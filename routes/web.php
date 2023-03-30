@@ -34,4 +34,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('users', App\Http\Controllers\Admin\UserController::class);
+    Route::get('/users/status/{users_id}/{status_code}', [App\Http\Controllers\Admin\UserController::class,'updateStatus'])->name('users.status.update');
+    ;
 });

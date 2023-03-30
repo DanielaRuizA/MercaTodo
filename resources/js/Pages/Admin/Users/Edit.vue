@@ -12,7 +12,7 @@ export default {
             return {
                 form: {
                     name: this.user.name,
-                    content: this.user.email,
+                    email: this.user.email,
                 }
             }
         },

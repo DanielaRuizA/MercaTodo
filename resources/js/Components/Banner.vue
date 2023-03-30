@@ -7,7 +7,7 @@ const style = computed(() => usePage().props.jetstream.flash?.bannerStyle || 'su
 const message = computed(() => usePage().props.jetstream.flash?.banner || '');
 
 watch(message, async () => {
-  show.value = true;
+    show.value = true;
 });
 </script>
 
