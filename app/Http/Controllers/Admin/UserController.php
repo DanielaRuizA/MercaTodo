@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Inertia\Inertia;
 use App\Models\User;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserRequest;
+//use App\Http\Requests\UserRequest;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -26,7 +27,7 @@ class UserController extends Controller
         return Inertia::render('Admin/Users/Edit', compact('user'));
     }
 
-    public function update(UserRequest $request, User $user)
+    public function update(Request $request, User $user)
     {
         $user->update($request->all());
 
@@ -56,10 +57,10 @@ class UserController extends Controller
             ]);
     
             if ($update_user) {
-                return redirect()->route('Admin/users.index')->with('success', 'User Status Updated Successfully.');
+                return redirect()->route('users.index')->with('success', 'User Status Updated Successfully.');
             }
     
-            return redirect()->route('Admin/users.index')->with('error', 'Fail to update user status.');
+            return redirect()->route('users.index')->with('error', 'Fail to update user status.');
         } catch (\Throwable $th) {
             throw $th;
         }
