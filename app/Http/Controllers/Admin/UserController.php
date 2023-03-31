@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Inertia\Inertia;
 use App\Models\User;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
 
 class UserController extends Controller
 {
@@ -26,6 +26,9 @@ class UserController extends Controller
         return Inertia::render('Admin/Users/Edit', compact('user'));
     }
 
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, User $user)
     {
         $user->update($request->all());
@@ -37,6 +40,31 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return redirect()->route('Admin/users.index')->with('message', 'Usuario eliminado');
+        return redirect()->route('users.index')->with('message', 'Usuario eliminado');
+    }
+
+
+    /**
+     * To Update Status of User
+     * @param Integer $user_id
+     * @param Integer $Status_code
+     * @return Success Response.
+     */
+
+    public function updateStatus(User $user_id, $status_code)
+    {
+        try {
+            $update_user = User::whereId($user_id)->update([
+            'status' => $status_code
+            ]);
+    
+            if ($update_user) {
+                return redirect()->route('Admin/users.index')->with('success', 'User Status Updated Successfully.');
+            }
+    
+            return redirect()->route('Admin/users.index')->with('error', 'Fail to update user status.');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }
