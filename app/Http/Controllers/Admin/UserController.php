@@ -26,10 +26,7 @@ class UserController extends Controller
         return Inertia::render('Admin/Users/Edit', compact('user'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
         $user->update($request->all());
 
