@@ -98,8 +98,6 @@ class UserControllerTest extends TestCase
             ->assertRedirect("users");
 
         $this->assertDatabaseHas('users', $data);
-
-        // fail Failed asserting that two strings are equal. ;
     }
 
     public function test_admin_destroy_user()
