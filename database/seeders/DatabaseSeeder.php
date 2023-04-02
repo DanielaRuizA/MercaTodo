@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         Permission::create(['name'=>'users.destroy']);
 
 
-        $role_admin = Role::create(['name'=>'admin']);
+        $role_admin = Role::create([ 'name' => 'admin' ]);
         $role_admin->givePermissionTo(Permission::all());
 
         //Role::create(['name'=>'user']);

@@ -16,29 +16,24 @@ use App\Http\Controllers\Admin\UserController;
 |
 */
 
-/*Route::get('/', function () {
+Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});*/
-
-Route::redirect('/', 'login');
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/userHome', function () {
-        return Inertia::render('UserHome');
-    })->name('userHome');
 });
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 });
-
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('users', App\Http\Controllers\Admin\UserController::class);
