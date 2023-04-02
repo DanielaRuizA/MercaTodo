@@ -41,28 +41,14 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('message', 'Usuario eliminado');
     }
 
-
-    /**
-     * To Update Status of User
-     * @param Integer $user_id
-     * @param Integer $Status_code
-     * @return Success Response.
-     */
-
-    public function updateStatus(User $user_id, $status_code)
+    public function changeStatus(Request $request)
     {
-        try {
-            $update_user = User::whereId($user_id)->update([
-            'status' => $status_code
-            ]);
-    
-            if ($update_user) {
-                return redirect()->route('users.index')->with('success', 'User Status Updated Successfully.');
-            }
-    
-            return redirect()->route('users.index')->with('error', 'Fail to update user status.');
-        } catch (\Throwable $th) {
-            throw $th;
-        }
+        $user = User::find($request->user_id);
+
+        $user->status = $request->status;
+
+        $user->save();
+
+        return redirect()->route('users.index')->response()->json(['success'=>'Status change successfully.']);
     }
 }

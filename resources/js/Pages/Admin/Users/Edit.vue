@@ -6,24 +6,42 @@ export default {
             AppLayout,
         },
         props: {
-            user: Object,
+            user: {
+                type: Object,
+                required: true
+                },
         },
         data () {
             return {
                 form: {
                     name: this.user.name,
                     email: this.user.email,
+                    status: this.user.status,
                 }
+            }
+        },
+        computed: {
+            status() {
+            return this.user.status === 0 ? 1 : 0;
+            },
+            buttonText() {
+            return this.user.status === 0 ? 'Inactivo' : 'Activo';
+            },
+            buttonClass() {
+            return 'btn btn-' + (this.user.status === 0 ? 'danger' : 'success');
             }
         },
         methods: {
             submit() {
-                this.$inertia.put(this.route('users.update', this.user.id), this.form)
+                this.$inertia.put(this.route('users.update', this.user.id), this.form);
             },
             destroy() {
                 if (confirm('¿Desea Eliminar?')) {
                     this.$inertia.delete(this.route('users.destroy', this.user.id))
                 }
+            },
+            submitForm() {
+            this.$inertia.put(this.route('update.status',this.user.id ), this.form);
             }
         }
     }
@@ -68,9 +86,7 @@ export default {
                                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md"
                                 >Editar</button>
                             </form>
-
                             <hr class="my-6">
-
                             <a href="#" @click.prevent="destroy">
                                 Eliminar Usuario
                             </a>
