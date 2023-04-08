@@ -117,7 +117,6 @@ class UserControllerTest extends TestCase
         ]);
     }
 
-    //User test
     public function test_user_access_dashboard()
     {
         $roleAdmin =  Role::create(['name' => 'dashboard']);
