@@ -12,6 +12,8 @@ class UserController extends Controller
 {
     public function index()
     {
+        //dd(User::latest()->get());
+        
         return Inertia::render('Admin/Users/Index', [
             'users'=> User::latest()->get()
         ]);
@@ -54,6 +56,6 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect()->route('users.index')->response()->json(['success'=>'Status change successfully.']);
+        return response()->json(['success'=>'Status change successfully.']);
     }
 }

@@ -21,9 +21,9 @@ export default {
     methods: {
         updateStatus(user) {
             const status = user.status ? 0 : 1;
-            axios.get(route('changeStatus', {
+            axios.get('/changeStatus', {
             params: { status: status, user_id: user.id }
-            })).then(response => {
+            }).then(response => {
             console.log(response.data.success);
             user.status = !user.status;
             }).catch(error => {

@@ -13,41 +13,40 @@ class UserControllerTest extends TestCase
 {
     use WithFaker,RefreshDatabase;
     
-    //Admin test
     public function test_admin_access_dashboard()
     {
-        $role_admin =  Role::create(['name' => 'admin']);
+        $roleAdmin =  Role::create(['name' => 'admin']);
 
-        Permission::create(['name' => 'admin.dashboard'])->assignRole($role_admin);
+        Permission::create(['name' => 'admin.dashboard'])->assignRole($roleAdmin);
         
         $admin = User::factory()->create()->assignRole('admin');
-        
-        $this->actingAs($admin)
-            ->get('dashboard')
-            ->assertStatus(200);
-        //->assertSee
+
+        $response = $this->actingAs($admin)
+                        ->get('dashboard')
+                        ->assertStatus(200);
+
+        $response->assertSeeText('dashboard');
     }
 
     public function test_admin_access_users_index()
     {
-        $role_admin =  Role::create(['name' => 'admin']);
+        $roleAdmin =  Role::create(['name' => 'admin']);
 
-        Permission::create(['name' => 'admin.users.index'])->assignRole($role_admin);
+        Permission::create(['name' => 'admin.users.index'])->assignRole($roleAdmin);
         
         $admin = User::factory()->create()->assignRole('admin');
         
         $this->actingAs($admin)
             ->get('users')
             ->assertStatus(200);
-        //->assertSee('No hay Usuarios registrados');
     }
 
     
     public function test_admin_show_user()
     {
-        $role_admin =  Role::create(['name' => 'admin']);
+        $roleAdmin =  Role::create(['name' => 'admin']);
 
-        Permission::create(['name' => 'admin.users.show'])->assignRole($role_admin);
+        Permission::create(['name' => 'admin.users.show'])->assignRole($roleAdmin);
         
         $admin = User::factory()->create()->assignRole('admin');
 
@@ -56,14 +55,13 @@ class UserControllerTest extends TestCase
         $this->actingAs($admin)
             ->get("users/$user->id")
             ->assertStatus(200);
-        //->assertSee();
     }
 
     public function test_admin_edit_user()
     {
-        $role_admin =  Role::create(['name' => 'admin']);
+        $roleAdmin =  Role::create(['name' => 'admin']);
 
-        Permission::create(['name' => 'admin.users.edit'])->assignRole($role_admin);
+        Permission::create(['name' => 'admin.users.edit'])->assignRole($roleAdmin);
         
         $admin = User::factory()->create()->assignRole('admin');
 
@@ -74,20 +72,17 @@ class UserControllerTest extends TestCase
             ->assertStatus(200)
             ->assertSee($user->name)
             ->assertSee($user->email);
-        //->assertSee();
     }
 
     public function test_admin_update_user()
     {
-        $role_admin = Role::create(['name' => 'admin']);
-        Permission::create(['name' => 'admin.users.update'])->assignRole($role_admin);
+        $roleAdmin = Role::create(['name' => 'admin']);
+        Permission::create(['name' => 'admin.users.update'])->assignRole($roleAdmin);
         
         $admin = User::factory()->create()->assignRole('admin');
         $user = User::factory()->create();
 
         $data = [
-            /*'name'  => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),*/
             'name'  => $this->faker->name,
             'email' => $this->faker->email,
         ];
@@ -102,9 +97,9 @@ class UserControllerTest extends TestCase
 
     public function test_admin_destroy_user()
     {
-        $role_admin =  Role::create(['name' => 'admin']);
+        $roleAdmin =  Role::create(['name' => 'admin']);
 
-        Permission::create(['name' => 'admin.users.update'])->assignRole($role_admin);
+        Permission::create(['name' => 'admin.users.update'])->assignRole($roleAdmin);
         
         $admin = User::factory()->create()->assignRole('admin');
 
@@ -125,16 +120,15 @@ class UserControllerTest extends TestCase
     //User test
     public function test_user_access_dashboard()
     {
-        $role_admin =  Role::create(['name' => 'dashboard']);
+        $roleAdmin =  Role::create(['name' => 'dashboard']);
 
-        Permission::create(['name' => 'dashboard'])->assignRole($role_admin);
+        Permission::create(['name' => 'dashboard'])->assignRole($roleAdmin);
         
         $user = User::factory()->create();
         
         $this->actingAs($user)
             ->get('dashboard')
             ->assertStatus(200);
-        //fail received 403.
     }
 
     public function test_user_access_index_users()
@@ -144,7 +138,6 @@ class UserControllerTest extends TestCase
         $this->actingAs($user)
             ->get("users")
             ->assertStatus(403);
-        //->assertSee();
     }
 
     public function test_user_show_users()
@@ -154,7 +147,6 @@ class UserControllerTest extends TestCase
         $this->actingAs($user)
             ->get("users/$user->id")
             ->assertStatus(403);
-        //->assertSee();
     }
 
     public function test_user_edit_users()
@@ -164,7 +156,6 @@ class UserControllerTest extends TestCase
         $this->actingAs($user)
             ->get("users/$user->id/edit")
             ->assertStatus(403);
-        //->assertSee();
     }
 
     public function test_user_update_users()
