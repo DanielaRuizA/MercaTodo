@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         //Role::create(['name'=>'user']);
 
         
-        /*User::factory()->create([
+        User::factory()->create([
             'name' => 'admi1',
             'email' => 'i@admin.com',
             'password' => bcrypt('123456')
