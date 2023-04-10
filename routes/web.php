@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\Admin\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,4 +33,9 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+});
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::resource('users', App\Http\Controllers\Admin\UserController::class);
+    Route::get('changeStatus', [App\Http\Controllers\Admin\UserController::class, 'changeStatus'])->name('changeStatus');
 });
