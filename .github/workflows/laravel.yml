@@ -31,6 +31,8 @@ jobs:
       run: |
         mkdir -p database
         touch database/database.sqlite
+    - name: install npm 
+      run: npm install
     - name: Recopile vue
       run: npm run build 
     - name: Run tests
