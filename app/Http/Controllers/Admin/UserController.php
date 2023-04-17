@@ -12,10 +12,11 @@ class UserController extends Controller
 {
     public function index()
     {
-        //dd(User::latest()->get());
-        
         return Inertia::render('Admin/Users/Index', [
-            'users'=> User::latest()->get()
+            'users'=> User::where('id', '!=', auth()->id())
+                            ->latest()->get()
+                            ->map->only(['id', 'name', 'email', 'status'])
+            
         ]);
     }
 
