@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('name')->nullable();
             $table->longText('description')->nullable();
             $table->boolean('product_status')->default(0);
-            $table->decimal('price', 7, 3)->nullable();
+            $table->integer('price')->nullable();
             $table->integer('quantity')->nullable();
             $table->timestamps();
         });
