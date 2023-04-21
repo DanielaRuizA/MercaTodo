@@ -12,6 +12,7 @@ class UserController extends Controller
 {
     public function index()
     {
+        //dd(User::latest()->get());
         return Inertia::render('Admin/Users/Index', [
             'users'=> User::where('id', '!=', auth()->id())
                             ->latest()->get()

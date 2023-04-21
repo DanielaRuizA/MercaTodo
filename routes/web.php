@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,4 +39,12 @@ Route::middleware([
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('users', App\Http\Controllers\Admin\UserController::class);
     Route::get('changeStatus', [App\Http\Controllers\Admin\UserController::class, 'changeStatus'])->name('changeStatus');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('products', App\Http\Controllers\Admin\ProductController::class);
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('stores', App\Http\Controllers\Store\StoreController::class);
 });
