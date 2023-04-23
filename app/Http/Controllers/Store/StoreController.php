@@ -16,5 +16,13 @@ class StoreController extends Controller
             'products'=> Product::latest()->paginate(20)
             
         ]);
+
+        // {
+        //     $usersList = User::orderBy('id', 'desc')
+        //                     ->paginate(6);
+        //     return Inertia::render('UserView', [
+        //         'usersList' => $usersList
+        //     ]);
+        // }
     }
 }

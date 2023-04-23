@@ -8,7 +8,7 @@ export default {
         AppLayout, Head, Link
     },
     props: {
-        users: Array,
+        users: Object,
     },
     setup() {
         const destroy = (id) => {
@@ -59,7 +59,7 @@ export default {
             </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200 divide-solid">
-            <tr v-for="user in users" :key="user.id">
+            <tr v-for="user in users.data" :key="user.id">
                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                     {{ user.id}}
                 </td>
@@ -89,6 +89,9 @@ export default {
             </tr>
             </tbody>
         </table>
+        <div>
+            <link v-for="Link in users.Links" :href="Link.url" v-html="Link.label">
+        </div>
     </AppLayout>
 </template>
 

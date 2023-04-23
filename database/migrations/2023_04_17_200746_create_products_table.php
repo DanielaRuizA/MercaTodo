@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->boolean('product_status')->default(0);
             $table->integer('price')->nullable();
             $table->integer('quantity')->nullable();
+            $table->string('product_photo')->nullable();
             $table->timestamps();
         });
     }

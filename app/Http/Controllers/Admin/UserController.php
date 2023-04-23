@@ -14,9 +14,10 @@ class UserController extends Controller
     {
         //dd(User::latest()->get());
         return Inertia::render('Admin/Users/Index', [
-            'users'=> User::where('id', '!=', auth()->id())
+            /*'users'=> User::where('id', '!=', auth()->id())
                             ->latest()->get()
-                            ->map->only(['id', 'name', 'email', 'status'])
+                            ->map->paginate(20)->only(['id', 'name', 'email', 'status'])*/
+                'users'=> User::paginate(30, ['id', 'name', 'email', 'status'])
             
         ]);
     }
