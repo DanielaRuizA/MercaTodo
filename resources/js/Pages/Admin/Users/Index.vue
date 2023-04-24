@@ -1,11 +1,12 @@
 <script>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import Paginator from "@/Components/Paginator.vue"
 import { Head, Link } from "@inertiajs/vue3"
 import {Inertia} from "@inertiajs/inertia";
 
 export default {
     components: {
-        AppLayout, Head, Link
+        AppLayout, Head, Link, Paginator
     },
     props: {
         users: Object,
@@ -36,6 +37,7 @@ export default {
 
 <template>  
     <AppLayout title="Dashboard">
+        <pre>{{ users }}</pre>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Usuarios lista 
@@ -89,8 +91,10 @@ export default {
             </tr>
             </tbody>
         </table>
-        <div>
-            <link v-for="Link in users.Links" :href="Link.url" v-html="Link.label">
+        <div class="absolute top-0 w-full">
+            <!-- <link v-for="Link in users.Links" :href="Link.url" v-html="Link.label"> -->
+            <!-- <Link class="p-4 bg-gray-100 divide" v-for="i in Math.ceil(users.total/users.per_page)">{{ i }}</Link> -->
+            <Paginator :current-page="users.current_page" :pages="Math.ceil(users.total/users.per_page)" />
         </div>
     </AppLayout>
 </template>

@@ -11,10 +11,8 @@ class ProductController extends Controller
 {
     public function index()
     {
-        //dd(Product::all());
         return Inertia::render('Admin/Products/Index', [
-            'products'=> Product::latest()->get()
-            
+            'products'=> Product::latest()->get(['id','name','description','product_status','price','quantity','product_photo'])
         ]);
     }
 

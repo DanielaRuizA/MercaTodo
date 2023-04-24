@@ -59,9 +59,9 @@ export default {
                 <th class="px-6 py-3 bg-gray-50 text-left">
                     <span class="text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Descripción</span>
                 </th>
-                <!-- <th class="px-6 py-3 bg-gray-50 text-left">
+                <th class="px-6 py-3 bg-gray-50 text-left">
                     <span class="text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Habilitado</span>
-                </th> -->
+                </th> 
                 <th class="px-6 py-3 bg-gray-50 text-left">
                     <span class="text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Precio Unitario</span>
                 </th>
@@ -82,13 +82,16 @@ export default {
                     {{ product.name}}
                 </td>
                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                    {{ product.description}}
+                    <img :src="product.product_photo">
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                    {{product.description}}
                 </td>
                 <!-- <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900"> -->
                     <!-- {{ product.product_status}} -->
-                <!-- </td> -->
+                <!-- </td>  -->
                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                    ${{ product.price}}
+                    {{Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumSignificantDigits: 3 }).format(product.price)}}
                 </td>
                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                     {{ product.quantity}}

@@ -46,7 +46,7 @@ export default {
                     <div class="pt-3 flex items-center justify-between">
                         <p class="">{{ product.name }}</p>
                     </div>
-                    <p class="pt-1 text-gray-900">{{ product.price }}</p>
+                    <p class="pt-1 text-gray-900">{{Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumSignificantDigits: 3 }).format(product.price)}}</p>
                 </a>
             </div>
 
