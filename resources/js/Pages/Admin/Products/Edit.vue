@@ -18,6 +18,7 @@ export default {
                     description: this.product.description,
                     price: this.product.price,
                     quantity: this.product.quantity,
+                    photo: this.product.product_photo,
                 }
             }
         },
@@ -67,7 +68,7 @@ export default {
                     </div>
                     <div class="md:col-span-2 mt-5 md:mt-0">
                         <div class="shadow bg-white md:rounded-md p-4">
-                            <form @submit.prevent="submit">
+                            <form @submit.prevent="submit" enctype="multipart/form-data">
                                 <label class="block font-medium text-sm text-gray-700">
                                     Nombre
                                 </label>
@@ -97,6 +98,10 @@ export default {
                                     class="form-input w-full rounded-md shadow-sm"
                                     v-model="form.quantity"
                                 ></textarea>
+                                <!-- <input type="file" @input="form.photo = $event.target.files[0]" />
+                                <progress v-if="form.progress" :value="form.progress.percentage" max="100">
+                                    {{ form.progress.percentage }}%
+                                </progress> -->
                                 <button 
                                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md"
                                 >Editar</button>

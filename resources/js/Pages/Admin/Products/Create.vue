@@ -1,5 +1,6 @@
 <script>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 
 export default {
         components: {
@@ -8,7 +9,6 @@ export default {
         props: {
             product: {
                 type: Object,
-                required: true
                 },
         },
         data () {
@@ -18,6 +18,7 @@ export default {
                     description: '',
                     price: '',
                     quantity: '',
+                    product_photo: '',
                 }
             }
         },
@@ -29,9 +30,10 @@ export default {
                 if (confirm('¿Desea Eliminar?')) {
                     this.$inertia.delete(this.route('products.destroy', this.product.id))
                 }
-            }
+            },
         }
     }
+
 </script>
 
 <template>
@@ -53,7 +55,7 @@ export default {
                     </div>
                     <div class="md:col-span-2 mt-5 md:mt-0">
                         <div class="shadow bg-white md:rounded-md p-4">
-                            <form @submit.prevent="submit">
+                            <form @submit.prevent="submit" enctype="multipart/form-data">
                                 <label class="block font-medium text-sm text-gray-700">
                                     Nombre
                                 </label>
@@ -83,6 +85,16 @@ export default {
                                     class="form-input w-full rounded-md shadow-sm"
                                     v-model="form.quantity"
                                 ></textarea>
+                                <!-- <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Upload file</label>
+                                <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file">
+                                <div class="form-group">
+                                    <label for="description">Picture</label>
+                                    <input type="file" name="picture" class="form-control-file" id="picture" @input="form.file = $event.target.files[0]">
+                                </div> -->
+                                <input type="file" @input="form.product_photo = $event.target.files[0]" />
+                                <progress v-if="form.progress" :value="form.progress.percentage" max="100">
+                                    {{ form.progress.percentage }}%
+                                </progress>
                                 <button 
                                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md"
                                 >Crear</button>

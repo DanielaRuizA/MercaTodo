@@ -24,9 +24,10 @@ import { Link, router } from '@inertiajs/vue3';
                             <p class="text-sm text-gray-600">{{ product.id }}</p>
                             <p>{{ product.name }}</p>
                             <p>{{ product.description }}</p>
-                            <p>{{ product.product_status }}</p>
+                            <p>{{ product.status }}</p>
                             <p>{{ product.price }}</p>
                             <p>{{ product.quantity }}</p>
+                            <img :src="product.product_photo">
                             <hr class="my-6">
                             <Link :href="route('products.index')">
                                 Volver
