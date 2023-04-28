@@ -5,6 +5,9 @@ import { Link, router } from '@inertiajs/vue3';
     const props = defineProps({
         product: Object
     })
+
+    const showImage= () =>"/storage/"
+        
 </script>
 
 <template>
@@ -27,7 +30,7 @@ import { Link, router } from '@inertiajs/vue3';
                             <p>{{ product.status }}</p>
                             <p>{{ product.price }}</p>
                             <p>{{ product.quantity }}</p>
-                            <img :src="product.product_photo">
+                            <img :src="showImage() + product.product_photo" :alt="product.name" width="400">
                             <hr class="my-6">
                             <Link :href="route('products.index')">
                                 Volver

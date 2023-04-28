@@ -63,7 +63,7 @@ class ProductController extends Controller
             'description'=> 'required',
             'price'=> 'required',
             'quantity'=> 'required',
-            'product_photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            // 'product_photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
         // $validated = $request->all();
@@ -74,7 +74,7 @@ class ProductController extends Controller
         //     $validated['product_photo'] = $filePath;
         // }
 
-        $product->Product::update($request->all());
+        $product->update($request->all());
 
         return redirect()->route('products.index')->with('message', 'Producto Actualizado');
     }
