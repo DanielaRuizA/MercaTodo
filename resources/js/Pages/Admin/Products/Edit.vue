@@ -1,52 +1,50 @@
-<script>
+<script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import { router, useForm  } from '@inertiajs/vue3';
 
-export default {
-        components: {
-            AppLayout,
-        },
-        props: {
-            product: {
-                type: Object,
-                required: true
-                },
-        },
-        data () {
-            return {
-                form: {
-                    name: this.product.name,
-                    description: this.product.description,
-                    price: this.product.price,
-                    quantity: this.product.quantity,
-                    photo: this.product.product_photo,
-                }
-            }
-        },
-        /*computed: {
-            status() {
-            return this.product.status === 0 ? 1 : 0;
-            },
-            buttonText() {
-            return this.product.status === 0 ? 'Inactivo' : 'Activo';
-            },
-            buttonClass() {
-            return 'btn btn-' + (this.product.status === 0 ? 'danger' : 'success');
-            }
-        },*/
-        methods: {
-            submit() {
-                this.$inertia.put(this.route('products.update', this.product.id), this.form);
-            },
-            destroy() {
-                if (confirm('¿Desea Eliminar?')) {
-                    this.$inertia.delete(this.route('products.destroy', this.product.id))
-                }
-            },
-            submitForm() {
-            this.$inertia.put(this.route('update.status',this.product.id ), this.form);
-            }
-        }
-    }
+
+const props = defineProps({
+    product: {
+        type: Object,
+        required: true
+    },
+});
+
+const form = useForm ({
+    id: props.product.id,
+    name: props.product.name,
+    description:props.product.description,
+    price:props.product.price,
+    quantity:props.product.quantity,
+    product_photo:props.product.product_photo,
+    _method: 'put'
+});
+
+const submit = () => {
+    form.post(route('products.update', props.product.id),
+//     {
+//         forceFormData: true,}
+);
+}
+
+// function submit(){
+//     form.post(router('products.update', {
+//                     // forceFormData: true,
+//                     //_method: 'put',
+//                     name: form.name,
+//                     description: form.description,
+//                     price:form.price,
+//                     quantity:form.quantity,
+//                     // product_photo:form.product_photo,
+//                 }))};
+            
+//     //         destroy() {
+    //             if (confirm('¿Desea Eliminar?')) {
+    //                 this.$inertia.delete(this.route('products.destroy', this.product.id))
+    //             }
+    //         }
+    //     }
+    // }
 </script>
 
 <template>
@@ -68,7 +66,7 @@ export default {
                     </div>
                     <div class="md:col-span-2 mt-5 md:mt-0">
                         <div class="shadow bg-white md:rounded-md p-4">
-                            <form @submit.prevent="submit" enctype="multipart/form-data">
+                            <form @submit.prevent="submit">
                                 <label class="block font-medium text-sm text-gray-700">
                                     Nombre
                                 </label>
@@ -98,11 +96,15 @@ export default {
                                     class="form-input w-full rounded-md shadow-sm"
                                     v-model="form.quantity"
                                 ></textarea>
-                                <!-- <input type="file" @input="form.photo = $event.target.files[0]" />
+                                <!-- <img :src="showImage() + product.product_photo" :alt="product.name" width="250"> -->
+                                <input type="file" @input="form.product_photo = $event.target.files[0]" />
                                 <progress v-if="form.progress" :value="form.progress.percentage" max="100">
                                     {{ form.progress.percentage }}%
+                                </progress>
+                                <!-- <progress v-if="form.progress" :value="form.progress.percentage" max="100">
+                                    {{ form.progress.percentage }}%
                                 </progress> -->
-                                <button 
+                                <button type="submit"
                                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md"
                                 >Editar</button>
                             </form>

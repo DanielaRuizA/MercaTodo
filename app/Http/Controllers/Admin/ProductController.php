@@ -29,7 +29,7 @@ class ProductController extends Controller
             'description'=> 'required',
             'price'=> 'required',
             'quantity'=> 'required',
-            'product_photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'product_photo' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
 
@@ -41,7 +41,7 @@ class ProductController extends Controller
             $validated['product_photo'] = $filePath;
         }
 
-        $product = Product::create($validated);
+        Product::create($validated);
 
         return redirect()->route('products.index', $product->id)->with('message', 'Producto Creado');
     }
@@ -59,28 +59,32 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $request->validate([
-            'name' => 'required',
-            'description'=> 'required',
-            'price'=> 'required',
-            'quantity'=> 'required',
-            // 'product_photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        'name' => 'required',
+        'description'=> 'required',
+        'price'=> 'required',
+        'quantity'=> 'required',
+        'product_photo' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
-        // $validated = $request->all();
-        
-        // if ($request->hasFile('product_photo')) {
-        //     $filePath = Storage::disk('public')->put('images', request()->file('product_photo'));
+        $validated = $request->all();
 
-        //     $validated['product_photo'] = $filePath;
-        // }
+        if ($request->hasFile('product_photo')) {
+            Storage::disk('public')->delete($product->product_photo);
 
-        $product->update($request->all());
+            $filePath = Storage::disk('public')->put('images', request()->file('product_photo'));
+            
+            $validated['product_photo'] = $filePath;
+        }
+
+        $product->update($validated);
 
         return redirect()->route('products.index')->with('message', 'Producto Actualizado');
     }
 
     public function destroy(Product $product)
     {
+        Storage::disk('public')->delete($product->product_photo);
+        
         $product->delete();
 
         return redirect()->route('products.index')->with('message', 'Producto Eliminado');
