@@ -23,9 +23,6 @@ class ProductFactory extends Factory
             'price'           => fake()->numberBetween(1000, 300000),
             'quantity'        => fake()->numberBetween(1, 100),
             'product_photo'   =>'images/icecream.jpg',
-            //'product_photo'   => $this->faker->imageUrl, esta es la que sirve
-            //'product_photo'   => "https://images.unsplash.com/photo-1555982105-d25af4182e4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&h=400&q=80",
-            // 'product_photo'   => fake()->imageUrl(),
         ];
     }
 }
