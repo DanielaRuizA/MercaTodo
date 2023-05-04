@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Inertia\Inertia;
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 //use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
 
@@ -12,14 +13,20 @@ class UserController extends Controller
 {
     public function index()
     {
-        //dd(User::latest()->get());
+        $productsList = Product::latest()
+        ->paginate(6);
+
         return Inertia::render('Admin/Users/Index', [
-            /*'users'=> User::where('id', '!=', auth()->id())
-                            ->latest()->get()
-                            ->map->paginate(20)->only(['id', 'name', 'email', 'status'])*/
-                'users'=> User::paginate(30, ['id', 'name', 'email', 'status'])
-            
+        'productsList' => $productsList
         ]);
+        //dd(User::latest()->get());
+        // return Inertia::render('Admin/Users/Index', [
+        /*'users'=> User::where('id', '!=', auth()->id())
+                        ->latest()->get()
+                        ->map->paginate(20)->only(['id', 'name', 'email', 'status'])*/
+        // 'users'=> User::paginate(30, ['id', 'name', 'email', 'status'])
+            
+        // ]);
     }
 
     public function show(User $user)
