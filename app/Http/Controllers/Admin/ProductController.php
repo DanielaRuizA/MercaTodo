@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\Admin\ProductRequest;
 
 class ProductController extends Controller
 {
@@ -22,18 +23,18 @@ class ProductController extends Controller
         return Inertia::render('Admin/Products/Create');
     }
 
-    public function store(Request $request, Product $product)
+    public function store(ProductRequest $request, Product $product)
     {
-        $request->validate([
-            'name' => 'required',
-            'description'=> 'required',
-            'price'=> 'required',
-            'quantity'=> 'required',
-            'product_photo' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048'
-        ]);
+        // $request->validate([
+        //     'name' => 'required',
+        //     'description'=> 'required',
+        //     'price'=> 'required',
+        //     'quantity'=> 'required',
+        //     'product_photo' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        // ]);
 
 
-        $validated = $request->all();
+        $validated = $request->validated();
         
         if ($request->hasFile('product_photo')) {
             $filePath = Storage::disk('public')->put('images', request()->file('product_photo'));
@@ -56,17 +57,17 @@ class ProductController extends Controller
         return Inertia::render('Admin/Products/Edit', compact('product'));
     }
 
-    public function update(Request $request, Product $product)
+    public function update(ProductRequest $request, Product $product)
     {
-        $request->validate([
-        'name' => 'required',
-        'description'=> 'required',
-        'price'=> 'required',
-        'quantity'=> 'required',
-        'product_photo' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048'
-        ]);
+        // $request->validate([
+        // 'name' => 'required',
+        // 'description'=> 'required',
+        // 'price'=> 'required',
+        // 'quantity'=> 'required',
+        // 'product_photo' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        // ]);
 
-        $validated = $request->all();
+        $validated = $request->validated();
 
         if ($request->hasFile('product_photo')) {
             Storage::disk('public')->delete($product->product_photo);
@@ -80,6 +81,7 @@ class ProductController extends Controller
 
         return redirect()->route('products.index')->with('message', 'Producto Actualizado');
     }
+
 
     public function destroy(Product $product)
     {

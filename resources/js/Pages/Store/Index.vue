@@ -31,11 +31,6 @@ export default {
 </script>
 <template>
     <AppLayout title="Dashboard">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Store
-            </h2>
-        </template>
         <!-- <pre>{{ products }}</pre> -->
         <body class="bg-white text-gray-600 work-sans leading-normal text-base tracking-normal">
             <section class="bg-white py-8">
@@ -44,7 +39,7 @@ export default {
                         <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-3">
                             <a class="uppercase tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl "
                                 href="#">
-                                Store
+                                Mercatodo
                             </a>
                             <div class="flex items-center" id="store-nav-content">
                                 <input type="text" class="pl-3 inline-block no-underline hover:text-black"

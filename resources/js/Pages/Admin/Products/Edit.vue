@@ -3,11 +3,16 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import { router, useForm  } from '@inertiajs/vue3';
 
 
+// const props = defineProps({
+//     product: {
+//         type: Object,
+//         required: true
+//     },
+// });
+
 const props = defineProps({
-    product: {
-        type: Object,
-        required: true
-    },
+    product: Object,
+    errors: Object
 });
 
 const form = useForm ({
@@ -78,6 +83,9 @@ function showImage () {
                                     class="form-input w-full rounded-md shadow-sm"
                                     v-model="form.name"
                                 ></textarea>
+                                <div v-if="errors.name" class="text-red-600">
+                                    {{ errors.name }}
+                                </div>
                                 <label class="block font-medium text-sm text-gray-700">
                                     Descripción
                                 </label>
@@ -86,6 +94,9 @@ function showImage () {
                                     v-model="form.description"
                                     rows="8"
                                 ></textarea>
+                                <div v-if="errors.description" class="text-red-600">
+                                    {{ errors.description }}
+                                </div>
                                 <label class="block font-medium text-sm text-gray-700">
                                     Precio
                                 </label>
@@ -93,6 +104,9 @@ function showImage () {
                                     class="form-input w-full rounded-md shadow-sm"
                                     v-model="form.price"
                                 ></textarea>
+                                <div v-if="errors.price" class="text-red-600">
+                                    {{ errors.price}}
+                                </div>
                                 <label class="block font-medium text-sm text-gray-700">
                                     Cantidad 
                                 </label>
@@ -100,8 +114,14 @@ function showImage () {
                                     class="form-input w-full rounded-md shadow-sm"
                                     v-model="form.quantity"
                                 ></textarea>
+                                <div v-if="errors.quantity" class="text-red-600">
+                                    {{ errors.quantity }}
+                                </div>
                                 <img :src="showImage() + product.product_photo" :alt="product.name" width="250">
                                 <input type="file" @input="form.product_photo = $event.target.files[0]" />
+                                <div v-if="errors.product_photo" class="text-red-600">
+                                    {{ errors.product_photo }}
+                                </div>
                                 <progress v-if="form.progress" :value="form.progress.percentage" max="100">
                                     {{ form.progress.percentage }}%
                                 </progress>

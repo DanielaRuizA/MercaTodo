@@ -7,19 +7,18 @@ export default {
             AppLayout,
         },
         props: {
-            product: {
-                type: Object,
-                },
+            product: Object,
+            errors: Object
         },
         data () {
             return {
-                form: {
+                form: useForm({
                     name: '',
                     description: '',
                     price: '',
                     quantity: '',
                     product_photo: '',
-                }
+                })
             }
         },
         methods: {
@@ -63,6 +62,9 @@ export default {
                                     class="form-input w-full rounded-md shadow-sm"
                                     v-model="form.name"
                                 ></textarea>
+                                <div v-if="errors.name" class="text-red-600">
+                                    {{ errors.name }}
+                                </div>
                                 <label class="block font-medium text-sm text-gray-700">
                                     Descripción
                                 </label>
@@ -71,6 +73,9 @@ export default {
                                     v-model="form.description"
                                     rows="8"
                                 ></textarea>
+                                <div v-if="errors.description" class="text-red-600">
+                                    {{ errors.description }}
+                                </div>
                                 <label class="block font-medium text-sm text-gray-700">
                                     Precio
                                 </label>
@@ -78,6 +83,9 @@ export default {
                                     class="form-input w-full rounded-md shadow-sm"
                                     v-model="form.price"
                                 ></textarea>
+                                <div v-if="errors.price" class="text-red-600">
+                                    {{ errors.price}}
+                                </div>
                                 <label class="block font-medium text-sm text-gray-700">
                                     Cantidad 
                                 </label>
@@ -85,6 +93,9 @@ export default {
                                     class="form-input w-full rounded-md shadow-sm"
                                     v-model="form.quantity"
                                 ></textarea>
+                                <div v-if="errors.quantity" class="text-red-600">
+                                    {{ errors.quantity }}
+                                </div>
                                 <!-- <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Upload file</label>
                                 <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file">
                                 <div class="form-group">
@@ -95,6 +106,9 @@ export default {
                                 <progress v-if="form.progress" :value="form.progress.percentage" max="100">
                                     {{ form.progress.percentage }}%
                                 </progress>
+                                <div v-if="errors.product_photo" class="text-red-600">
+                                    {{ errors.product_photo }}
+                                </div>
                                 <button 
                                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md"
                                 >Crear</button>
