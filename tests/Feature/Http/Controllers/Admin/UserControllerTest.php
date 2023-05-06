@@ -11,62 +11,62 @@ use App\Models\User;
 
 class UserControllerTest extends TestCase
 {
-    use WithFaker,RefreshDatabase;
-    
-    public function test_admin_access_dashboard()
-    {
-        $roleAdmin =  Role::create(['name' => 'admin']);
+    use WithFaker, RefreshDatabase;
 
-        Permission::create(['name' => 'admin.dashboard'])->assignRole($roleAdmin);
-        
-        $admin = User::factory()->create()->assignRole('admin');
+    public function testAdminAccessDashboard()
+    {
+        $roleAdmin =  Role::create(["name" => "admin"]);
+
+        Permission::create(["name" => "admin.dashboard"])->assignRole($roleAdmin);
+
+        $admin = User::factory()->create()->assignRole("admin");
 
         $response = $this->actingAs($admin)
-                        ->get('dashboard')
-                        ->assertStatus(200);
+            ->get("dashboard")
+            ->assertStatus(200);
 
-        $response->assertSeeText('dashboard');
+        $response->assertSeeText("dashboard");
     }
 
-    public function test_admin_access_users_index()
+    public function testAdminAccessUsersIndex()
     {
-        $roleAdmin =  Role::create(['name' => 'admin']);
+        $roleAdmin =  Role::create(["name" => "admin"]);
 
-        Permission::create(['name' => 'admin.users.index'])->assignRole($roleAdmin);
-        
-        $admin = User::factory()->create()->assignRole('admin');
-        
+        Permission::create(["name" => "admin.users.index"])->assignRole($roleAdmin);
+
+        $admin = User::factory()->create()->assignRole("admin");
+
         $this->actingAs($admin)
-            ->get('users')
+            ->get("users")
             ->assertStatus(200);
     }
 
-    
-    public function test_admin_show_user()
-    {
-        $roleAdmin =  Role::create(['name' => 'admin']);
 
-        Permission::create(['name' => 'admin.users.show'])->assignRole($roleAdmin);
-        
-        $admin = User::factory()->create()->assignRole('admin');
+    public function testAdminShowUser()
+    {
+        $roleAdmin =  Role::create(["name" => "admin"]);
+
+        Permission::create(["name" => "admin.users.show"])->assignRole($roleAdmin);
+
+        $admin = User::factory()->create()->assignRole("admin");
 
         $user = User::factory()->create();
-        
+
         $this->actingAs($admin)
             ->get("users/$user->id")
             ->assertStatus(200);
     }
 
-    public function test_admin_edit_user()
+    public function testAdminCanAccessEditFormUser()
     {
-        $roleAdmin =  Role::create(['name' => 'admin']);
+        $roleAdmin =  Role::create(["name" => "admin"]);
 
-        Permission::create(['name' => 'admin.users.edit'])->assignRole($roleAdmin);
-        
-        $admin = User::factory()->create()->assignRole('admin');
+        Permission::create(["name" => "admin.users.edit"])->assignRole($roleAdmin);
+
+        $admin = User::factory()->create()->assignRole("admin");
 
         $user = User::factory()->create();
-        
+
         $this->actingAs($admin)
             ->get("users/$user->id/edit")
             ->assertStatus(200)
@@ -74,34 +74,34 @@ class UserControllerTest extends TestCase
             ->assertSee($user->email);
     }
 
-    public function test_admin_update_user()
+    public function testAdminUpdateUser()
     {
-        $roleAdmin = Role::create(['name' => 'admin']);
-        Permission::create(['name' => 'admin.users.update'])->assignRole($roleAdmin);
-        
-        $admin = User::factory()->create()->assignRole('admin');
+        $roleAdmin = Role::create(["name" => "admin"]);
+        Permission::create(["name" => "admin.users.update"])->assignRole($roleAdmin);
+
+        $admin = User::factory()->create()->assignRole("admin");
         $user = User::factory()->create();
 
         $data = [
-            'name'  => $this->faker->name,
-            'email' => $this->faker->email,
+            "name"  => $this->faker->name,
+            "email" => $this->faker->email,
         ];
-        
+
         $this
             ->actingAs($admin)
             ->put("users/$user->id", $data)
             ->assertRedirect("users");
 
-        $this->assertDatabaseHas('users', $data);
+        $this->assertDatabaseHas("users", $data);
     }
 
-    public function test_admin_destroy_user()
+    public function testAdminDestroyUser()
     {
-        $roleAdmin =  Role::create(['name' => 'admin']);
+        $roleAdmin =  Role::create(["name" => "admin"]);
 
-        Permission::create(['name' => 'admin.users.update'])->assignRole($roleAdmin);
-        
-        $admin = User::factory()->create()->assignRole('admin');
+        Permission::create(["name" => "admin.users.destroy"])->assignRole($roleAdmin);
+
+        $admin = User::factory()->create()->assignRole("admin");
 
         $user = User::factory()->create();
 
@@ -110,69 +110,69 @@ class UserControllerTest extends TestCase
             ->delete("users/$user->id")
             ->assertRedirect("users");
 
-        $this->assertDatabaseMissing('users', [
-            'id'    => $user->id,
-            'name'  => $user->name,
-            'email' => $user->email,
+        $this->assertDatabaseMissing("users", [
+            "id"    => $user->id,
+            "name"  => $user->name,
+            "email" => $user->email,
         ]);
     }
 
-    public function test_user_access_dashboard()
+    public function testUserAccessDashboard()
     {
-        $roleAdmin =  Role::create(['name' => 'dashboard']);
+        $roleAdmin =  Role::create(["name" => "dashboard"]);
 
-        Permission::create(['name' => 'dashboard'])->assignRole($roleAdmin);
-        
+        Permission::create(["name" => "dashboard"])->assignRole($roleAdmin);
+
         $user = User::factory()->create();
-        
+
         $this->actingAs($user)
-            ->get('dashboard')
+            ->get("dashboard")
             ->assertStatus(200);
     }
 
-    public function test_user_access_index_users()
+    public function testUserCantAccessIndexUsers()
     {
         $user = User::factory()->create();
-        
+
         $this->actingAs($user)
             ->get("users")
             ->assertStatus(403);
     }
 
-    public function test_user_show_users()
+    public function testUserCantAccessShowUsers()
     {
         $user = User::factory()->create();
-        
+
         $this->actingAs($user)
             ->get("users/$user->id")
             ->assertStatus(403);
     }
 
-    public function test_user_edit_users()
+    public function testUserCantAccessEditFormUsers()
     {
         $user = User::factory()->create();
-        
+
         $this->actingAs($user)
             ->get("users/$user->id/edit")
             ->assertStatus(403);
     }
 
-    public function test_user_update_users()
+    public function testUserCantUpdateUsers()
     {
         $user = User::factory()->create();
 
         $data = [
-            'name'  => $this->faker->name,
-            'email' => $this->faker->email,
+            "name"  => $this->faker->name,
+            "email" => $this->faker->email,
         ];
-        
+
         $this
             ->actingAs($user)
             ->put("users/$user->id", $data)
             ->assertStatus(403);
     }
 
-    public function test_admin_destroy_users()
+    public function testUsersCantDestroyUsers()
     {
         $user = User::factory()->create();
 
