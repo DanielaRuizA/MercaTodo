@@ -26,7 +26,7 @@ class ProductRequest extends FormRequest
             'description'=> 'required|string|min:3|max:150',
             'price'=> 'required|integer|digits_between:3,7|gt:0',
             'quantity'=> 'required|integer|digits_between:1,5|gt:0',
-            'product_photo' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048'
+            'product_photo' => 'required|mimes:jpeg,png,jpg,webp|max:2048'
 
             // 'name' => 'required',
             // 'description'=> 'required',

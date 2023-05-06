@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Admin\ProductRequest;
+use App\Http\Requests\Admin\ProductUpdateRequest;
 
 class ProductController extends Controller
 {
@@ -57,7 +58,7 @@ class ProductController extends Controller
         return Inertia::render('Admin/Products/Edit', compact('product'));
     }
 
-    public function update(ProductRequest $request, Product $product)
+    public function update(ProductUpdateRequest $request, Product $product)
     {
         // $request->validate([
         // 'name' => 'required',

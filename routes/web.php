@@ -39,12 +39,10 @@ Route::middleware([
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('users', App\Http\Controllers\Admin\UserController::class);
     Route::get('changeStatus', [App\Http\Controllers\Admin\UserController::class, 'changeStatus'])->name('changeStatus');
-});
-
-Route::middleware(['auth'])->group(function () {
     Route::resource('products', App\Http\Controllers\Admin\ProductController::class);
     Route::get('changeProductStatus', [App\Http\Controllers\Admin\ProductController::class, 'changeProductStatus'])->name('changeProductStatus');
 });
+
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('stores', App\Http\Controllers\Store\StoreController::class);

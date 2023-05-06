@@ -23,12 +23,20 @@ class DatabaseSeeder extends Seeder
         Permission::create(['name'=>'users.edit']);
         Permission::create(['name'=>'users.update']);
         Permission::create(['name'=>'users.destroy']);
+        Permission::create(['name'=>'products.index']);
+        Permission::create(['name'=>'products.show']);
+        Permission::create(['name'=>'products.edit']);
+        Permission::create(['name'=>'products.update']);
+        Permission::create(['name'=>'products.destroy']);
+        Permission::create(['name'=>'stores.index']);
+
 
 
         $roleAdmin = Role::create([ 'name' => 'admin' ]);
         $roleAdmin->givePermissionTo(Permission::all());
 
-        //Role::create(['name'=>'user']);
+        $roleUser = Role::create(['name'=>'user']);
+        $roleUser->givePermissionTo('stores.index');
 
         
         User::factory()->create([
