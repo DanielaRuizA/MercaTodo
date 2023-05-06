@@ -17,6 +17,21 @@ use Illuminate\Http\Request;
 class ProductPruebaTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
+
+    public function testAvatarUpload()
+    {
+        Storage::fake('avatars');
+
+        $response = $this->json('POST', 'products', [
+            'product_photo' => UploadedFile::fake()->image('avatar.jpg')
+        ]);
+
+        // Assert the file was stored...
+        Storage::disk('avatars')->assertExists('avatar.jpg');
+
+        // Assert a file does not exist...
+        // Storage::disk('avatars')->assertMissing('missing.jpg');
+    }
 }
 //     public function test_destroy()
 //     {
@@ -363,5 +378,3 @@ class ProductPruebaTest extends TestCase
 
 // ->assertEquals('images/icecream.jpg', $product->product_photo);
 // }
-
-
