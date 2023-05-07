@@ -117,6 +117,28 @@ class UserControllerTest extends TestCase
         ]);
     }
 
+    public function testAdminChangeUserStatus()
+    {
+        $roleAdmin = Role::create(["name" => "admin"]);
+
+        Permission::create(["name" => "admin.products.status"])->assignRole($roleAdmin);
+
+        $admin = User::factory()->create()->assignRole("admin");
+
+        $user = User::factory()->create();
+
+        $data = [
+            "status"            => 1,
+        ];
+
+        $this->actingAs($admin)
+            ->get("changeStatus/$user->id", $data);
+
+        $this->assertDatabaseHas("users", [
+            "status"            => 0,
+        ]);
+    }
+
     public function testUserAccessDashboard()
     {
         $roleAdmin =  Role::create(["name" => "dashboard"]);
@@ -180,5 +202,24 @@ class UserControllerTest extends TestCase
             ->actingAs($user)
             ->delete("users/$user->id")
             ->assertStatus(403);
+    }
+
+    public function testUserCantChangeUserStatus()
+    {
+        $roleAdmin = Role::create(["name" => "admin"]);
+
+        Permission::create(["name" => "admin.products.status"])->assignRole($roleAdmin);
+
+        $admin = User::factory()->create()->assignRole("admin");
+
+        $user = User::factory()->create();
+
+        $data = [
+            "status"            => 1,
+        ];
+
+        $this->actingAs($admin)
+            ->get("changeStatus/$user->id", $data)
+            ->assertStatus(404);
     }
 }

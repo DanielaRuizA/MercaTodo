@@ -199,6 +199,28 @@ class ProductControllerTest extends TestCase
         ]);
     }
 
+    public function testAdminChangeProductStatus()
+    {
+        $roleAdmin = Role::create(["name" => "admin"]);
+
+        Permission::create(["name" => "admin.products.status"])->assignRole($roleAdmin);
+
+        $admin = User::factory()->create()->assignRole("admin");
+
+        $product = Product::factory()->create();
+
+        $data = [
+            "status"            => 1,
+        ];
+
+        $this->actingAs($admin)
+            ->get("changeProductStatus/$product->id", $data);
+
+        $this->assertDatabaseHas("products", [
+            "status"            => 0,
+        ]);
+    }
+
     public function testUserCantAccessIndexProducts()
     {
         $user = User::factory()->create();
@@ -311,38 +333,31 @@ class ProductControllerTest extends TestCase
             ->assertStatus(403);
     }
 
+    public function testUserCantChangeProductStatus()
+    {
+        $user = User::factory()->create();
+
+        $product = Product::factory()->create();
+
+        $data = [
+            "status"            => 1,
+        ];
+
+        $this->actingAs($user)
+            ->get("changeProductStatus/$product->id", $data)
+            ->assertStatus(404);
+    }
+
     public function testImagesCanBeUploaded()
     {
         Storage::fake("images");
 
         $file = File::create("avatar.jpg");
 
-        $response = $this->post("products", [
+        $this->post("products", [
             "product_photo" => $file,
         ]);
         $this->assertNotNull("product_photo");
         $this->assertFileExists($file, "filename doesn't exists");
-    }
-
-    public function testChangeProductStatus()
-    {
-        $roleAdmin = Role::create(["name" => "admin"]);
-
-        Permission::create(["name" => "admin.products.status"])->assignRole($roleAdmin);
-
-        $admin = User::factory()->create()->assignRole("admin");
-
-        $product = Product::factory()->create();
-
-        $data = [
-            "id" => $product->id,
-            "status" => 1
-        ];
-
-        $response = $this->actingAs($admin)
-            ->patch("changeProductStatus", $data);
-        //->assertStatus(403);
-
-        $response->assertOk()->assertJson(['status' => true]);
     }
 }
