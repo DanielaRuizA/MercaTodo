@@ -1,7 +1,6 @@
 <script>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link } from '@inertiajs/vue3';
-import Paginator from "@/Components/Paginator.vue"
 import Pagination from "@/Components/Pagination.vue"
 
 
@@ -31,7 +30,6 @@ export default {
 </script>
 <template>
     <AppLayout title="Dashboard">
-        <!-- <pre>{{ products }}</pre> -->
         <body class="bg-white text-gray-600 work-sans leading-normal text-base tracking-normal">
             <section class="bg-white py-8">
                 <div class="container mx-auto flex items-center flex-wrap pt-4 pb-12">

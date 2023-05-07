@@ -300,7 +300,7 @@ class ProductControllerTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function estUsersCantDestroyProducts()
+    public function testUsersCantDestroyProducts()
     {
         $user = User::factory()->create();
 
@@ -334,29 +334,15 @@ class ProductControllerTest extends TestCase
 
         $product = Product::factory()->create();
 
-        // $this->actingAs($admin)
-        //     ->get("changeProductStatus")
-        //     ->assertStatus(200);
-        // //     ->assertJson([
-        // //     "success" => "Status change successfully.",
-        // // ]);
+        $data = [
+            "id" => $product->id,
+            "status" => 1
+        ];
 
+        $response = $this->actingAs($admin)
+            ->patch("changeProductStatus", $data);
+        //->assertStatus(403);
 
-
-
-        // $this->assertEquals("out_of_stock", $product->fresh()->status);
-
-        //crear un product llamaro a la ruta change pasandole la variable
-        // $response = $this->actingAs($admin)->json("GET", "/change-product-status", [
-        //     "product_id" => $product->id,
-        //     "status" => 1,
-        // ]);
-
-
-        //assertStatus(200)
-
-
-        //$this->assertEquals(1, $product->fresh()->status);
-        // GET|HEAD        changeProductStatus ................................................... changeProductStatus
+        $response->assertOk()->assertJson(['status' => true]);
     }
 }

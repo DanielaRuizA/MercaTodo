@@ -7,15 +7,17 @@ use App\Models\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\Admin\ProductRequest;
+use App\Http\Requests\Admin\ProductStoreRequest;
 use App\Http\Requests\Admin\ProductUpdateRequest;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         return Inertia::render('Admin/Products/Index', [
-            'products'=> Product::latest()->get(['id','name','description','status','price','quantity','product_photo'])
+            'products'=> Product::latest()
+            ->where('name', 'LIKE', "%$request->q%")
+            ->get(['id','name','status','price','quantity','product_photo'])
         ]);
     }
 
@@ -24,17 +26,8 @@ class ProductController extends Controller
         return Inertia::render('Admin/Products/Create');
     }
 
-    public function store(ProductRequest $request, Product $product)
+    public function store(ProductStoreRequest $request, Product $product)
     {
-        // $request->validate([
-        //     'name' => 'required',
-        //     'description'=> 'required',
-        //     'price'=> 'required',
-        //     'quantity'=> 'required',
-        //     'product_photo' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048'
-        // ]);
-
-
         $validated = $request->validated();
         
         if ($request->hasFile('product_photo')) {
@@ -60,14 +53,6 @@ class ProductController extends Controller
 
     public function update(ProductUpdateRequest $request, Product $product)
     {
-        // $request->validate([
-        // 'name' => 'required',
-        // 'description'=> 'required',
-        // 'price'=> 'required',
-        // 'quantity'=> 'required',
-        // 'product_photo' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048'
-        // ]);
-
         $validated = $request->validated();
 
         if ($request->hasFile('product_photo')) {

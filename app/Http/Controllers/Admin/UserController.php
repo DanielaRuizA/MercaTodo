@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use Inertia\Inertia;
 use App\Models\User;
 use App\Http\Controllers\Controller;
-use App\Models\Product;
 use App\Http\Requests\Admin\UserRequest;
 use Illuminate\Http\Request;
 
@@ -13,13 +12,10 @@ class UserController extends Controller
 {
     public function index()
     {
-        //dd(User::latest()->get());
         return Inertia::render('Admin/Users/Index', [
-        /*'users'=> User::where('id', '!=', auth()->id())
-                        ->latest()->get()
-                        ->map->paginate(20)->only(['id', 'name', 'email', 'status'])*/
-        'users'=> User::paginate(30, ['id', 'name', 'email', 'status'])
-            
+            'users' => User::where('id', '!=', auth()->id())
+                ->latest()
+                ->paginate(15, ['id', 'name', 'email', 'status'])
         ]);
     }
 
@@ -35,12 +31,6 @@ class UserController extends Controller
 
     public function update(UserRequest $request, User $user)
     {
-        // $request->validate([
-        //     'name' => 'required',
-        //     'email' => 'required',
-        // ]);
-
-        // $user->update($request->all());
         $user->update($request->validated());
 
         return redirect()->route('users.index')->with('message', 'Usuario Actualizado');
@@ -53,6 +43,18 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('message', 'Usuario eliminado');
     }
 
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+
+        return Inertia::render('Admin/Users/Index', [
+        'users' => User::query()
+        ->Where('name', 'LIKE', "%{$search}%")
+        ->orWhere('email', 'LIKE', "%{$search}%")
+        ->get()
+    ]);
+    }
+
     public function changeStatus(Request $request)
     {
         $user = User::find($request->user_id);
@@ -61,6 +63,6 @@ class UserController extends Controller
 
         $user->save();
 
-        return response()->json(['success'=>'Status change successfully.']);
+        return response()->json(['success' => 'Status change successfully.']);
     }
 }
