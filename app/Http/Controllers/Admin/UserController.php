@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Inertia\Inertia;
-use App\Models\User;
+use App\Actions\User\changeStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
-use App\Actions\User\changeStatus;
+use Inertia\Inertia;
 
 class UserController extends Controller
 {
@@ -16,7 +16,7 @@ class UserController extends Controller
         return Inertia::render('Admin/Users/Index', [
             'users' => User::where('id', '!=', auth()->id())
                 ->latest()
-                ->paginate(15, ['id', 'name', 'email', 'status'])
+                ->paginate(15, ['id', 'name', 'email', 'status']),
         ]);
     }
 

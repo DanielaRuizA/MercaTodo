@@ -4,13 +4,13 @@ namespace Tests\Feature\Http\Controllers\Admin;
 
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Illuminate\Http\Testing\File;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\Testing\File;
+use Tests\TestCase;
 
 class ProductControllerTest extends TestCase
 {
@@ -18,24 +18,24 @@ class ProductControllerTest extends TestCase
 
     public function testAdminAccessProductsIndex()
     {
-        $roleAdmin =  Role::create(["name" => "admin"]);
+        $roleAdmin = Role::create(['name' => 'admin']);
 
-        Permission::create(["name" => "admin.products.index"])->assignRole($roleAdmin);
+        Permission::create(['name' => 'admin.products.index'])->assignRole($roleAdmin);
 
-        $admin = User::factory()->create()->assignRole("admin");
+        $admin = User::factory()->create()->assignRole('admin');
 
         $this->actingAs($admin)
-            ->get("products")
+            ->get('products')
             ->assertStatus(200);
     }
 
     public function testAdminShowProduct()
     {
-        $roleAdmin =  Role::create(["name" => "admin"]);
+        $roleAdmin = Role::create(['name' => 'admin']);
 
-        Permission::create(["name" => "admin.products.show"])->assignRole($roleAdmin);
+        Permission::create(['name' => 'admin.products.show'])->assignRole($roleAdmin);
 
-        $admin = User::factory()->create()->assignRole("admin");
+        $admin = User::factory()->create()->assignRole('admin');
 
         $user = User::factory()->create();
 
@@ -53,27 +53,27 @@ class ProductControllerTest extends TestCase
 
     public function testAdminCanAccessCreateFormProduct()
     {
-        $roleAdmin = Role::create(["name" => "admin"]);
+        $roleAdmin = Role::create(['name' => 'admin']);
 
-        Permission::create(["name" => "admin.products.create"])->assignRole($roleAdmin);
+        Permission::create(['name' => 'admin.products.create'])->assignRole($roleAdmin);
 
-        $admin = User::factory()->create()->assignRole("admin");
+        $admin = User::factory()->create()->assignRole('admin');
 
         $data = [
-            "name" => "New Product",
-            "description" => "This is a product",
-            "price" => 1000,
-            "quantity" => 33,
-            "product_photo" => "images/icecream.jpg",
+            'name' => 'New Product',
+            'description' => 'This is a product',
+            'price' => 1000,
+            'quantity' => 33,
+            'product_photo' => 'images/icecream.jpg',
         ];
 
         $product = Product::factory()->create();
 
-        Storage::fake("images");
+        Storage::fake('images');
 
         $this
             ->actingAs($admin)
-            ->get("products/create", $data)
+            ->get('products/create', $data)
             ->assertStatus(200)
             ->assertSee($product->nombre)
             ->assertSee($product->descripcion)
@@ -84,48 +84,48 @@ class ProductControllerTest extends TestCase
 
     public function testAdminStoreProduct()
     {
-        Storage::fake("public");
+        Storage::fake('public');
 
-        $roleAdmin = Role::create(["name" => "admin"]);
+        $roleAdmin = Role::create(['name' => 'admin']);
 
-        Permission::create(["name" => "admin.products.store"])->assignRole($roleAdmin);
+        Permission::create(['name' => 'admin.products.store'])->assignRole($roleAdmin);
 
-        $admin = User::factory()->create()->assignRole("admin");
+        $admin = User::factory()->create()->assignRole('admin');
 
         Product::factory()->create();
 
-        $file = File::create("icecream.jpg");
+        $file = File::create('icecream.jpg');
 
         $data = [
-            "name"            => "gomas",
-            "description"     => "gomas de distintos sabores y colores",
-            "price"           => 3000,
-            "quantity"        => 33,
-            "product_photo"   => $file
+            'name' => 'gomas',
+            'description' => 'gomas de distintos sabores y colores',
+            'price' => 3000,
+            'quantity' => 33,
+            'product_photo' => $file,
         ];
 
         $this->actingAs($admin)
-            ->post("products", $data)
-            ->assertRedirect("products");
+            ->post('products', $data)
+            ->assertRedirect('products');
 
-        $this->assertDatabaseHas("products", [
-            "name"            => "gomas",
-            "description"     => "gomas de distintos sabores y colores",
-            "price"           => 3000,
-            "quantity"        => 33,
+        $this->assertDatabaseHas('products', [
+            'name' => 'gomas',
+            'description' => 'gomas de distintos sabores y colores',
+            'price' => 3000,
+            'quantity' => 33,
         ]);
 
-        $this->assertNotNull("product_photo");
+        $this->assertNotNull('product_photo');
         $this->assertFileExists($file, "filename doesn't exists");
     }
 
     public function testAdminCanAccessEditFormProduct()
     {
-        $roleAdmin = Role::create(["name" => "admin"]);
+        $roleAdmin = Role::create(['name' => 'admin']);
 
-        Permission::create(["name" => "admin.products.edit"])->assignRole($roleAdmin);
+        Permission::create(['name' => 'admin.products.edit'])->assignRole($roleAdmin);
 
-        $admin = User::factory()->create()->assignRole("admin");
+        $admin = User::factory()->create()->assignRole('admin');
 
         $product = Product::factory()->create();
 
@@ -141,83 +141,83 @@ class ProductControllerTest extends TestCase
 
     public function testAdminUpdateProduct()
     {
-        $roleAdmin = Role::create(["name" => "admin"]);
+        $roleAdmin = Role::create(['name' => 'admin']);
 
-        Permission::create(["name" => "admin.products.update"])->assignRole($roleAdmin);
+        Permission::create(['name' => 'admin.products.update'])->assignRole($roleAdmin);
 
-        $admin = User::factory()->create()->assignRole("admin");
+        $admin = User::factory()->create()->assignRole('admin');
 
         $product = Product::factory()->create();
 
-        $file = File::create("icecream.jpg");
+        $file = File::create('icecream.jpg');
 
         $data = [
-            "name" => "New Product",
-            "description" => "This is a product",
-            "price" => 1000,
-            "quantity" => 33,
-            "product_photo" => $file,
+            'name' => 'New Product',
+            'description' => 'This is a product',
+            'price' => 1000,
+            'quantity' => 33,
+            'product_photo' => $file,
         ];
 
         $this->actingAs($admin)
             ->put("products/$product->id", $data)
-            ->assertRedirect("products");
+            ->assertRedirect('products');
 
-        $this->assertDatabaseHas("products", [
-            "name" => "New Product",
-            "description" => "This is a product",
-            "price" => 1000,
-            "quantity" => 33,
+        $this->assertDatabaseHas('products', [
+            'name' => 'New Product',
+            'description' => 'This is a product',
+            'price' => 1000,
+            'quantity' => 33,
         ]);
 
-        $this->assertNotNull("product_photo");
+        $this->assertNotNull('product_photo');
         $this->assertFileExists($file, "filename doesn't exists");
     }
 
     public function testAdminDestroyProduct()
     {
-        $roleAdmin = Role::create(["name" => "admin"]);
+        $roleAdmin = Role::create(['name' => 'admin']);
 
-        Permission::create(["name" => "admin.products.destroy"])->assignRole($roleAdmin);
+        Permission::create(['name' => 'admin.products.destroy'])->assignRole($roleAdmin);
 
-        $admin = User::factory()->create()->assignRole("admin");
+        $admin = User::factory()->create()->assignRole('admin');
 
         $product = Product::factory()->create();
 
         $this
             ->actingAs($admin)
             ->delete("products/$product->id")
-            ->assertRedirect("products");
+            ->assertRedirect('products');
 
-        $this->assertDatabaseMissing("products", [
-            "id" => $product->id,
-            "name" => $product->name,
-            "description" => $product->description,
-            "price" => $product->price,
-            "quantity" => $product->quantity,
-            "product_photo" => $product->product_photo,
+        $this->assertDatabaseMissing('products', [
+            'id' => $product->id,
+            'name' => $product->name,
+            'description' => $product->description,
+            'price' => $product->price,
+            'quantity' => $product->quantity,
+            'product_photo' => $product->product_photo,
         ]);
     }
 
     public function testAdminChangeProductStatus()
     {
-        $roleAdmin = Role::create(["name" => "admin"]);
+        $roleAdmin = Role::create(['name' => 'admin']);
 
-        Permission::create(["name" => "admin.products.status"])->assignRole($roleAdmin);
+        Permission::create(['name' => 'admin.products.status'])->assignRole($roleAdmin);
 
-        $admin = User::factory()->create()->assignRole("admin");
+        $admin = User::factory()->create()->assignRole('admin');
 
         $product = Product::factory()->create();
 
         $data = [
-            "status"            => 1,
+            'status' => 1,
         ];
 
         $this->actingAs($admin)
             ->get("changeProductStatus/$product->id", $data);
 
-        $this->assertDatabaseHas("products", [
-            "status"            => 0,
+        $this->assertDatabaseHas('products', [
+            'status' => 0,
         ]);
     }
 
@@ -226,7 +226,7 @@ class ProductControllerTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user)
-            ->get("products")
+            ->get('products')
             ->assertStatus(403);
     }
 
@@ -248,16 +248,16 @@ class ProductControllerTest extends TestCase
         Product::factory()->create();
 
         $data = [
-            "name" => "New Product",
-            "description" => "This is a product",
-            "price" => 1000,
-            "quantity" => 33,
-            "product_photo" => "images/icecream.jpg",
+            'name' => 'New Product',
+            'description' => 'This is a product',
+            'price' => 1000,
+            'quantity' => 33,
+            'product_photo' => 'images/icecream.jpg',
         ];
 
         $this
             ->actingAs($user)
-            ->get("products/create", $data)
+            ->get('products/create', $data)
             ->assertStatus(403);
     }
 
@@ -267,18 +267,18 @@ class ProductControllerTest extends TestCase
 
         Product::factory()->create();
 
-        $file = File::create("icecream.jpg");
+        $file = File::create('icecream.jpg');
 
         $data = [
-            "name"            => "gomas",
-            "description"     => "gomas de distintos sabores y colores",
-            "price"           => 3000,
-            "quantity"        => 33,
-            "product_photo"   => $file
+            'name' => 'gomas',
+            'description' => 'gomas de distintos sabores y colores',
+            'price' => 3000,
+            'quantity' => 33,
+            'product_photo' => $file,
         ];
 
         $this->actingAs($user)
-            ->post("products", $data)
+            ->post('products', $data)
             ->assertStatus(403);
     }
 
@@ -289,11 +289,11 @@ class ProductControllerTest extends TestCase
         $product = Product::factory()->create();
 
         $data = [
-            "name" => "New Product",
-            "description" => "This is a product",
-            "price" => 1000,
-            "quantity" => 33,
-            "product_photo" => "images/icecream.jpg",
+            'name' => 'New Product',
+            'description' => 'This is a product',
+            'price' => 1000,
+            'quantity' => 33,
+            'product_photo' => 'images/icecream.jpg',
         ];
 
         $this->actingAs($user)
@@ -307,14 +307,14 @@ class ProductControllerTest extends TestCase
 
         $product = Product::factory()->create();
 
-        $file = File::create("icecream.jpg");
+        $file = File::create('icecream.jpg');
 
         $data = [
-            "name" => "New Product",
-            "description" => "This is a product",
-            "price" => 1000,
-            "quantity" => 33,
-            "product_photo" => $file,
+            'name' => 'New Product',
+            'description' => 'This is a product',
+            'price' => 1000,
+            'quantity' => 33,
+            'product_photo' => $file,
         ];
 
         $this->actingAs($user)
@@ -340,7 +340,7 @@ class ProductControllerTest extends TestCase
         $product = Product::factory()->create();
 
         $data = [
-            "status"            => 1,
+            'status' => 1,
         ];
 
         $this->actingAs($user)
@@ -350,14 +350,14 @@ class ProductControllerTest extends TestCase
 
     public function testImagesCanBeUploaded()
     {
-        Storage::fake("images");
+        Storage::fake('images');
 
-        $file = File::create("avatar.jpg");
+        $file = File::create('avatar.jpg');
 
-        $this->post("products", [
-            "product_photo" => $file,
+        $this->post('products', [
+            'product_photo' => $file,
         ]);
-        $this->assertNotNull("product_photo");
+        $this->assertNotNull('product_photo');
         $this->assertFileExists($file, "filename doesn't exists");
     }
 }

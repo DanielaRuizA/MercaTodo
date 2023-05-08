@@ -2,13 +2,13 @@
 
 namespace Tests\Feature\Http\Controllers\Store;
 
+use App\Models\Product;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-use App\Models\User;
-use App\Models\Product;
+use Tests\TestCase;
 
 class StoreControllerTest extends TestCase
 {
@@ -16,16 +16,16 @@ class StoreControllerTest extends TestCase
 
     public function testAdminAccessStore()
     {
-        $roleAdmin =  Role::create(["name" => "admin"]);
+        $roleAdmin = Role::create(['name' => 'admin']);
 
-        Permission::create(["name" => "admin.store.index"])->assignRole($roleAdmin);
+        Permission::create(['name' => 'admin.store.index'])->assignRole($roleAdmin);
 
-        $admin = User::factory()->create()->assignRole("admin");
+        $admin = User::factory()->create()->assignRole('admin');
 
         $product = Product::factory()->create();
 
         $this->actingAs($admin)
-            ->get("stores")
+            ->get('stores')
             ->assertStatus(200)
             ->assertSee($product->nombre)
             ->assertSee($product->precio)
@@ -34,16 +34,16 @@ class StoreControllerTest extends TestCase
 
     public function testUserAccessStore()
     {
-        $roleUser =  Role::create(["name" => "user"]);
+        $roleUser = Role::create(['name' => 'user']);
 
-        Permission::create(["name" => "admin.store.index"])->assignRole($roleUser);
+        Permission::create(['name' => 'admin.store.index'])->assignRole($roleUser);
 
-        $user = User::factory()->create()->assignRole("user");
+        $user = User::factory()->create()->assignRole('user');
 
         $product = Product::factory()->create();
 
         $this->actingAs($user)
-            ->get("stores")
+            ->get('stores')
             ->assertStatus(200)
             ->assertSee($product->nombre)
             ->assertSee($product->precio)

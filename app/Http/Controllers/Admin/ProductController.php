@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Inertia\Inertia;
-use App\Models\Product;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Http\Requests\Admin\ProductStoreRequest;
-use App\Http\Requests\Admin\ProductUpdateRequest;
+use App\Actions\Product\changeProductStatusActions;
+use App\Actions\Product\ProductDestroyAction;
 use App\Actions\Product\ProductStoreAction;
 use App\Actions\Product\ProductUpdateAction;
-use App\Actions\Product\ProductDestroyAction;
-use App\Actions\Product\changeProductStatusActions;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ProductStoreRequest;
+use App\Http\Requests\Admin\ProductUpdateRequest;
+use App\Models\Product;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ProductController extends Controller
 {
@@ -20,7 +20,7 @@ class ProductController extends Controller
         return Inertia::render('Admin/Products/Index', [
             'products' => Product::latest()
                 ->where('name', 'LIKE', "%$request->q%")
-                ->get(['id', 'name', 'status', 'price', 'quantity', 'product_photo'])
+                ->get(['id', 'name', 'status', 'price', 'quantity', 'product_photo']),
         ]);
     }
 
@@ -52,7 +52,6 @@ class ProductController extends Controller
 
         return redirect()->route('products.index')->with('message', 'Producto Actualizado');
     }
-
 
     public function destroy(ProductDestroyAction $productDestroyAction, Product $product)
     {

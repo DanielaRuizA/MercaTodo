@@ -2,9 +2,9 @@
 
 namespace App\Actions\Product;
 
+use App\Http\Requests\Admin\ProductUpdateRequest;
 use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\Admin\ProductUpdateRequest;
 
 class ProductUpdateAction
 {

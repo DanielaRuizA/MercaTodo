@@ -23,10 +23,10 @@ class ProductStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:3|max:150',
-            'description'=> 'required|string|min:3|max:150',
-            'price'=> 'required|integer|digits_between:3,7|gt:0',
-            'quantity'=> 'required|integer|digits_between:1,5|gt:0',
-            'product_photo' => 'required|mimes:jpeg,png,jpg,webp|max:2048'
+            'description' => 'required|string|min:3|max:150',
+            'price' => 'required|integer|digits_between:3,7|gt:0',
+            'quantity' => 'required|integer|digits_between:1,5|gt:0',
+            'product_photo' => 'required|mimes:jpeg,png,jpg,webp|max:2048',
         ];
     }
 }

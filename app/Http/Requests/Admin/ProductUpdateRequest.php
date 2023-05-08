@@ -22,12 +22,12 @@ class ProductUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            
-                'name' => 'string|min:3|max:150',
-                'description'=> 'string|min:3|max:150',
-                'price'=> 'integer|digits_between:3,7|gt:0',
-                'quantity'=> 'integer|digits_between:1,5|gt:0',
-                'product_photo' => 'mimes:jpeg,png,jpg,webp|max:2048'
+
+            'name' => 'string|min:3|max:150',
+            'description' => 'string|min:3|max:150',
+            'price' => 'integer|digits_between:3,7|gt:0',
+            'quantity' => 'integer|digits_between:1,5|gt:0',
+            'product_photo' => 'mimes:jpeg,png,jpg,webp|max:2048',
         ];
     }
 }
