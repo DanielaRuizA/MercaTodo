@@ -21,11 +21,14 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'users.edit']);
         Permission::create(['name' => 'users.update']);
         Permission::create(['name' => 'users.destroy']);
+        Permission::create(['name' => 'users.destroy']);
+        Permission::create(['name' => 'users.status']);
         Permission::create(['name' => 'products.index']);
         Permission::create(['name' => 'products.show']);
         Permission::create(['name' => 'products.edit']);
         Permission::create(['name' => 'products.update']);
         Permission::create(['name' => 'products.destroy']);
+        Permission::create(['name' => 'products.status']);
         Permission::create(['name' => 'stores.index']);
 
 

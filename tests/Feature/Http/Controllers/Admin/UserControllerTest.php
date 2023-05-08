@@ -121,7 +121,7 @@ class UserControllerTest extends TestCase
     {
         $roleAdmin = Role::create(["name" => "admin"]);
 
-        Permission::create(["name" => "admin.products.status"])->assignRole($roleAdmin);
+        Permission::create(["name" => "admin.users.status"])->assignRole($roleAdmin);
 
         $admin = User::factory()->create()->assignRole("admin");
 

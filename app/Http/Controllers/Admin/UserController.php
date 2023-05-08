@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserRequest;
 use Illuminate\Http\Request;
+use App\Actions\User\changeStatus;
 
 class UserController extends Controller
 {
@@ -43,25 +44,9 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('message', 'Usuario eliminado');
     }
 
-    public function search(Request $request)
+    public function changeStatus(changeStatus $changeStatus, Request $request)
     {
-        $search = $request->input('search');
-
-        return Inertia::render('Admin/Users/Index', [
-        'users' => User::query()
-        ->Where('name', 'LIKE', "%{$search}%")
-        ->orWhere('email', 'LIKE', "%{$search}%")
-        ->get()
-    ]);
-    }
-
-    public function changeStatus(Request $request)
-    {
-        $user = User::find($request->user_id);
-
-        $user->status = $request->status;
-
-        $user->save();
+        $changeStatus->handle($request);
 
         return response()->json(['success' => 'Status change successfully.']);
     }
