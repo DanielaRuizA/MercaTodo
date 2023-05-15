@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\Product\ProductIndexAction;
 use App\Actions\Product\changeProductStatusActions;
 use App\Actions\Product\ProductDestroyAction;
 use App\Actions\Product\ProductStoreAction;
@@ -20,7 +21,7 @@ class ProductController extends Controller
         return Inertia::render('Admin/Products/Index', [
             'products' => Product::latest()
                 ->where('name', 'LIKE', "%$request->q%")
-                ->get(['id', 'name', 'status', 'price', 'quantity', 'product_photo']),
+                ->paginate(20, ['id','name', 'price', 'quantity','product_photo']),
         ]);
     }
 

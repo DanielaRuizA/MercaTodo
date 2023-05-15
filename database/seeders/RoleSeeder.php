@@ -19,7 +19,6 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'users.edit']);
         Permission::create(['name' => 'users.update']);
         Permission::create(['name' => 'users.destroy']);
-        Permission::create(['name' => 'users.destroy']);
         Permission::create(['name' => 'users.status']);
         Permission::create(['name' => 'products.index']);
         Permission::create(['name' => 'products.show']);
