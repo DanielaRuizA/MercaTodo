@@ -2,7 +2,7 @@
 
 namespace App\Actions\Product;
 
-use App\Http\Requests\Admin\ProductStoreRequest;
+use App\Http\Requests\AdminPanel\ProductStoreRequest;
 use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
 

@@ -43,7 +43,7 @@ export default {
     },
     watch: {
         q: function (value) {
-            this.$inertia.replace(this.route('stores.index', { q: value }))
+            this.$inertia.replace(this.route('products.index', { q: value }))
         }
     }
 }

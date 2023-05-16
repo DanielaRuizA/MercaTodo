@@ -24,10 +24,10 @@ Route::middleware([
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::resource('users', App\Http\Controllers\Admin\UserController::class);
-    Route::get('changeStatus', [App\Http\Controllers\Admin\UserController::class, 'changeStatus'])->name('changeStatus');
-    Route::resource('products', App\Http\Controllers\Admin\ProductController::class);
-    Route::get('changeProductStatus', [App\Http\Controllers\Admin\ProductController::class, 'changeProductStatus'])->name('changeProductStatus');
+    Route::resource('users', App\Http\Controllers\AdminPanel\UserController::class);
+    Route::get('changeStatus', [App\Http\Controllers\AdminPanel\UserController::class, 'changeStatus'])->name('changeStatus');
+    Route::resource('products', App\Http\Controllers\AdminPanel\ProductController::class);
+    Route::get('changeProductStatus', [App\Http\Controllers\AdminPanel\ProductController::class, 'changeProductStatus'])->name('changeProductStatus');
 });
 
 Route::middleware(['auth'])->group(function () {
