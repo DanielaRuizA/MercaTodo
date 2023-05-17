@@ -9,7 +9,6 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Request as FacadesRequest;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -34,7 +33,7 @@ class UserController extends Controller
             });
         }
 
-        $users = $query->paginate(25, ['id', 'name', 'email', 'status']);
+        $users = $query->paginate(15, ['id', 'name', 'email', 'status']);
 
         return Inertia::render('AdminPanel/Users/Index', [
             'users' => $users,

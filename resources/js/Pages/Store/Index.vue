@@ -30,6 +30,7 @@ export default {
 </script>
 <template>
     <AppLayout title="Dashboard">
+
         <body class="bg-white text-gray-600 work-sans leading-normal text-base tracking-normal">
             <section class="bg-white py-8">
                 <div class="container mx-auto flex items-center flex-wrap pt-4 pb-12">
@@ -50,7 +51,8 @@ export default {
                             </div>
                         </div>
                     </nav>
-                    <div class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col" v-for="product in products.data" :key="product.id">
+                    <div class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col" v-for="product in products.data"
+                        :key="product.id">
                         <img class="hover:grow hover:shadow-lg" :src="showImage() + product.product_photo"
                             :alt="product.name" width="450">
                         <div class="pt-3 flex items-center justify-between">
