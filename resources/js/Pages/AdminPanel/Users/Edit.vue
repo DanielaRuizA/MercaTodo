@@ -1,50 +1,49 @@
 <script>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import { useForm } from '@inertiajs/vue3';
 
 export default {
-        components: {
-            AppLayout,
-        },
-        props: {
-            user: {
-                type: Object,
-                required: true
-                },
-        },
-        data () {
-            return {
-                form: {
-                    name: this.user.name,
-                    email: this.user.email,
-                    status: this.user.status,
-                }
-            }
-        },
-        computed: {
-            status() {
+    components: {
+        AppLayout,
+    },
+    props: {
+        user: Object,
+        errors: Object
+    },
+    data() {
+        return {
+            form: useForm({
+                name: this.user.name,
+                email: this.user.email,
+                // status: this.user.status,
+            })
+        }
+    },
+    computed: {
+        status() {
             return this.user.status === 0 ? 1 : 0;
-            },
-            buttonText() {
+        },
+        buttonText() {
             return this.user.status === 0 ? 'Inactivo' : 'Activo';
-            },
-            buttonClass() {
+        },
+        buttonClass() {
             return 'btn btn-' + (this.user.status === 0 ? 'danger' : 'success');
+        }
+    },
+    methods: {
+        submit() {
+            this.$inertia.put(this.route('users.update', this.user.id), this.form);
+        },
+        destroy() {
+            if (confirm('¿Desea Eliminar?')) {
+                this.$inertia.delete(this.route('users.destroy', this.user.id))
             }
         },
-        methods: {
-            submit() {
-                this.$inertia.put(this.route('users.update', this.user.id), this.form);
-            },
-            destroy() {
-                if (confirm('¿Desea Eliminar?')) {
-                    this.$inertia.delete(this.route('users.destroy', this.user.id))
-                }
-            },
-            submitForm() {
-            this.$inertia.put(this.route('update.status',this.user.id ), this.form);
-            }
+        submitForm() {
+            this.$inertia.put(this.route('update.status', this.user.id), this.form);
         }
     }
+}
 </script>
 
 <template>
@@ -74,6 +73,9 @@ export default {
                                     class="form-input w-full rounded-md shadow-sm"
                                     v-model="form.name"
                                 ></textarea>
+                                <div v-if="errors.name" class="text-red-600">
+                                    {{ errors.name }}
+                                </div>
                                 <label class="block font-medium text-sm text-gray-700">
                                     Correo
                                 </label>
@@ -82,6 +84,9 @@ export default {
                                     v-model="form.email"
                                     rows="8"
                                 ></textarea>
+                                <div v-if="errors.email" class="text-red-600">
+                                    {{ errors.email }}
+                                </div>
                                 <button 
                                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md"
                                 >Editar</button>
@@ -97,5 +102,3 @@ export default {
         </div>
     </app-layout>
 </template>
-
-
