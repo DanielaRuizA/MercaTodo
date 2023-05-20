@@ -56,7 +56,6 @@ export default {
                         <Link :href="route('stores.show', product.id)">
                         <img class="hover:grow hover:shadow-lg" :src="showImage() + product.product_photo"
                             :alt="product.name" width="450">
-
                         <div class="pt-3 flex items-center justify-between">
                             <p class="">{{ product.name }}</p>
                         </div>

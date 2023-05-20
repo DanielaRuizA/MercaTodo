@@ -14,6 +14,7 @@ const props = defineProps({
                 Usuario
             </h2>
         </template>
+        <pre>{{ user.name }}</pre>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="px-4 sm:px-0">
                 <h3 class="text-base font-semibold leading-7 text-gray-900">Informacion Del Usuario</h3>

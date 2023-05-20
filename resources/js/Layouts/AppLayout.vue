@@ -53,12 +53,10 @@ const logout = () => {
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
-                                <NavLink :href="route('users.index')" :active="route().current('users.*')"
-                                    v-if="$page.props.user.permissions.includes('users.index')">
+                                <NavLink :href="route('users.index')" :active="route().current('users.*')">
                                     Usuarios
                                 </NavLink>
-                                <NavLink :href="route('products.index')" :active="route().current('products.*')"
-                                    v-if="$page.props.user.permissions.includes('products.index')">
+                                <NavLink :href="route('products.index')" :active="route().current('products.*')">
                                     Productos
                                 </NavLink>
                                 <NavLink :href="route('stores.index')" :active="route().current('products.*')">

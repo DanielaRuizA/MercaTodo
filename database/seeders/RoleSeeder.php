@@ -27,11 +27,13 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'products.destroy']);
         Permission::create(['name' => 'products.status']);
         Permission::create(['name' => 'stores.index']);
+        Permission::create(['name' => 'stores.show']);
+
 
         $roleAdmin = Role::create(['name' => 'admin']);
         $roleAdmin->givePermissionTo(Permission::all());
 
         $roleUser = Role::create(['name' => 'user']);
-        $roleUser->givePermissionTo('stores.index');
+        $roleUser->givePermissionTo(['stores.index','stores.show']);
     }
 }

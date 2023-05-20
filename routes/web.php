@@ -31,5 +31,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::resource('stores', App\Http\Controllers\Store\StoreController::class);
+    Route::get('/stores', [App\Http\Controllers\Store\StoreController::class, 'index'])->name('stores.index');
+    Route::get('stores/{product}', [App\Http\Controllers\Store\StoreController::class, 'show'])->name('stores.show');
 });
