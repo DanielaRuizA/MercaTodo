@@ -10,6 +10,46 @@ export default {
     props: {
         product: Object,
     },
+    data() {
+        return {
+            currentImg: this.product.main_image,
+            isActive: 0,
+            selected: false,
+            openDescription: false,
+            openFeatures: false,
+            openReturn: false,
+            openReviews: false,
+            quantity: 1,
+            form: this.$inertia.form({
+                id: this.product.id,
+                name: this.product.name,
+                description: this.product.description,
+                price: this.product.price,
+                photo: this.product.product_photo,
+                quantity: 1,
+                totalQty: this.product.quantity,
+            }),
+            slides: this.product.alt_images,
+            settings: {
+                itemsToShow: 1,
+                snapAlign: 'center',
+            },
+            // breakpoints are mobile first
+            // any settings not specified will fallback to the carousel settings
+            breakpoints: {
+                // 700px and up
+                700: {
+                    itemsToShow: 3.5,
+                    snapAlign: 'center',
+                },
+                // 1024 and up
+                1024: {
+                    itemsToShow: 5,
+                    snapAlign: 'start',
+                },
+            },
+        }
+    },
     methods: {
         showImage() {
             return "/storage/";
@@ -79,8 +119,42 @@ export default {
                                     </button>
                                 </div>
                             </div>
+                            <div class="mt-4">
+                                <template v-if="product.quantity <= 0">
+                                    <div class="mt-4">
+                                        <span class="text-2xl text-red-600 font-semibold italic uppercase">
+                                            Sold Out
+                                        </span>
+                                    </div>
+                                </template>
+                                <template v-else-if="product.quantity <= 5">
+                                    <div class="mt-4">
+                                        <span class="text-2xl text-yellow-600 font-semibold italic uppercase">
+                                            Only a few left
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <label for="quantity" class="flex-1 text-xl capitalize">Qty:</label>
+                                        <select class="flex-1 w-full border bg-white rounded px-3 py-1 outline-none"
+                                            tabindex="1" v-model="form.quantity">
+                                            <option :value="qty" :selected="qty === quantity"
+                                                v-for="(qty, index) in product.quantity" :key="index">{{ qty }}</option>
+                                        </select>
+                                    </div>
+                                </template>
+                                <template v-else>
+                                    <div class="flex items-center">
+                                        <label for="quantity" class="flex-1 text-xl capitalize">Qty:</label>
+                                        <select class="flex-1 w-full border bg-white rounded px-3 py-1 outline-none"
+                                            tabindex="1" v-model="form.quantity">
+                                            <option :value="qty" :selected="qty === quantity"
+                                                v-for="(qty, index) in product.quantity" :key="index">{{ qty }}</option>
+                                        </select>
+                                    </div>
+                                </template>
+                            </div>
                             <div class="flex flex-wrap items-center gap-4">
-                                <button
+                                <button @click="destroy(product.id)"
                                     class="w-full p-4 bg-blue-500 rounded-md lg:w-2/5 dark:text-gray-200 text-gray-50 hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-700">
                                     Add to cart</button>
                                 <button

@@ -33,4 +33,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/stores', [App\Http\Controllers\Store\StoreController::class, 'index'])->name('stores.index');
     Route::get('stores/{product}', [App\Http\Controllers\Store\StoreController::class, 'show'])->name('stores.show');
+
+    Route::prefix('/cart')->name('cart.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Cart\CartController::class, 'index'])->name('index');
+        Route::post('/add/{product}', [App\Http\Controllers\Cart\CartController::class, 'add'])->name('add');
+        Route::post('/remove/{product}', [App\Http\Controllers\Cart\CartController::class, 'remove'])->name('remove');
+    });
 });
