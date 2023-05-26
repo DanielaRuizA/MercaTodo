@@ -53,12 +53,23 @@ export default {
     methods: {
         showImage() {
             return "/storage/";
-        }
+        },
+        submit() {
+            this.form.post(this.route('cart.store', this.form), {
+                preserveScroll: true,
+                onSuccess: () => {
+                    Toast.fire({
+                        icon: 'success',
+                        title: `${this.form.name} has successfully been added to your cart!`
+                    })
+                }
+            })
+        },
     }
 }
 </script>
 <template>
-    <AppLayout title="Dashboard">
+    <AppLayout :title="product.name">
         <section class="overflow-hidden bg-white py-11 font-poppins">
             <div class="max-w-6xl px-4 py-4 mx-auto lg:py-8 md:px-6">
                 <div class="flex flex-wrap -mx-4">
@@ -88,81 +99,79 @@ export default {
                         </div>
                     </div>
                     <div class="w-full px-4 md:w-1/2 ">
-                        <div class="lg:pl-20">
-                            <div class="mb-8 ">
-                                <h2 class="max-w-xl mb-6 text-2xl font-bold md:text-4xl">
-                                    {{ product.name }}</h2>
-                                <p class="inline-block mb-6 text-4xl font-bold text-gray-700 ">
-                                    <span>{{ Intl.NumberFormat('es-CO', {
-                                        style: 'currency', currency: 'COP',
-                                        maximumSignificantDigits: 3
-                                    }).format(product.price) }}</span>
-                                </p>
-                                <p class="max-w-md text-gray-700 dark:text-gray-400">
-                                    {{ product.description }}
-                                </p>
-                            </div>
-                            <div class="w-32 mb-8 ">
-                                <label for=""
-                                    class="w-full pb-1 text-xl font-semibold text-gray-700 border-b border-blue-300 dark:border-gray-600 dark:text-gray-400">Quantity</label>
-                                <div class="relative flex flex-row w-full h-10 mt-6 bg-transparent rounded-lg">
-                                    <button
-                                        class="w-20 h-full text-gray-600 bg-gray-300 rounded-l outline-none cursor-pointer dark:hover:bg-gray-700 dark:text-gray-400 hover:text-gray-700 dark:bg-gray-900 hover:bg-gray-400">
-                                        <span class="m-auto text-2xl font-thin">-</span>
-                                    </button>
-                                    <input type="number"
-                                        class="flex items-center w-full font-semibold text-center text-gray-700 placeholder-gray-700 bg-gray-300 outline-none dark:text-gray-400 dark:placeholder-gray-400 dark:bg-gray-900 focus:outline-none text-md hover:text-black"
-                                        placeholder="1">
-                                    <button
-                                        class="w-20 h-full text-gray-600 bg-gray-300 rounded-r outline-none cursor-pointer dark:hover:bg-gray-700 dark:text-gray-400 dark:bg-gray-900 hover:text-gray-700 hover:bg-gray-400">
-                                        <span class="m-auto text-2xl font-thin">+</span>
-                                    </button>
+                        <form @submit.prevent="submit">
+                            <div class="lg:pl-20">
+                                <div class="mb-8 ">
+                                    <h2 class="max-w-xl mb-6 text-2xl font-bold md:text-4xl uppercase">
+                                        {{ product.name }}</h2>
+                                    <p class="inline-block mb-6 text-4xl font-bold text-gray-700 ">
+                                        <span>{{ Intl.NumberFormat('es-CO', {
+                                            style: 'currency', currency: 'COP',
+                                            maximumSignificantDigits: 3
+                                        }).format(product.price) }}</span>
+                                    </p>
+                                    <p class="max-w-md text-gray-700 dark:text-gray-400">
+                                        {{ product.description }}
+                                    </p>
+                                </div>
+                                <div class="w-32 mb-8 ">
+                                    <label for=""
+                                        class="w-full pb-1 text-xl font-semibold text-gray-700 border-b border-blue-300 dark:border-gray-600 dark:text-gray-400">Quantity</label>
+                                    <div class="relative flex flex-row w-full h-10 mt-6 bg-transparent rounded-lg">
+                                        <button
+                                            class="w-20 h-full text-gray-600 bg-gray-300 rounded-l outline-none cursor-pointer dark:hover:bg-gray-700 dark:text-gray-400 hover:text-gray-700 dark:bg-gray-900 hover:bg-gray-400">
+                                            <span class="m-auto text-2xl font-thin">-</span>
+                                        </button>
+                                        <input type="number"
+                                            class="flex items-center w-full font-semibold text-center text-gray-700 placeholder-gray-700 bg-gray-300 outline-none dark:text-gray-400 dark:placeholder-gray-400 dark:bg-gray-900 focus:outline-none text-md hover:text-black"
+                                            placeholder="1">
+                                        <button
+                                            class="w-20 h-full text-gray-600 bg-gray-300 rounded-r outline-none cursor-pointer dark:hover:bg-gray-700 dark:text-gray-400 dark:bg-gray-900 hover:text-gray-700 hover:bg-gray-400">
+                                            <span class="m-auto text-2xl font-thin">+</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <template v-if="product.quantity <= 0">
+                                        <div class="mt-4">
+                                            <span class="text-2xl font-bold text-red-400">
+                                                Agotado
+                                            </span>
+                                        </div>
+                                    </template>
+                                    <template v-else-if="product.quantity <= 5">
+                                        <div class="mt-4">
+                                            <span class="text-xl  text-sky-400 font-bold">
+                                                Pocas Unidades Disponibles
+                                            </span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <label for="quantity" class="flex-1 text-xl capitalize"> Cantidad:</label>
+                                            <select class="flex-1 w-full border bg-white rounded px-3 py-1 outline-none"
+                                                tabindex="1" v-model="form.quantity">
+                                                <option :value="qty" :selected="qty === quantity"
+                                                    v-for="(qty, index) in product.quantity" :key="index">{{ qty }}</option>
+                                            </select>
+                                        </div>
+                                    </template>
+                                    <template v-else>
+                                        <div class="flex items-center">
+                                            <label for="quantity" class="flex-1 text-xl capitalize">Qty:</label>
+                                            <select class="flex-1 w-full border bg-white rounded px-3 py-1 outline-none"
+                                                tabindex="1" v-model="form.quantity">
+                                                <option :value="qty" :selected="qty === quantity"
+                                                    v-for="(qty, index) in product.quantity" :key="index">{{ qty }}</option>
+                                            </select>
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="flex flex-wrap items-center gap-4">
+                                    <button v-if="product.quantity > 0"
+                                        class="w-full p-4 bg-blue-500 rounded-md lg:w-2/5 dark:text-gray-200 text-gray-50  uppercase hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-700">
+                                        Añadir a mi bolsa </button>
                                 </div>
                             </div>
-                            <div class="mt-4">
-                                <template v-if="product.quantity <= 0">
-                                    <div class="mt-4">
-                                        <span class="text-2xl text-red-600 font-semibold italic uppercase">
-                                            Sold Out
-                                        </span>
-                                    </div>
-                                </template>
-                                <template v-else-if="product.quantity <= 5">
-                                    <div class="mt-4">
-                                        <span class="text-2xl text-yellow-600 font-semibold italic uppercase">
-                                            Only a few left
-                                        </span>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <label for="quantity" class="flex-1 text-xl capitalize">Qty:</label>
-                                        <select class="flex-1 w-full border bg-white rounded px-3 py-1 outline-none"
-                                            tabindex="1" v-model="form.quantity">
-                                            <option :value="qty" :selected="qty === quantity"
-                                                v-for="(qty, index) in product.quantity" :key="index">{{ qty }}</option>
-                                        </select>
-                                    </div>
-                                </template>
-                                <template v-else>
-                                    <div class="flex items-center">
-                                        <label for="quantity" class="flex-1 text-xl capitalize">Qty:</label>
-                                        <select class="flex-1 w-full border bg-white rounded px-3 py-1 outline-none"
-                                            tabindex="1" v-model="form.quantity">
-                                            <option :value="qty" :selected="qty === quantity"
-                                                v-for="(qty, index) in product.quantity" :key="index">{{ qty }}</option>
-                                        </select>
-                                    </div>
-                                </template>
-                            </div>
-                            <div class="flex flex-wrap items-center gap-4">
-                                <button @click="destroy(product.id)"
-                                    class="w-full p-4 bg-blue-500 rounded-md lg:w-2/5 dark:text-gray-200 text-gray-50 hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-700">
-                                    Add to cart</button>
-                                <button
-                                    class="flex items-center justify-center w-full p-4 text-blue-500 border border-blue-500 rounded-md lg:w-2/5 dark:text-gray-200 dark:border-blue-600 hover:bg-blue-600 hover:border-blue-600 hover:text-gray-100 dark:bg-blue-500 dark:hover:bg-blue-700 dark:hover:border-blue-700 dark:hover:text-gray-300">
-                                    Buy Now
-                                </button>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>

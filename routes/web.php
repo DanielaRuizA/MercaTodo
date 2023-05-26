@@ -34,9 +34,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/stores', [App\Http\Controllers\Store\StoreController::class, 'index'])->name('stores.index');
     Route::get('stores/{product}', [App\Http\Controllers\Store\StoreController::class, 'show'])->name('stores.show');
 
-    Route::prefix('/cart')->name('cart.')->group(function () {
-        Route::get('/', [App\Http\Controllers\Cart\CartController::class, 'index'])->name('index');
-        Route::post('/add/{product}', [App\Http\Controllers\Cart\CartController::class, 'add'])->name('add');
-        Route::post('/remove/{product}', [App\Http\Controllers\Cart\CartController::class, 'remove'])->name('remove');
-    });
+    Route::resource('cart', App\Http\Controllers\Cart\CartController::class)->parameter('cart', 'product')->except(['edit', 'create']);
+    // Route::prefix('cart/later')->name('later.')->group(function () {
+    //     Route::post('/later/{product}', [LaterController::class, 'store'])->name('store');
+    //     Route::patch('/later/{product}', [LaterController::class, 'update'])->name('update');
+    //     Route::delete('/later/{product}', [LaterController::class, 'destroy'])->name('destroy');
+    //     Route::post('/move/{product}', [LaterController::class, 'moveToCart'])->name('moveToCart');
+    // });
+
+    // Route::prefix('/cart')->name('cart.')->group(function () {
+    //     Route::get('/', [App\Http\Controllers\Cart\CartController::class, 'index'])->name('index');
+    //     Route::post('/add/{product}', [App\Http\Controllers\Cart\CartController::class, 'add'])->name('add');
+    //     Route::post('/remove/{product}', [App\Http\Controllers\Cart\CartController::class, 'remove'])->name('remove');
+    // });
 });
