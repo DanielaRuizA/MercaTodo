@@ -59,14 +59,14 @@ const logout = () => {
                                 <NavLink :href="route('products.index')" :active="route().current('products.*')">
                                     Productos
                                 </NavLink>
-                                <NavLink :href="route('stores.index')" :active="route().current('products.*')">
+                                <NavLink :href="route('stores.index')" :active="route().current('stores.*')">
                                     Tienda
                                 </NavLink>
                             </div>
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
-                            <NavLink class="pl-3 inline-block no-underline hover:text-black" href="#">
+                            <NavLink class="pl-3 inline-block no-underline hover:text-black" :href="route('cart.index')">
                                 <svg class="fill-current hover:text-black" xmlns="http://www.w3.org/2000/svg" width="24"
                                     height="24" viewBox="0 0 24 24">
                                     <path

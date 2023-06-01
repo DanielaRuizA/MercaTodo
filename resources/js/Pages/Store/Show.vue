@@ -1,73 +1,321 @@
 <script>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { Link } from '@inertiajs/vue3';
-
+import { Link, useForm } from '@inertiajs/vue3';
 
 export default {
+    props: ['product'],
     components: {
-        AppLayout, Link
-    },
-    props: {
-        product: Object,
-    },
-    data() {
-        return {
-            currentImg: this.product.main_image,
-            isActive: 0,
-            selected: false,
-            openDescription: false,
-            openFeatures: false,
-            openReturn: false,
-            openReviews: false,
-            quantity: 1,
-            form: this.$inertia.form({
-                id: this.product.id,
-                name: this.product.name,
-                description: this.product.description,
-                price: this.product.price,
-                photo: this.product.product_photo,
-                quantity: 1,
-                totalQty: this.product.quantity,
-            }),
-            slides: this.product.alt_images,
-            settings: {
-                itemsToShow: 1,
-                snapAlign: 'center',
-            },
-            // breakpoints are mobile first
-            // any settings not specified will fallback to the carousel settings
-            breakpoints: {
-                // 700px and up
-                700: {
-                    itemsToShow: 3.5,
-                    snapAlign: 'center',
-                },
-                // 1024 and up
-                1024: {
-                    itemsToShow: 5,
-                    snapAlign: 'start',
-                },
-            },
-        }
+        Link,
+        AppLayout,
     },
     methods: {
         showImage() {
             return "/storage/";
-        },
+        }
+    },
+    data() {
+        return {
+            // currentImg: this.product.main_image,
+            // isActive: 0,
+            // selected: false,
+            // openDescription: false,
+            // openFeatures: false,
+            // openReturn: false,
+            // openReviews: false,
+            quantity: 1,
+            form: useForm({
+                id: this.product.id,
+                name: this.product.name,
+                slug: this.product.slug,
+                description: this.product.description,
+                image: this.product.product_photo,
+                price: this.product.price,
+                quantity: 1,
+                totalQty: this.product.quantity,
+                // _method: 'put'
+            }),
+        }
+    },
+    mounted() {
+        this.zoomImage()
+    },
+    methods: {
         submit() {
-            this.form.post(this.route('cart.store', this.form), {
+            this.$inertia.post(this.route('cart.store', this.product.id), this.form), {
                 preserveScroll: true,
                 onSuccess: () => {
-                    Toast.fire({
-                        icon: 'success',
-                        title: `${this.form.name} has successfully been added to your cart!`
-                    })
                 }
-            })
+            }
         },
+        showImage() {
+            return "/storage/";
+        },
+        // changeCurrentImage(image, index) {
+        //     if (image) {
+        //         this.currentImg = image
+        //         this.isActive = index
+        //         this.selected = false
+        //     } else {
+        //         this.currentImg = this.product.main_image
+        //         if (this.isActive = index) {
+        //             this.selected = false
+        //         } else {
+        //             this.selected = true
+        //         }
+        //     }
+        // },
+        zoomImage() {
+            let container = document.querySelector('#img-container')
+            let img = document.querySelector('#current-img')
+            container.addEventListener("mousemove", (e) => {
+                let x = e.clientX - e.target.offsetLeft
+                let y = e.clientY - e.target.offsetTop
+                img.style.transformOrigin = `${x}px ${y}px`
+                img.style.transform = "scale(3)"
+            })
+            container.addEventListener("mouseleave", () => {
+                img.style.transformOrigin = "center"
+                img.style.transform = "scale(1)"
+            })
+        }
     }
 }
-</script>
+</script >
+
+<template>
+    <AppLayout :title="product.name">
+        <div class="max-w-7xl mx-auto px-4 py-4 sm:flex sm:space-x-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col flex-1 sm:border-r">
+                <div class="border-2 overflow-hidden cursor-zoom-in h-full">
+                    <div id="img-container" class="w-full h-full">
+                        <img id="current-img" :src="showImage() + product.product_photo" :alt="product.name"
+                            class="w-full h-full object-cover origin-center">
+                    </div>
+                </div>
+            </div>
+            <div class="flex-1 space-y-6 my-4 sm:mt-0 sm:border-l sm:pl-4">
+                <form @submit.prevent="submit">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-2xl font-semibold capitalize italic">{{ product.name }}</h2>
+                        <div class="text-xl capitalize italic">
+                            <span>
+                                Price:
+                            </span>
+                            <span>
+                                {{ product.price }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <template v-if="product.quantity <= 0">
+                            <div class="mt-4">
+                                <span class="text-2xl text-red-600 font-semibold italic uppercase">
+                                    Sold Out
+                                </span>
+                            </div>
+                        </template>
+                        <template v-else-if="product.quantity <= 5">
+                            <div class="mt-4">
+                                <span class="text-2xl text-yellow-600 font-semibold italic uppercase">
+                                    Only a few left
+                                </span>
+                            </div>
+                            <div class="flex items-center">
+                                <label for="quantity" class="flex-1 text-xl capitalize">Qty:</label>
+                                <select class="flex-1 w-full border bg-white rounded px-3 py-1 outline-none" tabindex="1"
+                                    v-model="form.quantity">
+                                    <option :value="qty" :selected="qty === quantity"
+                                        v-for="(qty, index) in product.quantity" :key="index">{{ qty }}</option>
+                                </select>
+                            </div>
+                        </template>
+                        <template v-else>
+                            <div class="flex items-center">
+                                <label for="quantity" class="flex-1 text-xl capitalize">Qty:</label>
+                                <select class="flex-1 w-full border bg-white rounded px-3 py-1 outline-none" tabindex="1"
+                                    v-model="form.quantity">
+                                    <option :value="qty" :selected="qty === quantity"
+                                        v-for="(qty, index) in product.quantity" :key="index">{{ qty }}</option>
+                                </select>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="text-center mt-4" v-if="product.quantity > 0">
+                        <button as="submit" class="text-sm">
+                            <span>Add to Cart</span>
+                        </button>
+                    </div>
+                </form>
+                <div class="flex flex-col divide-y">
+                    <div>
+                        <button type="button"
+                            class="flex justify-between items-center bg-gray-300 rounded-t px-4 py-4 w-full transition hover:text-white hover:bg-gray-700 sm:px-6 lg:px-8"
+                            @click.prevent="openDescription = !openDescription">
+                            <span>Product Description</span>
+                            <svg name="angle-down" v-if="openDescription" aria-hidden="true" data-prefix="fas"
+                                data-icon="angle-down" class="w-5 h-5 text-yellow-500 fill-current"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                                <path
+                                    d="M143 352.3 7 216.3a23.9 23.9 0 0 1 0-33.9l22.6-22.6a23.9 23.9 0 0 1 33.9 0l96.4 96.4 96.4-96.4a23.9 23.9 0 0 1 33.9 0l22.6 22.6a23.9 23.9 0 0 1 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z" />
+                            </svg>
+                            <svg name="angle-left" v-else aria-hidden="true" data-prefix="fas" data-icon="angle-left"
+                                class="w-5 h-5 text-yellow-500 fill-current" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 256 512">
+                                <path
+                                    d="m31.7 239 136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z" />
+                            </svg>
+                        </button>
+                        <div class="bg-gray-50 px-4 py-4 sm:px-6 lg:px-8" v-if="openDescription">
+                            <p>
+                                {{ product.description }}
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="button"
+                            class="flex justify-between items-center bg-gray-300 rounded-t px-4 py-4 w-full transition hover:text-white hover:bg-gray-700 sm:px-6 lg:px-8"
+                            @click.prevent="openFeatures = !openFeatures">
+                            <span>Product Features</span>
+                            <svg name="angle-down" v-if="openFeatures" aria-hidden="true" data-prefix="fas"
+                                data-icon="angle-down" class="w-5 h-5 text-yellow-500 fill-current"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                                <path
+                                    d="M143 352.3 7 216.3a23.9 23.9 0 0 1 0-33.9l22.6-22.6a23.9 23.9 0 0 1 33.9 0l96.4 96.4 96.4-96.4a23.9 23.9 0 0 1 33.9 0l22.6 22.6a23.9 23.9 0 0 1 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z" />
+                            </svg>
+                            <svg name="angle-left" v-else aria-hidden="true" data-prefix="fas" data-icon="angle-left"
+                                class="w-5 h-5 text-yellow-500 fill-current" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 256 512">
+                                <path
+                                    d="m31.7 239 136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z" />
+                            </svg>
+                        </button>
+                        <div class="bg-gray-50 px-4 py-4 sm:px-6 lg:px-8" v-if="openFeatures">
+                            <p>
+                                {{ product.description }}
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="button"
+                            class="flex justify-between items-center bg-gray-300 rounded-t px-4 py-4 w-full transition hover:text-white hover:bg-gray-700 sm:px-6 lg:px-8"
+                            @click.prevent="openReturn = !openReturn">
+                            <span>Return Policy</span>
+                            <svg name="angle-down" v-if="openReturn" aria-hidden="true" data-prefix="fas"
+                                data-icon="angle-down" class="w-5 h-5 text-yellow-500 fill-current"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                                <path
+                                    d="M143 352.3 7 216.3a23.9 23.9 0 0 1 0-33.9l22.6-22.6a23.9 23.9 0 0 1 33.9 0l96.4 96.4 96.4-96.4a23.9 23.9 0 0 1 33.9 0l22.6 22.6a23.9 23.9 0 0 1 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z" />
+                            </svg>
+                            <svg name="angle-left" v-else aria-hidden="true" data-prefix="fas" data-icon="angle-left"
+                                class="w-5 h-5 text-yellow-500 fill-current" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 256 512">
+                                <path
+                                    d="m31.7 239 136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z" />
+                            </svg>
+                        </button>
+                        <div class="bg-gray-50 px-4 py-4 sm:px-6 lg:px-8" v-if="openReturn">
+                            <p>
+                                Don't worry about returns, we'll send you a new one!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </AppLayout>
+</template >
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// export default {
+//     components: {
+//         AppLayout, Link
+//     },
+//     props: {
+//         product: Object,
+//     },
+//     data() {
+//         return {
+            // currentImg: this.product.main_image,
+            // isActive: 0,
+            // selected: false,
+            // openDescription: false,
+            // openFeatures: false,
+            // openReturn: false,
+            // openReviews: false,
+            // quantity: 1,
+            // form: useForm({
+            //     id: this.product.id,
+            //     name: this.product.name,
+            //     description: this.product.description,
+            //     price: this.product.price,
+            //     photo: this.product.product_photo,
+            //     quantity: 1,
+            //     //_method: 'put'
+            //     // totalQty: this.product.quantity,
+            // }),
+            // slides: this.product.alt_images,
+            // settings: {
+            //     itemsToShow: 1,
+            //     snapAlign: 'center',
+            // },
+            // breakpoints are mobile first
+            // any settings not specified will fallback to the carousel settings
+            // breakpoints: {
+            //     // 700px and up
+            //     700: {
+            //         itemsToShow: 3.5,
+            //         snapAlign: 'center',
+            //     },
+            //     // 1024 and up
+            //     1024: {
+            //         itemsToShow: 5,
+            //         snapAlign: 'start',
+            //     },
+            // },
+//         }
+//     },
+//     methods: {
+//         showImage() {
+//             return "/storage/";
+//         },
+//         submit() {
+//             this.$inertia.post(this.route('cart.store', this.product.id), this.form), {
+//                 preserveScroll: true,
+//                 onSuccess: () => {
+//                 }
+//             }
+//         }
+//     }
+// }
+ <!-- </script>
 <template>
     <AppLayout :title="product.name">
         <section class="overflow-hidden bg-white py-11 font-poppins">
@@ -177,4 +425,4 @@ export default {
             </div>
         </section>
     </AppLayout>
-</template>
+</template>  -->
