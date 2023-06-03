@@ -38,4 +38,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('cart/{product}', [App\Http\Controllers\Cart\CartController::class, 'store'])->name('cart.store');
     Route::delete('cart/{product}', [App\Http\Controllers\Cart\CartController::class, 'destroy'])->name('cart.destroy');
     Route::patch('cart/{product}', [App\Http\Controllers\Cart\CartController::class, 'update'])->name('cart.update');
+
+    Route::get('/my-orders', [App\Http\Controllers\OrderController::class, 'index'])->name('orders.index');
 });

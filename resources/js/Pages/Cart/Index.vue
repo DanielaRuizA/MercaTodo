@@ -2,10 +2,7 @@
 import { Link } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { useForm } from '@inertiajs/vue3';
-// import CartItems from "@/Components/CartItems.vue";
-// import Pagination from "@/Components/Pagination.vue";
 
-// import OrderTotals from '@/Components/OrderTotals.vue';
 export default {
     props: ['cartItems', 'total'],
     components: {
