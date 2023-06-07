@@ -5,20 +5,24 @@ namespace App\Http\Controllers\Cart;
 use Inertia\Inertia;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Product;
+use App\Services\CartService;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
 class CartController extends Controller
 {
-    public function index()
+    public function index(CartService $cartService)
     {
-        $cartItems = Cart::instance('default')->content();
-        $total  = Cart::instance('default')->subtotal(); //subtotal
+        // $cartItems = Cart::instance('default')->content();
+        // $total  = Cart::instance('default')->subtotal(); //subtotal
 
         return Inertia::render('Cart/Index', [
-            'cartItems' => $cartItems,
-            'total' =>  $total,
+            'cartItems' => $cartService->setCartValues()->get('cartItems'),
+            'total' => $cartService->setCartValues()->get('total'),
+
         ]);
+        //     'cartItems' => $cartItems,
+        //     'total' =>  $total,
+        // ]);
     }
 
     public function store(Request $request)

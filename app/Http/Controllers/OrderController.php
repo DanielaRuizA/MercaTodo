@@ -13,7 +13,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('Orders/Index', [
+            'orders' => Order::all()
+        ]);
     }
 
     /**
@@ -21,7 +23,6 @@ class OrderController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Orders/Index');
     }
 
     /**
@@ -29,7 +30,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //dd($request->all());
     }
 
     /**

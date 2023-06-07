@@ -120,8 +120,8 @@ export default {
                                 </div>
                             </div>
                             <div class="text-center mt-4">
-                                <button as="href" class="text-sm">Secure
-                                    Checkout</button>
+                                <Link :href="route('checkout.index')" class="text-sm">Secure
+                                Checkout</Link>
                             </div>
                         </div>
                         <div class="text-center mt-4">

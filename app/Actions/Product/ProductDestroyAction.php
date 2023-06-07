@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductDestroyAction
 {
-    public function handle(Product $product)
+    public function handle(Product $product): void
     {
         Storage::disk('public')->delete($product->product_photo);
 

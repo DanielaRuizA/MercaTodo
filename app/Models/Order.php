@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Order extends Model
 {
@@ -13,11 +13,11 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
-        'confirmation_number',
-        'billing_email',
-        'billing_name',
-        'billing_name_on_card',
-        'billing_total',
+        'order_id',
+        'url',
+        'amount',
+        'currency',
+        'status',
     ];
 
     public function user(): BelongsTo
@@ -28,5 +28,19 @@ class Order extends Model
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class)->withPivot('quantity');
+    }
+    
+    public function completed(): void
+    {
+        $this->update([
+            'status' => 'COMPLETED'
+        ]);
+    }
+
+    public function canceled(): void
+    {
+        $this->update([
+            'status' => 'CANCELED'
+        ]);
     }
 }
