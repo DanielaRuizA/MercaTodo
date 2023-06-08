@@ -2,18 +2,19 @@
 
 namespace App\Services;
 
-use App\Contracts\PaymentInterface;
-use App\Domain\Order\OrderCreateAction;
-use App\Domain\Order\OrderGetLastAction;
-use App\Domain\Order\OrderUpdateAction;
 use Carbon\Carbon;
-use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
+use Inertia\Inertia;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Contracts\PaymentInterface;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\RedirectResponse;
+use App\Domain\Order\OrderCreateAction;
+use App\Domain\Order\OrderUpdateAction;
+use Illuminate\Database\Eloquent\Model;
+use App\Domain\Order\OrderGetLastAction;
 
 class PlaceToPayPayment implements PaymentInterface
 {
@@ -24,7 +25,7 @@ class PlaceToPayPayment implements PaymentInterface
         $order = OrderCreateAction::execute($request->all());
 
         $result = Http::post(
-            config('placetopay.url').'/api/session',
+            config('placetopay.url').config('placetopay.route.api'),
             $this->createSession($order, $request->ip(), $request->userAgent())
         );
 
@@ -33,7 +34,8 @@ class PlaceToPayPayment implements PaymentInterface
             $order->url = $result->json()['processUrl'];
 
             OrderUpdateAction::execute($order);
-            return redirect()->to($order->url);
+            // return redirect()->to($order->url)->send();
+            return Inertia::location($order->url)->send();
         }
 
         throw new \Exception($result->body());
@@ -50,11 +52,11 @@ class PlaceToPayPayment implements PaymentInterface
             'auth' => $this->getAuth(),
             'buyer' => [
                 'name' => auth()->user()->name,
-                'email' => auth()->user()->email
+                'email' => auth()->user()->email,
             ],
             "payment" => [
                 "reference" =>  $order->id,
-                "description" => "Pago mixto de prueba",
+                "description" =>'prueba',
                 "amount" => [
                     "currency" => "COP",
                     "total" => $order->amount,
@@ -77,7 +79,7 @@ class PlaceToPayPayment implements PaymentInterface
             'tranKey' => base64_encode(
                 hash(
                     'sha256',
-                    $nonce . $seed . config('placetopay.tranKey'),
+                    $nonce.$seed.config('placetopay.tranKey'),
                     true
                 )
             ),
@@ -103,7 +105,6 @@ class PlaceToPayPayment implements PaymentInterface
             }
 
             return view('payments.success', [
-                'processor' => $order->provider,
                 'status' => $order->status
             ]);
         }

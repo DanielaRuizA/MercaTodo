@@ -2,29 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Inertia\Inertia;
+use Illuminate\Http\Request;
+use App\Services\CartService;
+use App\Services\PlaceToPayPayment;
 use App\Contracts\PaymentFactoryInterface;
 use App\Services\PaymentBase;
-use App\Services\PlaceToPayPayment;
-use Illuminate\Http\Request;
 
 // use Inertia\Inertia;
 
 class PaymentController extends Controller
 {
-    // public function Index()
-    // {
-    //     return Inertia::render('Checkout/Index.vue');
-    // }
-
-    public function processPayment(Request $request, PaymentFactoryInterface $paymentFactory)
+    public function processPayment(Request $request, PlaceToPayPayment $paymentService)
     {
-        $processor = $paymentFactory->initializePayment($request->get('payment_type'));
-        return $processor->pay($request);
-        /*$this->sendEmail($processor);
-        return view('payments.success', [
-            'processor' => $request->get('payment_type'),
-            'status' => 'COMPLETED'
-        ]);*/
+        $paymentService->pay($request);
+        // return Inertia::location($paymentService->pay($request));
+
+        // return redirect()->to($order->url);
+
+        // Inertia::location($order->url);
+
+        // return Inertia::location($order->url);
     }
 
     private function sendEmail(PaymentBase $base): void
@@ -34,6 +33,7 @@ class PaymentController extends Controller
 
     public function processResponse(PlaceToPayPayment $placeToPayPayment)
     {
-        return $placeToPayPayment->getRequestInformation();
+        dd('hola');
+        // return $placeToPayPayment->getRequestInformation();
     }
 }

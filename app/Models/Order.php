@@ -20,6 +20,15 @@ class Order extends Model
         'status',
     ];
 
+    protected $casts = [
+        'user_id' => 'integer',
+        'order_id' => 'integer',
+        'url' => 'string',
+        'amount' => 'integer',
+        'currency' => 'string',
+        'status' => 'string',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

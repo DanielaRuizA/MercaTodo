@@ -33,9 +33,9 @@ class CheckoutController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, PlaceToPayPayment $paymentservice)
+    public function store(Request $request, PlaceToPayPayment $paymentService)
     {
-        return $paymentservice->pay($request);
+        return $paymentService->pay($request);
     }
 
     /**

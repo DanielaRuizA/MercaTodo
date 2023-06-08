@@ -1,51 +1,35 @@
-<script>
+<script setup>
 import { Link, useForm } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import axios from 'axios';
 
-export default {
-    props: [
-        'total',
-    ],
-    components: {
-        AppLayout,
-    },
-    data() {
-        return {
-            //disabled: true,
-            errors: [],
-            form: {
-                name: '',
-                lastname: '',
-                email: '',
-                total: this.total,
-            },
-            selectedPayment: 'PlaceToPay',
-            paymentProcessors: ['PlaceToPay'] // Replace with your actual data
-            // loading: false,
-            // stripe: {}, 
-        }
-    },
-    methods: {
-        async processPayment() {
-            axios.post(route('checkout.store', this.form))
-                .then((resp) => {
-                    console.log(resp)
-                })
-                .catch((err) => {
-                    console.log()
-                })
-        }
-    }
+const props = defineProps({
+    total: Object,
+});
+
+const form = useForm({
+    total: props.total,
+})
+
+const processPayment = () => {
+    form.post(route('payments.processPayment'))
 }
+
 </script>
 <template>
     <AppLayout title="Checkout">
         <div class="max-w-7xl mx-auto px-4 py-4 space-y-4 sm:px-6 md:flex md:space-y-0 md:space-x-4 lg:px-8">
             <div class="flex-1">
                 <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
-                    <form id="payment-form" @submit.prevent="processPayment">
-                        <div class="-mx-3 md:flex mb-6">
+                    <!-- <form id="payment-form" @submit.prevent="processPayment" enctype="multipart/form-data"> -->
+                    <div class="flex flex-col items-center space-y-4 py-6 bg-gray-700">
+                        <div class="flex space-x-4">
+                            <span class="text-white">
+                                Total a Pagar
+                            </span>
+                            <span class="text-yellow-500">{{ total }}</span>
+                        </div>
+                    </div>
+                    <!-- <div class="-mx-3 md:flex mb-6">
                             <div class="px-3 mb-6 w-full md:mb-0">
                                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                                     for="name">
@@ -86,8 +70,8 @@ export default {
                                     {{ errors.email[0] }}
                                 </span>
                             </div>
-                        </div>
-                        <div class="p-2">
+                        </div> -->
+                    <!-- <div class="p-2">
                             <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                                 Medio de Pago
                             </label>
@@ -98,15 +82,14 @@ export default {
                                     {{ processor }}
                                 </option>
                             </select>
-                        </div>
-                        <div class="flex justify-center">
-                            <button as="submit" class="text-sm" :class="{ 'opacity-50 cursor-not-allowed': disabled }"
-                                :disabled="disabled">
-                                <icon name="spinner" class="animate-spin h-5 w-5 fill-current" v-if="loading"></icon>
-                                <span v-else>Pay now</span>
-                            </button>
-                        </div>
-                    </form>
+                        </div> -->
+                    <div class="flex justify-center">
+                        <button class="text-sm" :class="{ 'opacity-50 cursor-not-allowed': disabled }"
+                            @click="processPayment" :disabled="processing">
+                            Pay now
+                        </button>
+                    </div>
+                    <!-- </form> -->
                 </div>
             </div>
             <div class="flex-1">

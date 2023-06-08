@@ -4,6 +4,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CheckoutController;
 
 Route::get('/', function () {
@@ -43,9 +44,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-
-
 
     Route::get('payments/{post_id}', [PaymentController::class, 'create'])->name('payments.create');
     Route::post('payments', [PaymentController::class, 'processPayment'])->name('payments.processPayment');

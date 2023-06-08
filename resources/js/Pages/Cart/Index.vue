@@ -2,6 +2,7 @@
 import { Link } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { useForm } from '@inertiajs/vue3';
+import axios from 'axios';
 
 export default {
     props: ['cartItems', 'total'],
@@ -16,13 +17,25 @@ export default {
             form: useForm({
                 cartItems: this.cartItems,
                 quantity: 0,
-            })
+            }),
+            // payForm: {
+            //     total: 'total',
+            // }
         }
     },
     methods: {
         showImage() {
             return "/storage/";
         },
+        // async processPayment() {
+        //     axios.post(route('payments.processPayment', this.form))
+        //         .then((resp) => {
+        //             console.log('Formulario enviado con éxito')
+        //         })
+        //         .catch((err) => {
+        //             console.log('Error al enviar el formulario')
+        //         })
+        // },
         updateCart(id, quantity) {
             this.form.quantity = quantity
             this.form.patch(this.route('cart.update', id), {
@@ -103,6 +116,7 @@ export default {
             <div class="flex-1">
                 <div class="shadow-md rounded sm:my-2">
                     <div class="bg-gray-300 px-4 py-6">
+                        <!-- <form id="payment-form" @submit.prevent="processPayment"> -->
                         <div>
                             <span class="px-4">Order Summary</span>
                             <div class="flex justify-between bg-white px-4 py-2 mt-4">
@@ -122,8 +136,11 @@ export default {
                             <div class="text-center mt-4">
                                 <Link :href="route('checkout.index')" class="text-sm">Secure
                                 Checkout</Link>
+                                <!-- <button class="text-sm">Secure
+                                        Checkout</button> -->
                             </div>
                         </div>
+                        <!-- </form> -->
                         <div class="text-center mt-4">
                             <Link :href="route('stores.index')" class="underline hover:text-red-700 transition">Continue
                             Shopping</Link>
