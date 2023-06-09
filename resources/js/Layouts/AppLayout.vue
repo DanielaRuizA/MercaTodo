@@ -35,7 +35,7 @@ const logout = () => {
         <Head :title="title" />
 
         <Banner />
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-white">
             <nav class="bg-white border-b border-gray-100">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -53,14 +53,20 @@ const logout = () => {
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
-                                <NavLink :href="route('users.index')" :active="route().current('users.*')">
+                                <NavLink :href="route('users.index')"
+                                    v-if="$page.props.user.permissions.includes('users.index')"
+                                    :active="route().current('users.*')">
                                     Usuarios
                                 </NavLink>
-                                <NavLink :href="route('products.index')" :active="route().current('products.*')">
+                                <NavLink :href="route('products.index')" v-if="$page.props.user.roles.includes('admin')"
+                                    :active="route().current('products.*')">
                                     Productos
                                 </NavLink>
                                 <NavLink :href="route('stores.index')" :active="route().current('stores.*')">
                                     Tienda
+                                </NavLink>
+                                <NavLink :href="route('orders.index')" :active="route().current('orders.*')">
+                                    Mis Ordenes
                                 </NavLink>
                             </div>
                         </div>

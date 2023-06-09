@@ -19,13 +19,15 @@ use Inertia\Response;
 
 class ProductController extends Controller
 {
-    public function index(Request $request, ProductIndexAction $productIndexAction): Response
+    public function index(Request $request): Response
     {
         // $productIndexAction->handle($request);
 
         // return Inertia::render('AdminPanel/Products/Index', [
         //     'products' => $productIndexAction
         // ]);
+        // dd(Product::all());
+
         return Inertia::render('AdminPanel/Products/Index', [
 
             'products' => Product::latest()

@@ -20,7 +20,6 @@ const processPayment = () => {
         <div class="max-w-7xl mx-auto px-4 py-4 space-y-4 sm:px-6 md:flex md:space-y-0 md:space-x-4 lg:px-8">
             <div class="flex-1">
                 <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
-                    <!-- <form id="payment-form" @submit.prevent="processPayment" enctype="multipart/form-data"> -->
                     <div class="flex flex-col items-center space-y-4 py-6 bg-gray-700">
                         <div class="flex space-x-4">
                             <span class="text-white">
@@ -89,7 +88,6 @@ const processPayment = () => {
                             Pay now
                         </button>
                     </div>
-                    <!-- </form> -->
                 </div>
             </div>
             <div class="flex-1">

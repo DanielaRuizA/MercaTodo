@@ -13,8 +13,10 @@ class OrderController extends Controller
      */
     public function index()
     {
+        // dd(Order::all());
+        $orders = Order::latest()->get();
         return Inertia::render('Orders/Index', [
-            'orders' => Order::all()
+            'orders'=> $orders
         ]);
     }
 

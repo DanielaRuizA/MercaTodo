@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Carbon\Carbon;
 use Inertia\Inertia;
+use Inertia\Response;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Contracts\PaymentInterface;
@@ -88,27 +89,27 @@ class PlaceToPayPayment implements PaymentInterface
         ];
     }
 
-    public function getRequestInformation(): View
-    {
-        $order = OrderGetLastAction::execute();
+public function getRequestInformation(): Response
+{
+    $order = OrderGetLastAction::execute();
 
-        $result = Http::post(config('placetopay.url') . "/api/session/$order->order_id", [
-            'auth' => $this->getAuth()
-        ]);
+    $result = Http::post(config('placetopay.url') . "/api/session/$order->order_id", [
+        'auth' => $this->getAuth()
+    ]);
 
-        if ($result->ok()) {
-            $status = $result->json()['status']['status'];
-            if ($status == 'APPROVED') {
-                $order->completed();
-            } elseif ($status == 'REJECTED') {
-                $order->canceled();
-            }
-
-            return view('payments.success', [
-                'status' => $order->status
-            ]);
+    if ($result->ok()) {
+        $status = $result->json()['status']['status'];
+        if ($status == 'APPROVED') {
+            $order->completed();
+        } elseif ($status == 'REJECTED') {
+            $order->canceled();
         }
 
-        throw  new \Exception($result->body());
+        return Inertia::render('Checkout/Show', [
+            'status' => $order->status
+        ]);
     }
+
+    throw  new \Exception($result->body());
+}
 }

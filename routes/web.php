@@ -43,11 +43,8 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('cart/{product}', [App\Http\Controllers\Cart\CartController::class, 'update'])->name('cart.update');
 
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
     
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-
-    Route::get('payments/{post_id}', [PaymentController::class, 'create'])->name('payments.create');
     Route::post('payments', [PaymentController::class, 'processPayment'])->name('payments.processPayment');
     Route::get('payments/payment/response', [PaymentController::class, 'processResponse'])->name('payments.processResponse');
+    Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
 });
