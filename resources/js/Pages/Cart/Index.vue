@@ -48,7 +48,7 @@ export default {
             <div class="flex-1">
                 <div class="flex flex-col items-center mb-2 md:flex-row md:justify-between">
                     <p class="text-sky-700 text-2xl font-semibold" v-if="$page.props.cartCount <= 0">
-                        El Carro Esta Vacio!
+                        El Carro Esta Vació!
                     </p>
                     <p class="text-blue-600 text-2xl font-semibold" v-else> {{ $page.props.cartCount }}
                         Productos
@@ -115,7 +115,10 @@ export default {
                             <span class="px-4">Resumen De Pedido</span>
                             <div class="flex justify-between bg-white px-4 py-2 mt-4">
                                 <span>Subtotal</span>
-                                <span>{{ total }}</span>
+                                <span>{{ Intl.NumberFormat('es-CO', {
+                                    style: 'currency', currency: 'COP',
+                                    maximumSignificantDigits: 3
+                                }).format(total) }}</span>
                             </div>
                             <div class="flex justify-between bg-white px-4 py-2 mt-4">
                                 <span>Cantidad De Productos </span>
@@ -128,12 +131,15 @@ export default {
                             <div class="bg-white px-4 py-2 mt-4">
                                 <div class="flex justify-between">
                                     <span> Total Del Pedido</span>
-                                    <span>{{ total }}</span>
+                                    <span>{{ Intl.NumberFormat('es-CO', {
+                                        style: 'currency', currency: 'COP',
+                                        maximumSignificantDigits: 3
+                                    }).format(total) }}</span>
                                 </div>
                             </div>
                             <div
                                 class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">
-                                <Link :href="route('checkout.index')" class="text-sm"> IR A PAGAR
+                                <Link :href="route('checkout.index')" class="text-sm"> CONFIRMAR PEDIDO
                                 </Link>
                             </div>
                         </div>
@@ -144,7 +150,7 @@ export default {
                     </div>
                 </div>
             </div>
-        </div>3
+        </div>
     </AppLayout>
 </template>
 
