@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class changeStatus
 {
-    public function handle(Request $request)
+    public function handle(Request $request): void
     {
         $user = User::find($request->user_id);
 

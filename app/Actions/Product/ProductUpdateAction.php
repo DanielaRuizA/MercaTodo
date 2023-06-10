@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductUpdateAction
 {
-    public function handle(ProductUpdateRequest $request, Product $product)
+    public function handle(ProductUpdateRequest $request, Product $product): void
     {
         $validated = $request->validated();
 

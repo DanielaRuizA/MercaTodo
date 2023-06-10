@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Services\PlaceToPayPayment;
 use App\Services\PaymentBase;
+use App\Services\PlaceToPayPayment;
+use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {

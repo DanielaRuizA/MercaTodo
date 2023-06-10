@@ -18,8 +18,9 @@ return new class extends Migration {
             $table->integer('amount');
             $table->enum('currency', ['COP'])->default('COP');
             $table->enum('status', ['PENDING', 'COMPLETED', 'CANCELED'])->default('PENDING');
+            $table->date('expiration')->nullable();
             $table->timestamps();
-        
+
             $table->foreign('user_id')->on('users')->references('id');
         });
     }

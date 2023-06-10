@@ -19,8 +19,7 @@ export default {
 }
 </script>
 <template>
-    <AppLayout title="Ordenes">
-        <h1>{{ orders }}</h1>
+    <AppLayout title="Pedidos">
 
         <body class="bg-white text-gray-600 work-sans leading-normal text-base tracking-normal">
             <section class="bg-white py-8">
@@ -29,7 +28,7 @@ export default {
                         <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-3">
                             <a class="uppercase tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl "
                                 href="#">
-                                Mis Ordenes
+                                Mis Pedidos
                             </a>
                         </div>
                     </nav>

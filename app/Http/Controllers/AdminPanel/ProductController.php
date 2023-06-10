@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\AdminPanel;
 
-use App\Actions\Product\ProductIndexAction;
 use App\Actions\Product\changeProductStatusActions;
 use App\Actions\Product\ProductDestroyAction;
 use App\Actions\Product\ProductStoreAction;

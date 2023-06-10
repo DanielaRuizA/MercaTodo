@@ -12,7 +12,6 @@ export default {
 </script>
 <template>
     <AppLayout title="Status Orden">
-        <h1>{{ status }}</h1>
         <div v-if="status === 'COMPLETED'">
             <div class="flex items-center justify-center">
                 <img width="200"

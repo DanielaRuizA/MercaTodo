@@ -1,11 +1,11 @@
 <?php
 
-use Inertia\Inertia;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\CheckoutController;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -43,7 +43,7 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('cart/{product}', [App\Http\Controllers\Cart\CartController::class, 'update'])->name('cart.update');
 
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-    
+
     Route::post('payments', [PaymentController::class, 'processPayment'])->name('payments.processPayment');
     Route::get('payments/payment/response', [PaymentController::class, 'processResponse'])->name('payments.processResponse');
     Route::get('orders', [OrderController::class, 'index'])->name('orders.index');

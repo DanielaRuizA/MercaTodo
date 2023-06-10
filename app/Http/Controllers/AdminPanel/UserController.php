@@ -22,7 +22,6 @@ class UserController extends Controller
         //         ->paginate(15, ['id', 'name', 'email', 'status']),
         // ]);
 
-
         $query = User::latest()->where('id', '!=', auth()->id());
 
         if ($request->q) {

@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Order extends Model
@@ -18,6 +18,7 @@ class Order extends Model
         'amount',
         'currency',
         'status',
+        'expiration',
     ];
 
     protected $casts = [
@@ -38,18 +39,18 @@ class Order extends Model
     {
         return $this->belongsToMany(Product::class)->withPivot('quantity');
     }
-    
+
     public function completed(): void
     {
         $this->update([
-            'status' => 'COMPLETED'
+            'status' => 'COMPLETED',
         ]);
     }
 
     public function canceled(): void
     {
         $this->update([
-            'status' => 'CANCELED'
+            'status' => 'CANCELED',
         ]);
     }
 }

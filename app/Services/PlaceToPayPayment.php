@@ -2,20 +2,19 @@
 
 namespace App\Services;
 
+use App\Contracts\PaymentInterface;
+use App\Domain\Order\OrderCreateAction;
+use App\Domain\Order\OrderGetLastAction;
+use App\Domain\Order\OrderUpdateAction;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Contracts\PaymentInterface;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Http\RedirectResponse;
-use App\Domain\Order\OrderCreateAction;
-use App\Domain\Order\OrderUpdateAction;
-use Illuminate\Database\Eloquent\Model;
-use App\Domain\Order\OrderGetLastAction;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 class PlaceToPayPayment implements PaymentInterface
 {
@@ -35,7 +34,9 @@ class PlaceToPayPayment implements PaymentInterface
             $order->url = $result->json()['processUrl'];
 
             OrderUpdateAction::execute($order);
-            // return redirect()->to($order->url)->send();
+
+            Cart::instance('default')->destroy();
+
             return Inertia::location($order->url)->send();
         }
 
@@ -55,18 +56,20 @@ class PlaceToPayPayment implements PaymentInterface
                 'name' => auth()->user()->name,
                 'email' => auth()->user()->email,
             ],
-            "payment" => [
-                "reference" =>  $order->id,
-                "description" =>'prueba',
-                "amount" => [
-                    "currency" => "COP",
-                    "total" => $order->amount,
-                ]
+            'payment' => [
+                'reference' => $order->id,
+                'description' => 'Transacción a Mercatodo',
+                'amount' => [
+                    'currency' => 'COP',
+                    'total' => $order->amount,
+                ],
+                'items' => [
+                ],
             ],
-            "expiration" => Carbon::now()->addHour(),
-            "returnUrl" => route('payments.processResponse'),
-            "ipAddress" => $ipAddress,
-            "userAgent" => $userAgent,
+            'expiration' => Carbon::now()->addHour(),
+            'returnUrl' => route('payments.processResponse'),
+            'ipAddress' => $ipAddress,
+            'userAgent' => $userAgent,
         ];
     }
 
@@ -93,8 +96,8 @@ public function getRequestInformation(): Response
 {
     $order = OrderGetLastAction::execute();
 
-    $result = Http::post(config('placetopay.url') . "/api/session/$order->order_id", [
-        'auth' => $this->getAuth()
+    $result = Http::post(config('placetopay.url')."/api/session/$order->order_id", [
+        'auth' => $this->getAuth(),
     ]);
 
     if ($result->ok()) {
@@ -106,10 +109,10 @@ public function getRequestInformation(): Response
         }
 
         return Inertia::render('Checkout/Show', [
-            'status' => $order->status
+            'status' => $order->status,
         ]);
     }
 
-    throw  new \Exception($result->body());
+    throw new \Exception($result->body());
 }
 }

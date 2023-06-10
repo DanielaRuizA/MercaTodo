@@ -14,9 +14,10 @@ class OrderController extends Controller
     public function index()
     {
         // dd(Order::all());
-        $orders = Order::latest()->get();
+        $orders = Order::where('user_id', '=', auth()->id())->latest()->get();
+
         return Inertia::render('Orders/Index', [
-            'orders'=> $orders
+            'orders' => $orders,
         ]);
     }
 

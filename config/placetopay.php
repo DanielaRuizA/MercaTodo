@@ -6,5 +6,5 @@ return [
     'url' => env('PLACETOPAY_URL'),
     'route' => [
         'api' => env('PLACETOPAY_API'),
-    ]
+    ],
 ];

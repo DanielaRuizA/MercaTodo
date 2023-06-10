@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Inertia\Inertia;
-use Illuminate\Http\Request;
 use App\Services\CartService;
 use App\Services\PlaceToPayPayment;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CheckoutController extends Controller
 {
@@ -15,10 +14,11 @@ class CheckoutController extends Controller
      */
     public function index(CartService $cartService)
     {
-        $contents =[
+        $contents = [
             'cartItems' => $cartService->setCartValues()->get('cartItems'),
             'total' => $cartService->setCartValues()->get('total'),
         ];
+
         return Inertia::render('Checkout/Index', $contents);
     }
 
@@ -39,8 +39,8 @@ class CheckoutController extends Controller
     }
 
     /**
-         * Display the specified resource.
-         */
+     * Display the specified resource.
+     */
     public function show(string $id)
     {
         //

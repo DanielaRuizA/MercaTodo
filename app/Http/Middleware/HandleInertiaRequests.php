@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
-use Gloudemans\Shoppingcart\Facades\Cart;
 
 class HandleInertiaRequests extends Middleware
 {

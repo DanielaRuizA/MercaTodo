@@ -13,7 +13,7 @@ class CartService
 
         return collect([
             'cartItems' => $cartItems,
-            'total' =>  $total,
+            'total' => $total,
         ]);
     }
 }
