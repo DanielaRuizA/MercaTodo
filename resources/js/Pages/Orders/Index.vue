@@ -1,8 +1,6 @@
 <script>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { Link } from '@inertiajs/vue3';
-import { Inertia } from '@inertiajs/inertia';
-
+import { Link, useForm } from '@inertiajs/vue3';
 
 export default {
     components: {
@@ -11,10 +9,20 @@ export default {
     props: {
         orders: Object,
     },
+    data() {
+        return {
+            form: useForm({
+                total: this.orders.amount
+            })
+        }
+    },
     methods: {
         openExternalLink(url) {
             window.location.replace(url);
         },
+        processPayment() {
+            this.form.post(route('payments.processPayment'))
+        }
     }
 }
 </script>
@@ -93,8 +101,10 @@ export default {
                                         PENDIENTE
                                     </div>
                                 </td>
-                                <td class="rounded-md px-4 py-2 bg-sky-400 text-center font-bold text-black">
-                                    <button @click="openExternalLink(order.url)">REINTENTAR PAGO</button>
+                                <td v-if="order.status == 'PENDING' || order.status === 'CANCELED'"
+                                    class="rounded-md px-4 py-2 bg-sky-400 text-center font-bold text-black">
+                                    <button @click="openExternalLink(order.url)">REINTENTAR
+                                        PAGO</button>
                                 </td>
                             </tr>
                         </tbody>
