@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -31,5 +34,17 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::resource('stores', App\Http\Controllers\Store\StoreController::class);
+    Route::get('/stores', [App\Http\Controllers\Store\StoreController::class, 'index'])->name('stores.index');
+    Route::get('stores/{product}', [App\Http\Controllers\Store\StoreController::class, 'show'])->name('stores.show');
+
+    Route::get('cart', [App\Http\Controllers\Cart\CartController::class, 'index'])->name('cart.index');
+    Route::post('cart/{product}', [App\Http\Controllers\Cart\CartController::class, 'store'])->name('cart.store');
+    Route::delete('cart/{product}', [App\Http\Controllers\Cart\CartController::class, 'destroy'])->name('cart.destroy');
+    Route::patch('cart/{product}', [App\Http\Controllers\Cart\CartController::class, 'update'])->name('cart.update');
+
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+
+    Route::post('payments', [PaymentController::class, 'processPayment'])->name('payments.processPayment');
+    Route::get('payments/payment/response', [PaymentController::class, 'processResponse'])->name('payments.processResponse');
+    Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
 });

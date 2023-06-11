@@ -35,7 +35,7 @@ const logout = () => {
         <Head :title="title" />
 
         <Banner />
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-white">
             <nav class="bg-white border-b border-gray-100">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -53,22 +53,39 @@ const logout = () => {
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
-                                <NavLink :href="route('users.index')" :active="route().current('users.*')"
-                                    v-if="$page.props.user.permissions.includes('users.index')">
+                                <NavLink :href="route('users.index')"
+                                    v-if="$page.props.user.permissions.includes('users.index')"
+                                    :active="route().current('users.*')">
                                     Usuarios
                                 </NavLink>
-                                <NavLink :href="route('products.index')" :active="route().current('products.*')"
-                                    v-if="$page.props.user.permissions.includes('products.index')">
+                                <NavLink :href="route('products.index')" v-if="$page.props.user.roles.includes('admin')"
+                                    :active="route().current('products.*')">
                                     Productos
                                 </NavLink>
-                                <NavLink :href="route('stores.index')" :active="route().current('products.*')">
+                                <NavLink :href="route('stores.index')" :active="route().current('stores.*')">
                                     Tienda
+                                </NavLink>
+                                <NavLink :href="route('orders.index')" :active="route().current('orders.*')">
+                                    Mis Ordenes
                                 </NavLink>
                             </div>
                         </div>
-
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
                             <div class="ml-3 relative">
+                                <NavLink class="pl-3 inline-block no-underline hover:text-black"
+                                    :href="route('cart.index')">
+                                    <span class="bg-red-600 text-white text-xs rounded-md p-1 absolute"
+                                        style="top: -10px; right: -8px;">{{
+                                            $page.props.cartCount }}
+                                    </span>
+                                    <svg class="fill-current hover:text-black" xmlns="http://www.w3.org/2000/svg" width="24"
+                                        height="24" viewBox="0 0 24 24">
+                                        <path
+                                            d="M21,7H7.462L5.91,3.586C5.748,3.229,5.392,3,5,3H2v2h2.356L9.09,15.414C9.252,15.771,9.608,16,10,16h8 c0.4,0,0.762-0.238,0.919-0.606l3-7c0.133-0.309,0.101-0.663-0.084-0.944C21.649,7.169,21.336,7,21,7z M17.341,14h-6.697L8.371,9 h11.112L17.341,14z" />
+                                        <circle cx="10.5" cy="18.5" r="1.5" />
+                                        <circle cx="17.5" cy="18.5" r="1.5" />
+                                    </svg>
+                                </NavLink>
                                 <!-- Teams Dropdown -->
                                 <Dropdown v-if="$page.props.jetstream.hasTeamFeatures" align="right" width="60">
                                     <template #trigger>
