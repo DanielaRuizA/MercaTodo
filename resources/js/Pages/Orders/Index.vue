@@ -93,9 +93,8 @@ export default {
                                         PENDIENTE
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                    <Link>{{ order.url }}</link>
-                                    <button @click="openExternalLink(order.url)">Abrir enlace externo</button>
+                                <td class="rounded-md px-4 py-2 bg-sky-400 text-center font-bold text-black">
+                                    <button @click="openExternalLink(order.url)">REINTENTAR PAGO</button>
                                 </td>
                             </tr>
                         </tbody>
