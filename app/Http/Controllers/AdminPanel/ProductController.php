@@ -21,7 +21,6 @@ class ProductController extends Controller
     public function index(Request $request): Response
     {
         return Inertia::render('AdminPanel/Products/Index', [
-
             'products' => Product::latest()
                 ->where('id', 'LIKE', "%$request->q%")
                 ->orWhere('name', 'LIKE', "%$request->q%")
