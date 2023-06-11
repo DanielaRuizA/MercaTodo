@@ -7,6 +7,7 @@ use App\Domain\Order\OrderCreateAction;
 use App\Domain\Order\OrderGetLastAction;
 use App\Domain\Order\OrderUpdateAction;
 use Carbon\Carbon;
+use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -14,7 +15,6 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
-use Gloudemans\Shoppingcart\Facades\Cart;
 
 class PlaceToPayPayment implements PaymentInterface
 {

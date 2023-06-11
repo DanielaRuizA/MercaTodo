@@ -12,17 +12,10 @@ class CartController extends Controller
 {
     public function index(CartService $cartService)
     {
-        // $cartItems = Cart::instance('default')->content();
-        // $total  = Cart::instance('default')->subtotal(); //subtotal
-
         return Inertia::render('Cart/Index', [
             'cartItems' => $cartService->setCartValues()->get('cartItems'),
             'total' => $cartService->setCartValues()->get('total'),
-
         ]);
-        //     'cartItems' => $cartItems,
-        //     'total' =>  $total,
-        // ]);
     }
 
     public function store(Request $request)

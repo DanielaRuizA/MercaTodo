@@ -49,6 +49,7 @@ class StoreControllerTest extends TestCase
             ->assertSee($product->precio)
             ->assertSee($product->imagen);
     }
+
     public function testAdminAccessStoreShowProductView()
     {
         $roleAdmin = Role::create(['name' => 'admin']);
