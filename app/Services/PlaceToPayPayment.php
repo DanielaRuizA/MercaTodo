@@ -15,10 +15,11 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 class PlaceToPayPayment implements PaymentInterface
 {
-    public function pay(Request $request)
+    public function pay(Request $request): HttpFoundationResponse
     {
         Log::info('[PAY]: Pago con PlaceToPay');
 

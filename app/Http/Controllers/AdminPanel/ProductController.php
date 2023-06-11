@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\AdminPanel;
 
-use App\Actions\Product\changeProductStatusActions;
+use App\Actions\Product\ChangeProductStatusActions;
 use App\Actions\Product\ProductDestroyAction;
 use App\Actions\Product\ProductStoreAction;
 use App\Actions\Product\ProductUpdateAction;
@@ -20,13 +20,6 @@ class ProductController extends Controller
 {
     public function index(Request $request): Response
     {
-        // $productIndexAction->handle($request);
-
-        // return Inertia::render('AdminPanel/Products/Index', [
-        //     'products' => $productIndexAction
-        // ]);
-        // dd(Product::all());
-
         return Inertia::render('AdminPanel/Products/Index', [
 
             'products' => Product::latest()
@@ -74,7 +67,7 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('message', 'Producto Eliminado');
     }
 
-    public function changeProductStatus(changeProductStatusActions $changeProductStatusActions, Request $request): JsonResponse
+    public function changeProductStatus(ChangeProductStatusActions $changeProductStatusActions, Request $request): JsonResponse
     {
         $changeProductStatusActions->handle($request);
 

@@ -23,68 +23,73 @@ class CartControllerTest extends TestCase
             ->assertStatus(200);
     }
 
-
-    // public function testUserAddItemsCart()
-    // {
-    //     $user = User::factory()->create();
-
-    //     $product = Product::factory()->create();
-
-    //     $data = Cart::instance('default')->add('1', 'nuevo', 55, 300, ['totalQty' => 3]);
-
-
-    //     $this
-    //         ->actingAs($user)
-    //         ->post("cart/$product->id")
-    //         ->assertRedirect('cart');
-        // ->assertRedirect('product');
-        // ->assertSee($product->nombre)
-        // ->assertSee($product->descripcion)
-        // ->assertSee($product->precio)
-        // ->assertSee($product->cantidad)
-        // ->assertSee($product->imagen);
-    // }
-
-    // public function testUserUpdateCart()
-    // {
-    //     $user = User::factory()->create();
-
-    //     $product = Product::factory()->create();
-
-    //     $data = [
-    //         'name' => 'New Product',
-    //         'description' => 'This is a product',
-    //         'price' => 1000,
-    //         'quantity' => 33,
-    //     ];
-
-    //     $this->actingAs($user)
-    //         ->patch("cart/$product->id", $data)
-    //         ->assertRedirect('cart.index');
-    // }
-    
-    // public function testAdminDestroyProduct()
-    // {
-    //     $roleAdmin = Role::create(['name' => 'admin']);
-
-    //     Permission::create(['name' => 'admin.products.destroy'])->assignRole($roleAdmin);
-
-    //     $admin = User::factory()->create()->assignRole('admin');
-
-    //     $product = Product::factory()->create();
-
-    //     $this
-    //         ->actingAs($admin)
-    //         ->delete("products/$product->id")
-    //         ->assertRedirect('products');
-
-    //     $this->assertDatabaseMissing('products', [
-    //         'id' => $product->id,
-    //         'name' => $product->name,
-    //         'description' => $product->description,
-    //         'price' => $product->price,
-    //         'quantity' => $product->quantity,
-    //         'product_photo' => $product->product_photo,
-    //     ]);
+    public function testCanAccessToCartOnlyLoggedUsers()
+    {
+        $this->get('cart')
+        ->assertRedirect('login');
     }
+
+    public function testUserCanAccessToEmptyItemsCart()
+    {
+        $user = User::factory()->create();
+        
+        Product::factory()->create();
+
+        $this
+            ->actingAs($user)
+            ->get('cart')
+            ->assertStatus(200)
+            ->assertSee(0);
+    }
+
+
+    public function testUserCanAddItemsToCart()
+    {
+        $user = User::factory()->create();
+
+        $product = Product::factory()->create();
+
+        $data = [
+            'id' => 1,
+            'name' => 'Sample Product',
+            'quantity' => 2,
+            'price' => 9.99,
+            'totalQty' => 5,
+            'image' => 'sample_image.jpg',
+            'description' => 'Sample description',
+        ];
+
+        $this
+            ->actingAs($user)
+            ->post("cart/$product->id", $data)
+            ->assertRedirect(route('cart.index'));
+    }
+
+
+    public function testUserUpdateTheQuantityOfTheCart()
+    {
+        $cartItemId = 'da39a3ee5e6b4b0d3255bfef95601890afd80709';
+        $newQuantity = 2;
+
+        $this
+        ->patch(route('cart.update', $cartItemId), ['quantity' => $newQuantity])
+        ->assertRedirect();
+    }
+    
+    // public function testUserRemoveItemsOfTheCart()
+    // {
+    //     $user = User::factory()->create();
+
+    //     $product = Product::factory()->create();
+
+        // Cart::instance('default')->add(['id' => '293ad', 'name' => 'Product 1', 'qty' => 1, 'price' => 10.00]);
+        
+        // $this
+        // ->post(route('cart.destroy', 'id' => '293ad'))
+        // ->assertFalse(Cart::instance('default')->has('id' => '293ad'))
+        // ->assertRedirect();
+
+        // // Assert that the response redirects back to the previous page
+        // $response->assertSessionHas('url.intended', url()->previous());
+//     }
 }

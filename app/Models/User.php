@@ -12,6 +12,18 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
+/**
+ * @property string $id
+ * @property string $name
+ * @property string $email
+ * @property string $tokens
+ * @property object $each
+ * @method static User create(...$parameters)
+ * @method static User find(...$parameters)
+ * @method static User latest(...$parameters)
+ */
+
+
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens;

@@ -23,8 +23,6 @@ class StoreController extends Controller
 
         $products = $query->paginate(20, ['id', 'name', 'price', 'product_photo']);
 
-        // dd($products);
-
         return Inertia::render('Store/Index', [
             'products' => $products,
         ]);
@@ -32,8 +30,6 @@ class StoreController extends Controller
 
     public function show(Product $product): Response
     {
-        // dd($product);
-
         return Inertia::render('Store/Show', compact('product'));
     }
 

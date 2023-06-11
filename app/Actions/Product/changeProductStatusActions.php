@@ -5,7 +5,7 @@ namespace App\Actions\Product;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
-class changeProductStatusActions
+class ChangeProductStatusActions
 {
     public function handle(Request $request): void
     {

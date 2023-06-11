@@ -37,24 +37,23 @@ The .env file contains the configuration of the application. It is important to 
 >DB_PASSWORD
 
 ### Mail Configuration
->MAIL_MAILER
->MAIL_HOST
->MAIL_PORT
+>MAIL_MAILER 
+>MAIL_HOST 
+>MAIL_PORT  
 >MAIL_USERNAME
->MAIL_PASSWORD
+>MAIL_PASSWORD  
 >MAIL_ENCRYPTION
 >MAIL_FROM_ADDRESS
 >MAIL_FROM_NAME
 
 ### PlaceToPay Payment Service
->PLACETOPAY_LOGIN
->PLACETOPAY_TRANKEY
->PLACETOPAY_URl
+>PLACETOPAY_LOGIN  
+>PLACETOPAY_TRANKEY  
+>PLACETOPAY_URl  
 >PLACETOPAY_API
 
-## Product Images
-
-for storage and see the images save this in the route `storage/app/public/images` folder.
+## Images
+for storage and see the images save then in the route `storage/app/public/images` folder.
 
 Amd run the following command:
 
