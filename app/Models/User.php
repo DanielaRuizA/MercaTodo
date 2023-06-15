@@ -4,12 +4,25 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+
+/**
+ * @property string $id
+ * @property string $name
+ * @property string $email
+ * @property string $tokens
+ * @property object $each
+ * @method static User create(...$parameters)
+ * @method static User find(...$parameters)
+ * @method static User latest(...$parameters)
+ */
+
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -61,4 +74,9 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
 }

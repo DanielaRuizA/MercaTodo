@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductStoreAction
 {
-    public function handle(ProductStoreRequest $request)
+    public function handle(ProductStoreRequest $request): void
     {
         $validated = $request->validated();
 

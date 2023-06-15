@@ -8,6 +8,14 @@ const props = defineProps({
 
 const showImage = () => "/storage/"
 
+const statusMessage = () => {
+    if (product.status === 1) {
+        ("deshabilitado");
+    } else {
+        console.log("Habilitado");
+    }
+}
+
 </script>
 
 <template>
@@ -38,22 +46,35 @@ const showImage = () => "/storage/"
                     </div>
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt class="text-sm font-medium leading-6 text-gray-900">Precio</dt>
-                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ product.price }}</dd>
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ Intl.NumberFormat('es-CO',
+                            {
+                                style: 'currency', currency: 'COP', maximumSignificantDigits: 3
+                            }).format(product.price) }}</dd>
                     </div>
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt class="text-sm font-medium leading-6 text-gray-900">Cantidad</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ product.quantity }}</dd>
                     </div>
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                        <dt class="text-sm font-medium leading-6 text-gray-900">Status</dt>
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0" v-if="product.status === 0">
+                            Producto Habilitado
+                        </dd>
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0" v-if="product.status === 1">
+                            Producto Deshabilitado
+                        </dd>
+                    </div>
+                    <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt class="text-sm font-medium leading-6 text-gray-900">Imagen</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <img :src="showImage() + product.product_photo" :alt="product.name" width="400">
                         </dd>
+                        <hr class="my-6">
+                        <Link :href="route('products.index')">
+                        Volver
+                        </Link>
                     </div>
-                    <hr class="my-6">
-                    <Link :href="route('products.index')">
-                    Volver
-                    </Link>
+
                 </dl>
             </div>
         </div>

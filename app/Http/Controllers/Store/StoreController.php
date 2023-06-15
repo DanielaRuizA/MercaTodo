@@ -21,10 +21,20 @@ class StoreController extends Controller
             });
         }
 
-        $products = $query->paginate(20, ['name', 'price', 'product_photo']);
+        $products = $query->paginate(20, ['id', 'name', 'price', 'product_photo']);
 
         return Inertia::render('Store/Index', [
             'products' => $products,
         ]);
+    }
+
+    public function show(Product $product): Response
+    {
+        return Inertia::render('Store/Show', compact('product'));
+    }
+
+    public function edit(Product $product): Response
+    {
+        return Inertia::render('Store/Edit', compact('product'));
     }
 }

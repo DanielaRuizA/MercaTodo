@@ -5,9 +5,9 @@ namespace App\Actions\User;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class changeStatus
+class ChangeStatus
 {
-    public function handle(Request $request)
+    public function handle(Request $request): void
     {
         $user = User::find($request->user_id);
 

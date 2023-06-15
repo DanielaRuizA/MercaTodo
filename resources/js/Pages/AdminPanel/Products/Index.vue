@@ -103,7 +103,7 @@ export default {
                                 </th>
                                 <th class="px-6 py-3 bg-gray-50 text-left">
                                     <span
-                                        class="text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Status</span>
+                                        class="text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Inhabilitado</span>
                                 </th>
                                 <th class="px-6 py-3 bg-gray-50 text-left">
                                     <span
@@ -145,8 +145,6 @@ export default {
                                         <div
                                             class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600">
                                         </div>
-                                        <span
-                                            class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Inhabilitado</span>
                                     </label>
                                 </td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
@@ -168,20 +166,6 @@ export default {
                         </tbody>
                     </table>
                 </div>
-                <!-- <div class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col" v-for="product in products.data"
-                        :key="product.id">
-                        <img class="hover:grow hover:shadow-lg" :src="showImage() + product.product_photo"
-                            :alt="product.name" width="450">
-                        <div class="pt-3 flex items-center justify-between">
-                            <p class="">{{ product.name }}</p>
-                        </div>
-                        <p class="pt-1 text-gray-900">{{ Intl.NumberFormat('es-CO', {
-                            style: 'currency', currency: 'COP',
-                            maximumSignificantDigits: 3
-                        }).format(product.price) }}</p>
-                    </div>
-                    <pagination class="mt-6" :links="products.links" />
-                </div> -->
                 <div>
                     <pagination class="mt-6" :links="products.links" />
                 </div>
@@ -190,9 +174,3 @@ export default {
     </AppLayout>
 </template>
 
-
-
-v-for="product in products" :key="product.id"
-vs
-v-for="product in products.data"
-                        :key="product.id"

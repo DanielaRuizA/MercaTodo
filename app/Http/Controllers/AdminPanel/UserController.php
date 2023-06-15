@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\AdminPanel;
 
-use App\Actions\User\changeStatus;
+use App\Actions\User\ChangeStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminPanel\UserRequest;
 use App\Models\User;
@@ -16,13 +16,6 @@ class UserController extends Controller
 {
     public function index(Request $request): Response
     {
-        // return Inertia::render('AdminPanel/Users/Index', [
-        //     'users' => User::where('id', '!=', auth()->id())
-        //         ->latest()
-        //         ->paginate(15, ['id', 'name', 'email', 'status']),
-        // ]);
-
-
         $query = User::latest()->where('id', '!=', auth()->id());
 
         if ($request->q) {
@@ -64,7 +57,7 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('message', 'Usuario eliminado');
     }
 
-    public function changeStatus(changeStatus $changeStatus, Request $request): JsonResponse
+    public function changeStatus(ChangeStatus $changeStatus, Request $request): JsonResponse
     {
         $changeStatus->handle($request);
 
