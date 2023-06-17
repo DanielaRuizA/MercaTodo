@@ -1,6 +1,6 @@
 <script>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { Link, useForm } from '@inertiajs/vue3';
+import { Link, useForm, router } from '@inertiajs/vue3';
 
 export default {
     components: {
@@ -12,7 +12,7 @@ export default {
     data() {
         return {
             form: useForm({
-                total: this.orders.amount,
+                id: '',
             })
         }
     },
@@ -23,10 +23,10 @@ export default {
         processPayment() {
             this.form.post(route('payments.processPayment'))
         },
-        newURLpayment() {
-            this.form.patch(route('payments.retryPayment'), {
-                // _method: 'patch',
-                // id: id,
+        newURLpayment(id) {
+            router.post(route('payments.retryPayment', id), {
+                _method: 'patch',
+                id: id,
             });
         }
     }
@@ -110,7 +110,7 @@ export default {
                                 </td>
                                 <td v-if="order.status == 'PENDING' || order.status === 'CANCELED'"
                                     class="rounded-md px-4 py-2 bg-sky-400 text-center font-bold text-black">
-                                    <button @click="newURLpayment()">REINTENTAR
+                                    <button @click="newURLpayment(order.id)">REINTENTAR
                                         PAGO</button>
                                 </td>
                             </tr>

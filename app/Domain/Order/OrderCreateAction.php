@@ -3,6 +3,7 @@
 namespace App\Domain\Order;
 
 use App\Models\Order;
+use Gloudemans\Shoppingcart\CartItem;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderCreateAction
@@ -12,6 +13,7 @@ class OrderCreateAction
         return Order::query()->create([
             'user_id' => auth()->id(),
             'amount' => $data['total'],
+            // 'amount' => CartItem->
         ]);
     }
 }
