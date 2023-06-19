@@ -12,7 +12,7 @@ const form = useForm({
 })
 
 const processPayment = () => {
-    form.post(route('payments.processPayment'))
+    form.post(route('payments.process'))
 }
 
 </script>

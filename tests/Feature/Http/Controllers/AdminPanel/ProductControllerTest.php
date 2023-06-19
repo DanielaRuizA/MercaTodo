@@ -214,7 +214,7 @@ class ProductControllerTest extends TestCase
         ];
 
         $this->actingAs($admin)
-            ->get("changeProductStatus/$product->id", $data);
+            ->get("change/product/status/$product->id", $data);
 
         $this->assertDatabaseHas('products', [
             'status' => 0,
@@ -344,7 +344,7 @@ class ProductControllerTest extends TestCase
         ];
 
         $this->actingAs($user)
-            ->get("changeProductStatus/$product->id", $data)
+            ->get("change/product/status/$product->id", $data)
             ->assertStatus(404);
     }
 

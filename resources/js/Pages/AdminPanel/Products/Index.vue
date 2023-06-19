@@ -18,7 +18,7 @@ export default {
         },
         updateStatus(product) {
             const status = product.status ? 0 : 1;
-            axios.get('/changeProductStatus', {
+            axios.get('change/product/status', {
                 params: { status: status, product_id: product.id }
             }).then(response => {
                 console.log(response.data.success);
@@ -138,7 +138,7 @@ export default {
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                     {{ product.quantity }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                <td>
                                     <label class="relative inline-flex items-center mr-5 cursor-pointer">
                                         <input type="checkbox" value="" class="sr-only peer" :checked="product.status"
                                             @change="updateStatus(product)" :data-id="product.id">

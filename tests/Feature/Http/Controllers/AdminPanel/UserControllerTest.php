@@ -131,7 +131,7 @@ class UserControllerTest extends TestCase
         ];
 
         $this->actingAs($admin)
-            ->get("changeStatus/$user->id", $data);
+            ->get("change/status/$user->id", $data);
 
         $this->assertDatabaseHas('users', [
             'status' => 0,
@@ -218,7 +218,7 @@ class UserControllerTest extends TestCase
         ];
 
         $this->actingAs($admin)
-            ->get("changeStatus/$user->id", $data)
+            ->get("change/status/$user->id", $data)
             ->assertStatus(404);
     }
 }

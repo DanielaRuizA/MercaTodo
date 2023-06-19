@@ -1,11 +1,15 @@
 <?php
 
-use App\Http\Controllers\CheckoutController;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\Cart\CartController;
+use App\Http\Controllers\Store\StoreController;
+use App\Http\Controllers\AdminPanel\UserController;
+use App\Http\Controllers\AdminPanel\ProductController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -28,25 +32,26 @@ Route::middleware([
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('users', App\Http\Controllers\AdminPanel\UserController::class);
-    Route::get('changeStatus', [App\Http\Controllers\AdminPanel\UserController::class, 'changeStatus'])->name('changeStatus');
+    Route::get('change/status', [App\Http\Controllers\AdminPanel\UserController::class, 'changeStatus'])->name('change.status');
+
     Route::resource('products', App\Http\Controllers\AdminPanel\ProductController::class);
-    Route::get('changeProductStatus', [App\Http\Controllers\AdminPanel\ProductController::class, 'changeProductStatus'])->name('changeProductStatus');
+    Route::get('change/product/status', [App\Http\Controllers\AdminPanel\ProductController::class, 'changeProductStatus'])->name('change.product.status');
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/stores', [App\Http\Controllers\Store\StoreController::class, 'index'])->name('stores.index');
-    Route::get('stores/{product}', [App\Http\Controllers\Store\StoreController::class, 'show'])->name('stores.show');
+    Route::get('stores', [StoreController::class, 'index'])->name('stores.index');
+    Route::get('stores/{product}', [StoreController::class, 'show'])->name('stores.show');
 
-    Route::get('cart', [App\Http\Controllers\Cart\CartController::class, 'index'])->name('cart.index');
-    Route::post('cart/{product}', [App\Http\Controllers\Cart\CartController::class, 'store'])->name('cart.store');
-    Route::delete('cart/{product}', [App\Http\Controllers\Cart\CartController::class, 'destroy'])->name('cart.destroy');
-    Route::patch('cart/{product}', [App\Http\Controllers\Cart\CartController::class, 'update'])->name('cart.update');
+    Route::get('cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('cart/{product}', [CartController::class, 'store'])->name('cart.store');
+    Route::delete('cart/{product}', [CartController::class, 'destroy'])->name('cart.destroy');
+    Route::patch('cart/{product}', [CartController::class, 'update'])->name('cart.update');
 
-    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout.index');
 
-    Route::post('payments', [PaymentController::class, 'processPayment'])->name('payments.processPayment');
-    Route::get('payments/payment/response', [PaymentController::class, 'processResponse'])->name('payments.processResponse');
-    Route::patch('payments/retry/payment/', [PaymentController::class, 'retryPayment'])->name('payments.retryPayment');
-    
+    Route::post('payments', [PaymentController::class, 'processPayment'])->name('payments.process');
+    Route::get('payments/payment/response', [PaymentController::class, 'processResponse'])->name('payments.process.response');
+    Route::patch('payments/retry/payment/', [PaymentController::class, 'retryPayment'])->name('payments.retry.payment');
+
     Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
 });
