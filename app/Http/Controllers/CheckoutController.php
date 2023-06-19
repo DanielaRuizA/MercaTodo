@@ -20,4 +20,9 @@ class CheckoutController extends Controller
 
         return Inertia::render('Checkout/Index', $contents);
     }
+
+    public function store(Request $request, PlaceToPayPayment $paymentService): HttpFoundationResponse
+    {
+        return $paymentService->pay($request);
+    }
 }

@@ -46,7 +46,5 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('payments', [PaymentController::class, 'processPayment'])->name('payments.processPayment');
     Route::get('payments/payment/response', [PaymentController::class, 'processResponse'])->name('payments.processResponse');
-    Route::patch('payments/retry/payment/', [PaymentController::class, 'retryPayment'])->name('payments.retryPayment');
-    
     Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
 });
