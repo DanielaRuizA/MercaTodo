@@ -12,7 +12,7 @@ export default {
     data() {
         return {
             form: useForm({
-                total: this.orders.amount
+                total: this.orders.amount,
             })
         }
     },
@@ -22,6 +22,12 @@ export default {
         },
         processPayment() {
             this.form.post(route('payments.processPayment'))
+        },
+        newURLpayment() {
+            this.form.patch(route('payments.retryPayment'), {
+                // _method: 'patch',
+                // id: id,
+            });
         }
     }
 }
@@ -40,6 +46,7 @@ export default {
                             </a>
                         </div>
                     </nav>
+                    <div>{{ orders }}</div>
                     <table class="mt-4 min-w-full divide-y divide-gray-200 border">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
@@ -72,7 +79,7 @@ export default {
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200 divide-solid">
-                            <tr v-for="order in orders">
+                            <tr v-for="order in orders" :key="order.id">
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                     {{ order.id }}
                                 </td>
@@ -80,7 +87,7 @@ export default {
                                     {{ order.order_id }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                    {{ order.created_at }}
+                                    {{ Date(order.created_at) }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                     {{ Intl.NumberFormat('es-CO', {
@@ -103,7 +110,7 @@ export default {
                                 </td>
                                 <td v-if="order.status == 'PENDING' || order.status === 'CANCELED'"
                                     class="rounded-md px-4 py-2 bg-sky-400 text-center font-bold text-black">
-                                    <button @click="openExternalLink(order.url)">REINTENTAR
+                                    <button @click="newURLpayment()">REINTENTAR
                                         PAGO</button>
                                 </td>
                             </tr>
