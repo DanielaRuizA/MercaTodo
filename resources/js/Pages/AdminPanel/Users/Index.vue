@@ -46,7 +46,7 @@ export default {
 </script>
 
 <template>
-    <AppLayout title="Usuarios Lista">
+    <AppLayout title="Lista De Usuarios">
         <nav id="store" class="w-full z-30 top-0 px-6 py-1">
             <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-3">
                 <a class="uppercase tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl "
@@ -81,7 +81,7 @@ export default {
                             class="text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Inhabilitado</span>
                     </th>
                     <th class="px-6 py-3 bg-gray-50 text-left">
-                        <span class="text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">ver</span>
+                        <span class="text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Detalles</span>
                     </th>
                     <th class="px-6 py-3 bg-gray-50 text-left">
                         <span class="text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Editar</span>
@@ -113,7 +113,7 @@ export default {
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                         <Link :href="route('users.show', user.id)"
-                            class="px-2 py-1 bg-blue-600 text-white rounded font-bold uppercase mr-2">Ver</Link>
+                            class="px-2 py-1 bg-blue-600 text-white rounded font-bold uppercase mr-2">Detalles</Link>
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                         <Link :href="route('users.edit', user.id)"

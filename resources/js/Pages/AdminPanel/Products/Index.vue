@@ -69,8 +69,8 @@ export default {
                                         d="M10,18c1.846,0,3.543-0.635,4.897-1.688l4.396,4.396l1.414-1.414l-4.396-4.396C17.365,13.543,18,11.846,18,10 c0-4.411-3.589-8-8-8s-8,3.589-8,8S5.589,18,10,18z M10,4c3.309,0,6,2.691,6,6s-2.691,6-6,6s-6-2.691-6-6S6.691,4,10,4z" />
                                 </svg>
                                 <Link :href="route('products.create')"
-                                    class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md">
-                                Crear
+                                    class="bg-blue-600 hover:bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-mdpx-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold uppercase mr-2">
+                                Crear Producto
                                 </Link>
                             </div>
                         </div>
@@ -107,7 +107,7 @@ export default {
                                 </th>
                                 <th class="px-6 py-3 bg-gray-50 text-left">
                                     <span
-                                        class="text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">ver</span>
+                                        class="text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Detalles</span>
                                 </th>
                                 <th class="px-6 py-3 bg-gray-50 text-left">
                                     <span
@@ -150,7 +150,8 @@ export default {
                                 </td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                     <Link :href="route('products.show', product.id)"
-                                        class="px-2 py-1 bg-blue-600 text-white rounded font-bold uppercase mr-2">Ver</Link>
+                                        class="px-2 py-1 bg-blue-600 text-white rounded font-bold uppercase mr-2">Detalles
+                                    </Link>
                                 </td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                     <Link :href="route('products.edit', product.id)"

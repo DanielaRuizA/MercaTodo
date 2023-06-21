@@ -4,7 +4,7 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 
 export default {
     components: {
-        AppLayout,
+        AppLayout, Link
     },
     props: {
         product: Object,
@@ -24,12 +24,7 @@ export default {
     methods: {
         submit() {
             this.$inertia.post(this.route('products.store'), this.form);
-        },
-        destroy() {
-            if (confirm('¿Desea Eliminar?')) {
-                this.$inertia.delete(this.route('products.destroy', this.product.id))
-            }
-        },
+        }
     }
 }
 
@@ -84,26 +79,26 @@ export default {
                                 <div v-if="errors.quantity" class="text-red-600">
                                     {{ errors.quantity }}
                                 </div>
-                                <!-- <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Upload file</label>
-                                <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file">
-                                <div class="form-group">
-                                    <label for="description">Picture</label>
-                                    <input type="file" name="picture" class="form-control-file" id="picture" @input="form.file = $event.target.files[0]">
-                                </div> -->
-                                <input type="file" @input="form.product_photo = $event.target.files[0]" />
+                                <input class="py-2" type="file" @input="form.product_photo = $event.target.files[0]" />
                                 <progress v-if="form.progress" :value="form.progress.percentage" max="100">
                                     {{ form.progress.percentage }}%
                                 </progress>
                                 <div v-if="errors.product_photo" class="text-red-600">
                                     {{ errors.product_photo }}
                                 </div>
-                                <button
-                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">Crear</button>
+                                <div class="py-3 block font-medium text-sm text-gray-700">
+                                    <button
+                                        class="bg-blue-600 hover:bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-mdpx-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold uppercase mr-2">Crear
+                                        Producto</button>
+                                </div>
                             </form>
                             <hr class="my-6">
-                            <a href="#" @click.prevent="destroy">
-                                Eliminar Producto
-                            </a>
+                            <div>
+                                <Link :href="route('products.index')"
+                                    class="bg-blue-600 hover:bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-mdpx-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold uppercase mr-2">
+                                Volver
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </div>

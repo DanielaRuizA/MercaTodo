@@ -15,6 +15,7 @@ const form = useForm({
     price: props.product.price,
     quantity: props.product.quantity,
     product_photo: props.product.product_photo,
+    status: props.product.status,
     _method: 'put'
 });
 
@@ -35,7 +36,7 @@ const destroy = (id) => {
 </script>
 
 <template>
-    <AppLayout title="Edición de Producto">
+    <AppLayout title="Edición Del Producto">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Editar Producto {{ product.name }}
@@ -82,6 +83,14 @@ const destroy = (id) => {
                                 <div v-if="errors.quantity" class="text-red-600">
                                     {{ errors.quantity }}
                                 </div>
+                                <label class=" py-2 block font-medium text-m text-gray-700"
+                                    v-if="product.status === 'Active'">
+                                    El Producto Esta Disponible
+                                </label>
+                                <label class="py-2 block font-medium text-m text-gray-700"
+                                    v-if="product.status === 'Inactive'">
+                                    El Producto No Esta Disponible
+                                </label>
                                 <img class="py-2" :src="showImage() + product.product_photo" :alt="product.name"
                                     width="250">
                                 <input class="py-2" type="file" @input="form.product_photo = $event.target.files[0]" />
@@ -93,11 +102,12 @@ const destroy = (id) => {
                                 </progress>
                                 <div class="py-2">
                                     <button type="submit"
-                                        class="px-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold uppercase mr-2">Editar</button>
+                                        class="px-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold uppercase mr-2">Editar
+                                        Producto</button>
                                 </div>
                             </form>
                             <hr class="my-6">
-                            <Link :href="route('users.index')"
+                            <Link :href="route('products.index')"
                                 class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-md mr-2">
                             Volver
                             </Link>

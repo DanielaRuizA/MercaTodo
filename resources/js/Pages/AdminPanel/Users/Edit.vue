@@ -54,7 +54,7 @@ export default {
 </script>
 
 <template>
-    <AppLayout title="Edición De Usuario">
+    <AppLayout title="Edición Del Usuario">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             Editar Información Del Usuario {{ user.name }}
         </h2>
@@ -99,17 +99,18 @@ export default {
                                     </label>
                                 </td>
                                 <button
-                                    class="px-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold uppercase mr-2">Editar</button>
+                                    class="px-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold uppercase mr-2">Editar
+                                    Usuario</button>
                             </form>
                             <hr class="my-6">
                             <div>
                                 <Link :href="route('users.index')"
-                                    class="bg-blue-600 hover:bg-blue-500 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-mdpx-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold uppercase mr-2">
+                                    class="bg-blue-600 hover:bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-mdpx-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold uppercase mr-2">
                                 Volver
                                 </Link>
                                 <button @click.prevent="destroy()" type="button"
-                                    class="px-2 py-1 bg-red-600  hover:bg-red-500 text-white rounded font-bold uppercase">
-                                    Eliminar
+                                    class="px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded font-bold uppercase">
+                                    Eliminar Usuario
                                 </button>
                             </div>
                         </div>

@@ -9,14 +9,6 @@ const props = defineProps({
 
 const showImage = () => "/storage/"
 
-const statusMessage = () => {
-    if (product.status === 1) {
-        ("deshabilitado");
-    } else {
-        console.log("Habilitado");
-    }
-}
-
 const destroy = (id) => {
     if (confirm('¿Desea Eliminar?')) {
         Inertia.delete(route('products.destroy', id))
@@ -64,11 +56,13 @@ const destroy = (id) => {
                     </div>
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt class="text-sm font-medium leading-6 text-gray-900">Status</dt>
-                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0" v-if="product.status === 0">
-                            Producto Habilitado
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+                            v-if="product.status === 'Active'">
+                            El Producto Esta Disponible
                         </dd>
-                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0" v-if="product.status === 1">
-                            Producto Deshabilitado
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+                            v-if="product.status === 'Inactive'">
+                            El Producto No Esta Disponible
                         </dd>
                     </div>
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
