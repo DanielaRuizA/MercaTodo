@@ -31,14 +31,7 @@ export default {
     },
     methods: {
         updateStatus(user) {
-            // const status = user.status ? 0 : 1;
-            // const status = user.status === 'Inactive' ? 'Inactive' : 'Active';
-            // const status = user.status ? 'Active' : 'Inactive';
-            // const status = user.status === 'Active' ? 'Active' : 'Inactive';
-            // const status = user.status ? 'Active' : 'Inactive';
-            // const status = user.status ? 'Inactive' : 'Active';
-            // const status = user.status === 'Inactive' ? 'Inactive' : 'Active';
-            const status = user.status ? 'Inactive' : 'Active';
+            const status = (user.status === 'Active') ? 'Inactive' : 'Active';
             axios.get('/change/status', {
                 params: { status: status, user_id: user.id }
             }).then(response => {
@@ -47,24 +40,13 @@ export default {
             }).catch(error => {
                 console.error(error);
             });
-            // updateStatus(user) {
-            //     const status = user.status ? 'Inactive' : 'Active';
-            //     axios.get('/change/status', {
-            //         params: { status: status, user_id: user.id }
-            //     }).then(response => {
-            //         console.log(response.data.success);
-            //         user.status = !user.status;
-            //     }).catch(error => {
-            //         console.error('Error al cambiar el estado:', error);
-            //     });
-            // }
         }
     }
 }
 </script>
 
 <template>
-    <AppLayout title="Dashboard">
+    <AppLayout title="Usuarios Lista">
         <nav id="store" class="w-full z-30 top-0 px-6 py-1">
             <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-3">
                 <a class="uppercase tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl "
@@ -119,9 +101,6 @@ export default {
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                         {{ user.email }}
-                    </td>
-                    <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                        {{ user.status }}
                     </td>
                     <td>
                         <label class="relative inline-flex items-center mr-5 cursor-pointer">

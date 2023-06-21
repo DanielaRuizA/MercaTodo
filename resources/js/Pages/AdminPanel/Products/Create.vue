@@ -3,40 +3,40 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
 export default {
-        components: {
-            AppLayout,
+    components: {
+        AppLayout,
+    },
+    props: {
+        product: Object,
+        errors: Object
+    },
+    data() {
+        return {
+            form: useForm({
+                name: '',
+                description: '',
+                price: '',
+                quantity: '',
+                product_photo: '',
+            })
+        }
+    },
+    methods: {
+        submit() {
+            this.$inertia.post(this.route('products.store'), this.form);
         },
-        props: {
-            product: Object,
-            errors: Object
-        },
-        data () {
-            return {
-                form: useForm({
-                    name: '',
-                    description: '',
-                    price: '',
-                    quantity: '',
-                    product_photo: '',
-                })
+        destroy() {
+            if (confirm('¿Desea Eliminar?')) {
+                this.$inertia.delete(this.route('products.destroy', this.product.id))
             }
         },
-        methods: {
-            submit() {
-                this.$inertia.post(this.route('products.store'), this.form);
-            },
-            destroy() {
-                if (confirm('¿Desea Eliminar?')) {
-                    this.$inertia.delete(this.route('products.destroy', this.product.id))
-                }
-            },
-        }
     }
+}
 
 </script>
 
 <template>
-    <app-layout>
+    <AppLayout title="Crear Producto">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Añadir Producto
@@ -44,7 +44,7 @@ export default {
         </template>
 
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">  
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="md:grid md:grid-cols-3 md:gap-6">
                     <div class="md:col-span-1">
                         <div class="px-4 sm:px0">
@@ -58,41 +58,29 @@ export default {
                                 <label class="block font-medium text-sm text-gray-700">
                                     Nombre
                                 </label>
-                                <textarea 
-                                    class="form-input w-full rounded-md shadow-sm"
-                                    v-model="form.name"
-                                ></textarea>
+                                <textarea class="form-input w-full rounded-md shadow-sm" v-model="form.name"></textarea>
                                 <div v-if="errors.name" class="text-red-600">
                                     {{ errors.name }}
                                 </div>
                                 <label class="block font-medium text-sm text-gray-700">
                                     Descripción
                                 </label>
-                                <textarea 
-                                    class="form-input w-full rounded-md shadow-sm"
-                                    v-model="form.description"
-                                    rows="8"
-                                ></textarea>
+                                <textarea class="form-input w-full rounded-md shadow-sm" v-model="form.description"
+                                    rows="8"></textarea>
                                 <div v-if="errors.description" class="text-red-600">
                                     {{ errors.description }}
                                 </div>
                                 <label class="block font-medium text-sm text-gray-700">
                                     Precio
                                 </label>
-                                <textarea 
-                                    class="form-input w-full rounded-md shadow-sm"
-                                    v-model="form.price"
-                                ></textarea>
+                                <textarea class="form-input w-full rounded-md shadow-sm" v-model="form.price"></textarea>
                                 <div v-if="errors.price" class="text-red-600">
-                                    {{ errors.price}}
+                                    {{ errors.price }}
                                 </div>
                                 <label class="block font-medium text-sm text-gray-700">
-                                    Cantidad 
+                                    Cantidad
                                 </label>
-                                <textarea 
-                                    class="form-input w-full rounded-md shadow-sm"
-                                    v-model="form.quantity"
-                                ></textarea>
+                                <textarea class="form-input w-full rounded-md shadow-sm" v-model="form.quantity"></textarea>
                                 <div v-if="errors.quantity" class="text-red-600">
                                     {{ errors.quantity }}
                                 </div>
@@ -109,9 +97,8 @@ export default {
                                 <div v-if="errors.product_photo" class="text-red-600">
                                     {{ errors.product_photo }}
                                 </div>
-                                <button 
-                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md"
-                                >Crear</button>
+                                <button
+                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">Crear</button>
                             </form>
                             <hr class="my-6">
                             <a href="#" @click.prevent="destroy">
@@ -119,8 +106,8 @@ export default {
                             </a>
                         </div>
                     </div>
-                </div>  
+                </div>
             </div>
         </div>
-    </app-layout>
+    </AppLayout>
 </template>

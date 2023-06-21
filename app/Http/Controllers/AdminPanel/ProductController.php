@@ -26,7 +26,7 @@ class ProductController extends Controller
                 ->orWhere('name', 'LIKE', "%$request->search%")
                 ->orWhere('price', 'LIKE', "%$request->search%")
                 ->orWhere('quantity', 'LIKE', "%$request->search%")
-                ->paginate(20, ['id', 'name', 'price', 'quantity', 'product_photo']),
+                ->paginate(20, ['id', 'name', 'status','price', 'quantity', 'product_photo']),
         ]);
     }
 

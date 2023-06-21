@@ -17,7 +17,7 @@ export default {
             return "/storage/";
         },
         updateStatus(product) {
-            const status = product.status ? 0 : 1;
+            const status = (product.status === 'Active') ? 'Inactive' : 'Active';
             axios.get('change/product/status', {
                 params: { status: status, product_id: product.id }
             }).then(response => {
@@ -49,7 +49,7 @@ export default {
 }
 </script>
 <template>
-    <AppLayout title="Dashboard">
+    <AppLayout title="Lista De Productos">
 
         <body class="bg-white text-gray-600 work-sans leading-normal text-base tracking-normal">
             <section class="bg-white py-8">
@@ -101,7 +101,7 @@ export default {
                                         de
                                         Productos</span>
                                 </th>
-                                <th class="px-6 py-3 bg-gray-50 text-left">
+                                <th class="px-4 py-3 bg-gray-50 text-left">
                                     <span
                                         class="text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Inhabilitado</span>
                                 </th>
@@ -135,13 +135,14 @@ export default {
                                         style: 'currency', currency: 'COP', maximumSignificantDigits: 3
                                     }).format(product.price) }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                                <td class="p-16 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                     {{ product.quantity }}
                                 </td>
-                                <td>
+                                <td class="px-4 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                     <label class="relative inline-flex items-center mr-5 cursor-pointer">
-                                        <input type="checkbox" value="" class="sr-only peer" :checked="product.status"
-                                            @change="updateStatus(product)" :data-id="product.id">
+                                        <input type="checkbox" value="" class="sr-only peer"
+                                            :checked="product.status === 'Inactive'" @change="updateStatus(product)"
+                                            :data-id="product.id">
                                         <div
                                             class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600">
                                         </div>

@@ -127,14 +127,14 @@ class UserControllerTest extends TestCase
         $user = User::factory()->create();
 
         $data = [
-            'status' => 1,
+            'status' => 'Inactive',
         ];
 
         $this->actingAs($admin)
             ->get("change/status/$user->id", $data);
 
         $this->assertDatabaseHas('users', [
-            'status' => 0,
+            'status' => 'Active',
         ]);
     }
 
@@ -214,7 +214,7 @@ class UserControllerTest extends TestCase
         $user = User::factory()->create();
 
         $data = [
-            'status' => 1,
+            'status' => 'Inactive',
         ];
 
         $this->actingAs($admin)

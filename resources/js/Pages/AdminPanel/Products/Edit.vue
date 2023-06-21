@@ -35,13 +35,12 @@ const destroy = (id) => {
 </script>
 
 <template>
-    <app-layout>
+    <AppLayout title="Edición de Producto">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Editar Producto
+                Editar Producto {{ product.name }}
             </h2>
         </template>
-
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="md:grid md:grid-cols-3 md:gap-6">
@@ -111,7 +110,7 @@ const destroy = (id) => {
                 </div>
             </div>
         </div>
-    </app-layout>
+    </AppLayout>
 </template>
 
 
