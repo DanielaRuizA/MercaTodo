@@ -18,11 +18,11 @@ class UserController extends Controller
     {
         $query = User::latest()->where('id', '!=', auth()->id());
 
-        if ($request->q) {
+        if ($request->search) {
             $query->where(function ($query) use ($request) {
-                $query->where('id', 'LIKE', "%$request->q%")
-                    ->orWhere('name', 'LIKE', "%$request->q%")
-                    ->orWhere('email', 'LIKE', "%$request->q%");
+                $query->where('id', 'LIKE', "%$request->search%")
+                    ->orWhere('name', 'LIKE', "%$request->search%")
+                    ->orWhere('email', 'LIKE', "%$request->search%");
             });
         }
 

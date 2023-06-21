@@ -22,10 +22,10 @@ class ProductController extends Controller
     {
         return Inertia::render('AdminPanel/Products/Index', [
             'products' => Product::latest()
-                ->where('id', 'LIKE', "%$request->q%")
-                ->orWhere('name', 'LIKE', "%$request->q%")
-                ->orWhere('price', 'LIKE', "%$request->q%")
-                ->orWhere('quantity', 'LIKE', "%$request->q%")
+                ->where('id', 'LIKE', "%$request->search%")
+                ->orWhere('name', 'LIKE', "%$request->search%")
+                ->orWhere('price', 'LIKE', "%$request->search%")
+                ->orWhere('quantity', 'LIKE', "%$request->search%")
                 ->paginate(20, ['id', 'name', 'price', 'quantity', 'product_photo']),
         ]);
     }

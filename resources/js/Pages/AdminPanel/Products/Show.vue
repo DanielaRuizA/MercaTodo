@@ -1,6 +1,7 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link, router } from '@inertiajs/vue3';
+import { Inertia } from '@inertiajs/inertia';
 
 const props = defineProps({
     product: Object
@@ -16,13 +17,19 @@ const statusMessage = () => {
     }
 }
 
+const destroy = (id) => {
+    if (confirm('¿Desea Eliminar?')) {
+        Inertia.delete(route('products.destroy', id))
+    }
+}
+
 </script>
 
 <template>
     <app-layout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Producto
+                Producto {{ product.name }}
             </h2>
         </template>
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -69,16 +76,22 @@ const statusMessage = () => {
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <img :src="showImage() + product.product_photo" :alt="product.name" width="400">
                         </dd>
-                        <hr class="my-6">
-                        <Link :href="route('products.index')">
-                        Volver
-                        </Link>
                     </div>
-
                 </dl>
+                <div class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                    <Link :href="route('products.index')"
+                        class="px-2 py-1 bg-blue-600 text-white rounded font-bold uppercase mr-2">
+                    Volver
+                    </Link>
+                    <Link :href="route('products.edit', product.id)"
+                        class="px-2 py-1 bg-blue-600 text-white rounded font-bold uppercase mr-2">Editar</Link>
+                    <button @click="destroy(product.id)" type="button"
+                        class="px-2 py-1 bg-red-600 text-white rounded font-bold uppercase">
+                        Eliminar
+                    </button>
+                </div>
             </div>
         </div>
     </app-layout>
 </template>
-
 

@@ -21,12 +21,12 @@ export default {
     },
     data() {
         return {
-            q: ''
+            search: ''
         }
     },
     watch: {
-        q: function (value) {
-            this.$inertia.replace(this.route('users.index', { q: value }))
+        search: function (value) {
+            this.$inertia.replace(this.route('users.index', { search: value }))
         }
     },
     methods: {
@@ -73,7 +73,7 @@ export default {
                 </a>
                 <div class="flex items-center" id="store-nav-content">
                     <input type="text" class="pl-3 inline-block no-underline hover:text-black" placeholder="Buscar..."
-                        v-model="q">
+                        v-model="search">
                     <svg class="fill-current hover:text-black" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                         viewBox="0 0 24 24">
                         <path
