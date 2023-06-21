@@ -32,7 +32,7 @@ export default {
     methods: {
         updateStatus(user) {
             const status = (user.status === 'Active') ? 'Inactive' : 'Active';
-            axios.get('/change/status', {
+            axios.get('/change/user/status', {
                 params: { status: status, user_id: user.id }
             }).then(response => {
                 console.log(response.data.success);

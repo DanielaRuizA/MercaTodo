@@ -32,7 +32,7 @@ Route::middleware([
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('users', App\Http\Controllers\AdminPanel\UserController::class);
-    Route::get('change/status', [App\Http\Controllers\AdminPanel\UserController::class, 'changeStatus'])->name('change.status');
+    Route::get('change/user/status', [App\Http\Controllers\AdminPanel\UserController::class, 'changeUserStatus'])->name('change.user.status');
 
     Route::resource('products', App\Http\Controllers\AdminPanel\ProductController::class);
     Route::get('change/product/status', [App\Http\Controllers\AdminPanel\ProductController::class, 'changeProductStatus'])->name('change.product.status');

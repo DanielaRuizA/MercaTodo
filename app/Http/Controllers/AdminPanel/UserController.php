@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\AdminPanel;
 
-use App\Actions\User\ChangeStatus;
+use App\Actions\User\ChangeUserStatusAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminPanel\UserRequest;
 use App\Models\User;
@@ -57,7 +57,7 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('message', 'Usuario eliminado');
     }
 
-    public function changeStatus(ChangeStatus $changeStatus, Request $request): JsonResponse
+    public function changeUserStatus(ChangeUserStatusAction $changeStatus, Request $request): JsonResponse
     {
         $changeStatus->handle($request);
 

@@ -1,39 +1,54 @@
-<script setup>
+<script>
 import AppLayout from '@/Layouts/AppLayoutUser.vue';
 import { Inertia } from '@inertiajs/inertia';
 import { Link } from '@inertiajs/vue3';
 
-const props = defineProps({
-    user: Object
-});
-
-const destroy = (id) => {
-    if (confirm('¿Desea Eliminar?')) {
-        Inertia.delete(route('users.destroy', id))
-    };
-
-    const updateStatus = (user) => {
-        const status = (user.status === 'Active') ? 'Inactive' : 'Active';
-        axios.get('/change/status', {
-            params: { status: status, user_id: user.id }
-        }).then(response => {
-            console.log(response.data.success);
-            user.status = !user.status;
-        }).catch(error => {
-            console.error(error);
-        });
-    };
+export default {
+    components: {
+        AppLayout, Link
+    },
+    props: {
+        user: Object,
+    },
+    setup() {
+        const destroy = (id) => {
+            if (confirm('¿Desea Eliminar?')) {
+                Inertia.delete(route('users.destroy', id))
+            }
+        }
+        return { destroy }
+    },
+    computed: {
+        status() {
+            if (this.user.status === 'Active') {
+                return 'Usuario Esta habilitado'
+            } else {
+                return 'Usuario Esta Deshabilitado'
+            }
+        }
+    },
+    methods: {
+        updateStatus(user) {
+            const status = (user.status === 'Active') ? 'Inactive' : 'Active';
+            axios.get('/change/user/status', {
+                params: { status: status, user_id: user.id }
+            }).then(response => {
+                console.log(response.data.success);
+                user.status = !user.status;
+            }).catch(error => {
+                console.error(error);
+            });
+        }
+    }
 }
-
 </script>
 
 <template>
     <AppLayout title="Detalles del Usuario">
         <nav id="store" class="w-full z-30 top-0 px-6 py-1">
             <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-3">
-                <a class="uppercase tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl "
-                    href="#">
-                    Detalles Del Usuario
+                <a class="uppercase tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl ">
+                    Detalles Del Usuario {{ user.name }}
                 </a>
             </div>
         </nav>
@@ -76,12 +91,7 @@ const destroy = (id) => {
                         {{ user.email }}
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                        <div v-if="user.status === 'Active'">
-                            Usuario Habilitado
-                        </div>
-                        <div v-if="user.status === 'Inactive'">
-                            Usuario Deshabilitado
-                        </div>
+                        {{ status }}
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                         <label class="relative inline-flex items-center mr-5 cursor-pointer">
