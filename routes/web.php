@@ -36,7 +36,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::resource('products', ProductController::class);
     Route::get('change/product/status', [ProductController::class, 'changeProductStatus'])->name('change.product.status');
-    Route::get('change/status/products', [ProductController::class, 'changeProductStatus'])->name('change.status');
 });
 
 Route::middleware(['auth'])->group(function () {

@@ -26,7 +26,7 @@ class PlaceToPayPayment implements PaymentInterface
         $order = OrderCreateAction::execute($request->all());
 
         $result = Http::post(
-            config('placetopay.url').config('placetopay.route.api'),
+            config('placetopay.url').'/api/session/',
             $this->createSession($order, $request->ip(), $request->userAgent())
         );
 
