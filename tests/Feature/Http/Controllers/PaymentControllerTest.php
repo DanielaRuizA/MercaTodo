@@ -38,7 +38,7 @@ class PaymentControllerTest extends TestCase
 
         Http::fake([config('placetopay.url').'/*' => Http::response($mockResponse)]);
 
-        $this->postJson(route('payments.processPayment'), [
+        $this->postJson(route('payments.process'), [
             'reference' => $order->id,
             'total' => $order->amount,
         ])->assertStatus(200);

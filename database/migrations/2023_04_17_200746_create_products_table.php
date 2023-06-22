@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -15,7 +14,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->longText('description')->nullable();
-            $table->boolean('status')->default(0);
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->integer('price')->nullable();
             $table->integer('quantity')->nullable();
             $table->string('product_photo')->nullable();

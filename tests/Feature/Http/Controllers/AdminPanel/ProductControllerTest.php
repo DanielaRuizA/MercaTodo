@@ -210,14 +210,14 @@ class ProductControllerTest extends TestCase
         $product = Product::factory()->create();
 
         $data = [
-            'status' => 1,
+            'status' => 'Inactive',
         ];
 
         $this->actingAs($admin)
-            ->get("changeProductStatus/$product->id", $data);
+            ->get("change/product/status/$product->id", $data);
 
         $this->assertDatabaseHas('products', [
-            'status' => 0,
+            'status' => 'Active',
         ]);
     }
 
@@ -340,11 +340,11 @@ class ProductControllerTest extends TestCase
         $product = Product::factory()->create();
 
         $data = [
-            'status' => 1,
+            'status' => 'Inactive',
         ];
 
         $this->actingAs($user)
-            ->get("changeProductStatus/$product->id", $data)
+            ->get("change/product/status/$product->id", $data)
             ->assertStatus(404);
     }
 

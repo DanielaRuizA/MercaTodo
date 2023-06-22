@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\AdminPanel;
 
-use App\Actions\Product\ChangeProductStatusActions;
+use App\Actions\Product\ChangeProductStatusAction;
 use App\Actions\Product\ProductDestroyAction;
 use App\Actions\Product\ProductStoreAction;
 use App\Actions\Product\ProductUpdateAction;
@@ -22,11 +22,11 @@ class ProductController extends Controller
     {
         return Inertia::render('AdminPanel/Products/Index', [
             'products' => Product::latest()
-                ->where('id', 'LIKE', "%$request->q%")
-                ->orWhere('name', 'LIKE', "%$request->q%")
-                ->orWhere('price', 'LIKE', "%$request->q%")
-                ->orWhere('quantity', 'LIKE', "%$request->q%")
-                ->paginate(20, ['id', 'name', 'price', 'quantity', 'product_photo']),
+                ->where('id', 'LIKE', "%$request->search%")
+                ->orWhere('name', 'LIKE', "%$request->search%")
+                ->orWhere('price', 'LIKE', "%$request->search%")
+                ->orWhere('quantity', 'LIKE', "%$request->search%")
+                ->paginate(20, ['id', 'name', 'status','price', 'quantity', 'product_photo']),
         ]);
     }
 
@@ -66,9 +66,9 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('message', 'Producto Eliminado');
     }
 
-    public function changeProductStatus(ChangeProductStatusActions $changeProductStatusActions, Request $request): JsonResponse
+    public function changeProductStatus(ChangeProductStatusAction $changeProductStatusAction, Request $request): JsonResponse
     {
-        $changeProductStatusActions->handle($request);
+        $changeProductStatusAction->handle($request);
 
         return response()->json(['success' => 'Status change successfully.']);
     }
