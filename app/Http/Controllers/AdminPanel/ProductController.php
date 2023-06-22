@@ -66,9 +66,9 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('message', 'Producto Eliminado');
     }
 
-    public function changeProductStatus(ChangeProductStatusAction $changeProductStatusActions, Request $request): JsonResponse
+    public function changeProductStatus(ChangeProductStatusAction $changeProductStatusAction, Request $request): JsonResponse
     {
-        $changeProductStatusActions->handle($request);
+        $changeProductStatusAction->handle($request);
 
         return response()->json(['success' => 'Status change successfully.']);
     }

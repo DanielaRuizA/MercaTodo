@@ -87,7 +87,8 @@ export default {
                                     {{ order.order_id }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                    {{ Date(order.created_at) }}
+                                    <!-- {{ Date(order.created_at) }} -->
+                                    {{ order.created_at }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                     {{ Intl.NumberFormat('es-CO', {
