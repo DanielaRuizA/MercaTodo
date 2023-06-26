@@ -2,20 +2,21 @@
 
 namespace App\Services;
 
-use App\Contracts\PaymentInterface;
-use App\Domain\Order\OrderCreateAction;
-use App\Domain\Order\OrderGetLastAction;
-use App\Domain\Order\OrderUpdateAction;
-use App\Models\Order;
 use Carbon\Carbon;
-use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 use Inertia\Inertia;
+use App\Models\Order;
 use Inertia\Response;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Contracts\PaymentInterface;
+use Illuminate\Support\Facades\Log;
+use App\Domain\Order\OrderGetAction;
+use Illuminate\Support\Facades\Http;
+use App\Domain\Order\OrderCreateAction;
+use App\Domain\Order\OrderUpdateAction;
+use Illuminate\Database\Eloquent\Model;
+use App\Domain\Order\OrderGetLastAction;
+use Gloudemans\Shoppingcart\Facades\Cart;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 class PlaceToPayPayment implements PaymentInterface
@@ -95,6 +96,7 @@ class PlaceToPayPayment implements PaymentInterface
 public function getRequestInformation(): Response
 {
     $order = OrderGetLastAction::execute();
+    
 
     $result = Http::post(config('placetopay.url')."/api/session/$order->order_id", [
         'auth' => $this->getAuth(),

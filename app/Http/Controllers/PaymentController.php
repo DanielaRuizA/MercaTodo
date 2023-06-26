@@ -27,34 +27,27 @@ class PaymentController extends Controller
 
     public function processResponse(PlaceToPayPayment $placeToPayPayment):Response
     {
+        // dd($placeToPayPayment->getRequestInformation());
         return $placeToPayPayment->getRequestInformation();
     }
 
-    public function retryPayment(Request $request, Order $order, PlaceToPayPayment $paymentService)
+    public function retryPayment(Request $request, PlaceToPayPayment $paymentService)
     {
         $request->validate([
-            'id' => ['required', Rule::exists('order', 'id')],
+            'id' => ['required', 'integer'],
         ]);
 
-        $order = Order::query()->whereUser($request->user()->id)->find($request->get('id'));
+        $order = Order::findOrFail($request->input('id'));
+        $status = $paymentService->pay($request, $order);
 
+        if ($order->payment_status == 'CANCELED') {
+            $order->pending();
+        }
 
-        return $paymentService->pay($request, $order);
-
-
-        // $request->validate([
-        //     'id' => ['required', 'integer'],
-        // ]);
-
-        // $order = Order::where('order_id', $id)->first();
-
-        // if ($order-> status == 'CANCELED') {
-        //     $order->pending();
-        // }
-        // return $paymentService->pay(
-        //     $order,
-        //     $request->ip() ? $request->ip() : '',
-        //     $request->userAgent() ? $request->userAgent() : ''
-        // );
+        if ($status === 200) {
+            return redirect()->route('orders.index');
+        }if ($status === 500) {
+            return redirect()->route('orders.index');
+        }
     }
 }
