@@ -20,15 +20,12 @@ export default {
         openExternalLink(url) {
             window.location.replace(url);
         },
-        processPayment() {
-            this.form.post(route('payments.processPayment'))
-        },
-        newURLpayment(id) {
-            router.post(route('payments.retryPayment', id), {
+        retryPayment(id) {
+            router.post(route('payments.retry', id), {
                 _method: 'patch',
                 id: id,
             });
-        }
+        },
     }
 }
 </script>
@@ -105,7 +102,7 @@ export default {
                                 </td>
                                 <td v-if="order.status == 'PENDING' || order.status === 'CANCELED'"
                                     class="rounded-md px-4 py-2 bg-sky-400 text-center font-semibold text-white">
-                                    <button @click="newURLpayment(order.id)">REINTENTAR
+                                    <button @click="retryPayment(order.id)">REINTENTAR
                                         PAGO</button>
                                 </td>
                             </tr>

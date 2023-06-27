@@ -13,7 +13,6 @@ class OrderCreateAction
         return Order::query()->create([
             'user_id' => auth()->id(),
             'amount' => $data['total'],
-            // 'amount' => CartItem->
         ]);
     }
 }

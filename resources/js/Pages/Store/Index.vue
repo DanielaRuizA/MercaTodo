@@ -36,8 +36,7 @@ export default {
                 <div class="container mx-auto flex items-center flex-wrap pt-4 pb-12">
                     <nav id="stores" class="w-full z-30 top-0 px-6 py-1">
                         <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-3">
-                            <a class="uppercase tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl "
-                                href="#">
+                            <a class="uppercase text-indigo-700 text-4xl font-bold tracking-wide no-underline" href="#">
                                 Mercatodo
                             </a>
                             <div class="flex items-center" id="store-nav-content">

@@ -52,7 +52,7 @@ export default {
             </div>
         </div>
         <div class="my-4 flex items-center justify-center">
-            <Link :href="route('orders.index')" class="underline hover:text-red-700 transition"> Mis Ordenes
+            <Link :href="route('orders.index')" class="underline hover:text-indigo-700 transition"> Mis Ordenes
             </Link>
         </div>
     </AppLayout>
