@@ -25,11 +25,13 @@ class PaymentController extends Controller
         $paymentService->pay($request, $order);
     }
 
-    public function processResponse(PlaceToPayPayment $placeToPayPayment):Response
+    public function processResponse(PlaceToPayPayment $placeToPayPayment)
     {
         // dd($placeToPayPayment->getRequestInformation());
+
         return $placeToPayPayment->getRequestInformation();
     }
+    
 
     public function retryPayment(Request $request, PlaceToPayPayment $paymentService)
     {
