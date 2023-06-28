@@ -67,6 +67,7 @@ class PlaceToPayPayment implements PaymentInterface
             ],
             'expiration' => Carbon::now()->addHour(),
             'returnUrl' => route('payments.process.response'),
+            'cancelUrl' => route('payments.process.response'),
             'ipAddress' => $ipAddress,
             'userAgent' => $userAgent,
         ];
