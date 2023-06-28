@@ -97,10 +97,11 @@ export default {
                                         pendiente
                                     </div>
                                 </td>
-                                <td v-if="order.status == 'PENDING' || order.status === 'CANCELED'"
-                                    class="rounded-md px-4 py-2 bg-sky-400 text-center font-semibold text-white">
-                                    <button @click="retryPayment(order.id)">REINTENTAR
-                                        PAGO</button>
+                                <td v-if="order.status == 'PENDING' || order.status === 'CANCELED'">
+                                    <button
+                                        class="rounded-md px-4 py-2 bg-sky-400 text-center font-semibold text-white uppercase"
+                                        @click="retryPayment(order.id)">reintentar
+                                        pago</button>
                                 </td>
                             </tr>
                         </tbody>
