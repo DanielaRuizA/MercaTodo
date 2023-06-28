@@ -36,8 +36,6 @@ class PlaceToPayPayment implements PaymentInterface
 
             OrderUpdateAction::execute($order);
 
-            Cart::instance('default')->destroy();
-
             return Inertia::location($order->url)->send();
         }
 
@@ -69,6 +67,7 @@ class PlaceToPayPayment implements PaymentInterface
             ],
             'expiration' => Carbon::now()->addHour(),
             'returnUrl' => route('payments.process.response'),
+            'cancelUrl' => route('payments.process.response'),
             'ipAddress' => $ipAddress,
             'userAgent' => $userAgent,
         ];

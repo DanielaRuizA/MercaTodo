@@ -63,7 +63,7 @@ const logout = () => {
                                     Tienda
                                 </NavLink>
                                 <NavLink :href="route('orders.index')" :active="route().current('orders.*')">
-                                    Mis Ordenes
+                                    Mis Pedidos
                                 </NavLink>
                             </div>
                         </div>

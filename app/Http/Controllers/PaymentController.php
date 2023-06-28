@@ -46,6 +46,8 @@ class PaymentController extends Controller
         // }
 
         $paymentService->pay($request, $order);
+
+        Cart::instance('default')->destroy();
     }
 
     public function processResponse(PlaceToPayPayment $placeToPayPayment)
