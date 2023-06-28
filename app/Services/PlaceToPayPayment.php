@@ -36,8 +36,6 @@ class PlaceToPayPayment implements PaymentInterface
 
             OrderUpdateAction::execute($order);
 
-            Cart::instance('default')->destroy();
-
             return Inertia::location($order->url)->send();
         }
 
