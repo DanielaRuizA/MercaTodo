@@ -17,9 +17,6 @@ export default {
         }
     },
     methods: {
-        openExternalLink(url) {
-            window.location.replace(url);
-        },
         retryPayment(id) {
             router.post(route('payments.retry', id), {
                 _method: 'patch',
@@ -43,7 +40,7 @@ export default {
                             </a>
                         </div>
                     </nav>
-                    <div>{{ orders }}</div>
+                    <!-- <div>{{ orders }}</div> -->
                     <table class="mt-4 min-w-full divide-y divide-gray-200 border">
                         <thead class="text-base font-semibold text-black-500 uppercase bg-gray-50">
                             <tr>

@@ -43,6 +43,7 @@ class Order extends Model
         'amount' => 'integer',
         'currency' => 'string',
         'status' => 'string',
+        'created_at' => 'datetime:Y-m-d H:i:s'
     ];
 
     public function user(): BelongsTo
@@ -52,7 +53,7 @@ class Order extends Model
 
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class)->withPivot('quantity');
+        return $this->belongsToMany(Product::class)->withPivot('quantity','unit_price');
     }
 
     public function completed(): void
