@@ -10,6 +10,7 @@ use App\Http\Controllers\Cart\CartController;
 use App\Http\Controllers\Store\StoreController;
 use App\Http\Controllers\AdminPanel\UserController;
 use App\Http\Controllers\AdminPanel\ProductController;
+use App\Http\Controllers\AdminPanel\ProductExportController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -34,6 +35,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('users', UserController::class);
     Route::get('change/user/status', [UserController::class, 'changeUserStatus'])->name('change.user.status');
 
+    Route::get('products/exports', ProductExportController::class)->name('products.export');
     Route::resource('products', ProductController::class);
     Route::get('change/product/status', [ProductController::class, 'changeProductStatus'])->name('change.product.status');
 });
