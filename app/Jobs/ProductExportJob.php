@@ -29,6 +29,7 @@ class ProductExportJob implements ShouldQueue
     public function handle(): void
     {
         $headers = [
+            'id',
             'name',
             'description',
             'status',
@@ -46,6 +47,7 @@ class ProductExportJob implements ShouldQueue
         Product::chunk(10, function ($products) use ($file) {
             foreach ($products as $product) {
                 fputcsv($file, [
+                    'id'=> $product->id,
                     'name' => $product->name,
                     'description' => $product->description,
                     'status' => $product->status,
