@@ -72,6 +72,10 @@ export default {
                                     class="bg-blue-600 hover:bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-mdpx-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold uppercase mr-2">
                                 Crear Producto
                                 </Link>
+                                <Link :href="route('products.export')"
+                                    class="bg-blue-600 hover:bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-mdpx-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold uppercase mr-2">
+                                Exportar
+                                </Link>
                             </div>
                         </div>
                     </nav>
