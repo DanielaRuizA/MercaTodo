@@ -11,6 +11,7 @@ use App\Http\Controllers\Store\StoreController;
 use App\Http\Controllers\AdminPanel\UserController;
 use App\Http\Controllers\AdminPanel\ProductController;
 use App\Http\Controllers\AdminPanel\ProductExportController;
+use App\Http\Controllers\AdminPanel\ProductImportController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -34,6 +35,9 @@ Route::middleware([
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('users', UserController::class);
     Route::get('change/user/status', [UserController::class, 'changeUserStatus'])->name('change.user.status');
+
+    Route::get('products/imports', [ProductImportController::class,'show'])->name('products.show.imports');
+    Route::post('products/imports', [ProductImportController::class,'store'])->name('products.store.imports');
 
     Route::get('products/exports', ProductExportController::class)->name('products.export');
     Route::resource('products', ProductController::class);
