@@ -38,7 +38,7 @@ export default {
             let formData = new FormData();
             formData.append('file', this.file);
             axios.post('/products/imports', formData).then(response => {
-                console.log(response.data);
+                console.log('import file');
             }).catch(error => {
                 console.log(error.response.data);
             });

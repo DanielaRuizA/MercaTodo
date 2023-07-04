@@ -22,7 +22,10 @@ class ProductImportController extends Controller
 
         Excel::import(new ProductsImport, $file);
 
-        return back()->with('import');
+        return redirect()->back();
+
+
+        // return back()->with('import');
     }
 }
 
