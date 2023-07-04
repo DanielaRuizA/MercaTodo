@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id();
+            $table->id()->uniqid();
             $table->string('name')->nullable();
             $table->longText('description')->nullable();
             $table->enum('status', ['Active', 'Inactive'])->default('Active');
