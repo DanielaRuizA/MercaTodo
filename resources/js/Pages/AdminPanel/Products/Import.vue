@@ -37,21 +37,12 @@ export default {
         importFile() {
             let formData = new FormData();
             formData.append('file', this.file);
-            axios.post('/products/imports', formData).then(response => {
+            axios.post('/products/imports', formData).then(() => {
                 console.log('import file');
             }).catch(error => {
                 console.log(error.response.data);
             });
         },
-        // importFile() {
-        //     let formData = new FormData();
-        //     formData.append('file', this.file);
-        //     axios.post('/products/imports', formData).then(response => {
-        //         console.log(response.data);
-        //     }).catch(error => {
-        //         console.log(error.response.data);
-        //     });
-        // },
     },
 };
 </script>

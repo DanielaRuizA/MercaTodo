@@ -20,6 +20,7 @@ class ProductsImport implements ToModel, WithHeadingRow, WithUpserts
             'id'                => $row['id'],
             'name'              => $row['name'],
             'description'       => $row['description'],
+            'status'            => $row['status'],
             'price'             => $row['price'],
             'quantity'          => $row['quantity'],
             'product_photo'     => $row['product_photo'],
