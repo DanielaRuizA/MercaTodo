@@ -24,26 +24,20 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('123456'),
         ])->assignRole('admin');
 
-        // User::factory(50)->create();
-
-        // $product = Product::factory(100)->create();
-
-        // Order::factory(50)->create()->each(function($orders) use($product)){
-
-        // }
-
-
-        // User::factory(100)
-        //     ->has(Order::factory(2))
-        //     ->has(Product::factory(3))
-        //     ->create();
-
-        
         User::factory(100)
             ->has(Order::factory()->count(2))
             ->afterCreating(function (User $user) {
                 $user->orders->each(function (Order $order) {
-                    $order->products()->saveMany(Product::factory(3)->make());
+                    $products = Product::factory(3)->make();
+                    $order->products()->saveMany($products);
+                    $products->each(function (Product $product) use ($order) {
+                        $unitPrice = $product->price;
+                        $quantity = fake()->numberBetween(1, 100);
+                        $order->products()->updateExistingPivot($product->id, [
+                            'quantity' => $quantity,
+                            'unit_price' => $unitPrice,
+                        ]);
+                    });
                 });
             })
             ->create();
