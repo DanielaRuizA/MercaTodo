@@ -12,6 +12,7 @@ use App\Http\Controllers\AdminPanel\UserController;
 use App\Http\Controllers\AdminPanel\ProductController;
 use App\Http\Controllers\AdminPanel\ProductExportController;
 use App\Http\Controllers\AdminPanel\ProductImportController;
+use App\Http\Controllers\AdminPanel\ProductsStockReportController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -42,6 +43,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('products/exports', ProductExportController::class)->name('products.export');
     Route::resource('products', ProductController::class);
     Route::get('change/product/status', [ProductController::class, 'changeProductStatus'])->name('change.product.status');
+
+    Route::get('products/stock/report', ProductsStockReportController::class)->name('products.stock.report');
 });
 
 Route::middleware(['auth'])->group(function () {
