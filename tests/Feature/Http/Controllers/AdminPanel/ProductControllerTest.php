@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Http\Controllers\Admin;
+namespace Tests\Feature\Http\Controllers\AdminPanel;
 
 use App\Models\Product;
 use App\Models\User;
