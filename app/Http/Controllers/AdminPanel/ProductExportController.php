@@ -10,8 +10,8 @@ class ProductExportController extends Controller
 {
     public function __invoke(Request $request)
     {
-        ProductExportJob::dispatch();
-        
-        return redirect()->route('products.export')->with('message', 'Productos exportador a formato excel');
+        dispatch(new ProductExportJob($request->user()));
+
+        return redirect()->route('products.index')->with('message', 'Productos export a excel format');
     }
 }

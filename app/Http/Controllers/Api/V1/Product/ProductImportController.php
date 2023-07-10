@@ -22,7 +22,7 @@ class ProductImportController extends Controller
         dispatch(new ProductImportJob($file, $request->user()));
 
         return response()->json([
-            'message' => 'The file was file was imported successfully'
+            'message' => 'The file was imported successfully'
         ]);
     }
 }

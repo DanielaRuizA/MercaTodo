@@ -26,7 +26,7 @@ class ProductExportControllerTest extends TestCase
 
         $this->actingAs($admin)
             ->get('products/exports')
-            ->assertRedirect('products/exports');
+            ->assertRedirect('products');
     }
 
     public function testAdminCanExportProductsEnqueueJob(): void
@@ -40,7 +40,7 @@ class ProductExportControllerTest extends TestCase
         Queue::fake();
         $this->actingAs($admin)
             ->get(route('products.export'))
-            ->assertRedirect('products/exports');
+            ->assertRedirect('products');
 
         Queue::assertPushed(ProductExportJob::class);
     }
