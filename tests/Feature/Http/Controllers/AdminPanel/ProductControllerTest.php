@@ -199,27 +199,33 @@ class ProductControllerTest extends TestCase
         ]);
     }
 
-    public function testAdminChangeProductStatus()
-    {
-        $roleAdmin = Role::create(['name' => 'admin']);
+        public function testAdminChangeProductStatus()
+        {
+            $roleAdmin = Role::create(['name' => 'admin']);
 
-        Permission::create(['name' => 'admin.products.status'])->assignRole($roleAdmin);
+            Permission::create(['name' => 'admin.products.status'])->assignRole($roleAdmin);
 
-        $admin = User::factory()->create()->assignRole('admin');
+            $admin = User::factory()->create()->assignRole('admin');
 
-        $product = Product::factory()->create();
+            $product = Product::factory()->create();
 
-        $data = [
-            'status' => 'Inactive',
-        ];
+            $data = [
+                'product_id' => $product->id,
+                'status' => 'Inactive',
+            ];
 
-        $this->actingAs($admin)
-            ->get("change/product/status/$product->id", $data);
+            $this->actingAs($admin)
+                ->get("change/product/status/$product->id", $data);
 
-        $this->assertDatabaseHas('products', [
-            'status' => 'Active',
-        ]);
-    }
+
+            $updatedProduct = Product::find($product->id);
+            $this->assertEquals('Active', $updatedProduct->status);
+
+
+            $this->assertDatabaseHas('products', [
+                'status' => 'Active',
+            ]);
+        }
 
     public function testUserCantAccessIndexProducts()
     {
@@ -340,14 +346,15 @@ class ProductControllerTest extends TestCase
         $product = Product::factory()->create();
 
         $data = [
+            'product_id' => $product->id,
             'status' => 'Inactive',
         ];
 
         $this->actingAs($user)
-            ->get("change/product/status/$product->id", $data)
+            ->post("change/product/status/$product->id", $data)
             ->assertStatus(404);
     }
-
+    
     public function testImagesCanBeUploaded()
     {
         Storage::fake('images');

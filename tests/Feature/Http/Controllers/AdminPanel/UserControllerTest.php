@@ -127,11 +127,15 @@ class UserControllerTest extends TestCase
         $user = User::factory()->create();
 
         $data = [
+            'user_id' => $user->id,
             'status' => 'Inactive',
         ];
 
         $this->actingAs($admin)
             ->get("change/user/status/$user->id", $data);
+
+        $updatedUser = User::find($user->id);
+        $this->assertEquals('Active', $updatedUser->status);
 
         $this->assertDatabaseHas('users', [
             'status' => 'Active',
