@@ -28,7 +28,10 @@ export default {
             this.form.patch(this.route('cart.update', id), {
                 preserveScroll: true,
                 onSuccess: () => {
-                    console.log(this.form)
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'El producto a sido actualizado!'
+                    })
                 }
             })
         },
@@ -36,6 +39,10 @@ export default {
             this.$inertia.delete(this.route('cart.destroy', id), {
                 preserveScroll: true,
                 onSuccess: () => {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'El producto a sido eliminado del carro de compras!'
+                    })
                 }
             })
         },

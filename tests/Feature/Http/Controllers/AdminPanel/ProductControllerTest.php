@@ -16,7 +16,7 @@ class ProductControllerTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    public function testAdminAccessProductsIndex()
+    public function testAdminAccessProductsIndex(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -29,7 +29,7 @@ class ProductControllerTest extends TestCase
             ->assertStatus(200);
     }
 
-    public function testAdminShowProduct()
+    public function testAdminShowProduct(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -51,7 +51,7 @@ class ProductControllerTest extends TestCase
             ->assertSee($product->imagen);
     }
 
-    public function testAdminCanAccessCreateFormProduct()
+    public function testAdminCanAccessCreateFormProduct(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -82,7 +82,7 @@ class ProductControllerTest extends TestCase
             ->assertSee($product->imagen);
     }
 
-    public function testAdminStoreProduct()
+    public function testAdminStoreProduct(): void
     {
         Storage::fake('public');
 
@@ -119,7 +119,7 @@ class ProductControllerTest extends TestCase
         $this->assertFileExists($file, "filename doesn't exists");
     }
 
-    public function testAdminCanAccessEditFormProduct()
+    public function testAdminCanAccessEditFormProduct(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -139,7 +139,7 @@ class ProductControllerTest extends TestCase
             ->assertSee($product->imagen);
     }
 
-    public function testAdminUpdateProduct()
+    public function testAdminUpdateProduct(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -174,7 +174,7 @@ class ProductControllerTest extends TestCase
         $this->assertFileExists($file, "filename doesn't exists");
     }
 
-    public function testAdminDestroyProduct()
+    public function testAdminDestroyProduct(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -199,7 +199,7 @@ class ProductControllerTest extends TestCase
         ]);
     }
 
-        public function testAdminChangeProductStatus()
+        public function testAdminChangeProductStatus(): void
         {
             $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -227,7 +227,7 @@ class ProductControllerTest extends TestCase
             ]);
         }
 
-    public function testUserCantAccessIndexProducts()
+    public function testUserCantAccessIndexProducts(): void
     {
         $user = User::factory()->create();
 
@@ -236,7 +236,7 @@ class ProductControllerTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function testUserCantAccessShowProducts()
+    public function testUserCantAccessShowProducts(): void
     {
         $user = User::factory()->create();
 
@@ -247,7 +247,7 @@ class ProductControllerTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function testUserCantAccessCreateFormProduct()
+    public function testUserCantAccessCreateFormProduct(): void
     {
         $user = User::factory()->create();
 
@@ -267,7 +267,7 @@ class ProductControllerTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function testUserCantStoreProduct()
+    public function testUserCantStoreProduct(): void
     {
         $user = User::factory()->create();
 
@@ -288,7 +288,7 @@ class ProductControllerTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function testUserCantAccessEditFormProducts()
+    public function testUserCantAccessEditFormProducts(): void
     {
         $user = User::factory()->create();
 
@@ -307,7 +307,7 @@ class ProductControllerTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function testUserCantUpdateProducts()
+    public function testUserCantUpdateProducts(): void
     {
         $user = User::factory()->create();
 
@@ -328,7 +328,7 @@ class ProductControllerTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function testUsersCantDestroyProducts()
+    public function testUsersCantDestroyProducts(): void
     {
         $user = User::factory()->create();
 
@@ -339,7 +339,7 @@ class ProductControllerTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function testUserCantChangeProductStatus()
+    public function testUserCantChangeProductStatus(): void
     {
         $user = User::factory()->create();
 
@@ -355,7 +355,7 @@ class ProductControllerTest extends TestCase
             ->assertStatus(404);
     }
     
-    public function testImagesCanBeUploaded()
+    public function testImagesCanBeUploaded(): void
     {
         Storage::fake('images');
 

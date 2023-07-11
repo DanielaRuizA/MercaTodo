@@ -3,20 +3,22 @@
 namespace App\Http\Controllers\AdminPanel;
 
 use Inertia\Inertia;
+use Inertia\Response;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Imports\ProductsImport;
 use App\Http\Controllers\Controller;
-use App\Models\Product;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Http\RedirectResponse;
 
 class ProductImportController extends Controller
 {
-    public function show()
+    public function show():Response
     {
         return Inertia::render('AdminPanel/Products/Import');
     }
 
-    public function store(Request $request)
+    public function store(Request $request):RedirectResponse
     {
         $file = $request->file('file');
 

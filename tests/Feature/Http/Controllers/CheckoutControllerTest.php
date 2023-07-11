@@ -15,7 +15,7 @@ class CheckoutControllerTest extends TestCase
     use RefreshDatabase;
 
 
-    public function testUserCanAccessToCheckoutView()
+    public function testUserCanAccessToCheckoutView(): void
     {
         $user = User::factory()->create();
 
@@ -24,13 +24,13 @@ class CheckoutControllerTest extends TestCase
             ->assertStatus(200);
     }
 
-    public function testCanAccessToCheckoutLoggedUsers()
+    public function testCanAccessToCheckoutLoggedUsers(): void
     {
         $this->get('checkout')
         ->assertRedirect('login');
     }
 
-    public function testUserCantCheckoutWithAEmptyCart()
+    public function testUserCantCheckoutWithAEmptyCart(): void
     {
         $user = User::factory()->create();
 

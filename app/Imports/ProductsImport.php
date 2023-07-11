@@ -26,7 +26,7 @@ class ProductsImport implements ToModel, WithHeadingRow, WithUpserts
             'product_photo'     => $row['product_photo'],
         ]);
     }
-    public function uniqueBy()
+    public function uniqueBy():string|array
     {
         return 'id';
     }
