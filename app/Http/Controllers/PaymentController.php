@@ -2,24 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
 use App\Models\Order;
 use Inertia\Response;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Services\PaymentBase;
-use Illuminate\Validation\Rule;
 use App\Services\PlaceToPayPayment;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Http;
 use App\Domain\Order\OrderCreateAction;
-use App\Domain\Order\OrderUpdateAction;
-use Illuminate\Support\Facades\Redirect;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response as HttpResponse;
 
 class PaymentController extends Controller
 {
-    public function processPayment(Request $request, Order $order, PlaceToPayPayment $paymentService)
+    public function processPayment(Request $request, Order $order, PlaceToPayPayment $paymentService): HttpResponse
     {
         $order = OrderCreateAction::execute($request->all());
 
@@ -50,7 +45,7 @@ class PaymentController extends Controller
         Cart::instance('default')->destroy();
     }
 
-    public function processResponse(PlaceToPayPayment $placeToPayPayment)
+    public function processResponse(PlaceToPayPayment $placeToPayPayment): Response
     {
         // dd($placeToPayPayment->getRequestInformation());
 
@@ -58,7 +53,7 @@ class PaymentController extends Controller
     }
     
 
-    public function retryPayment(Request $request, PlaceToPayPayment $paymentService)
+    public function retryPayment(Request $request, PlaceToPayPayment $paymentService):RedirectResponse
     {
         $request->validate([
             'id' => ['required', 'integer'],

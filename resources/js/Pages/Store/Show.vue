@@ -33,11 +33,15 @@ export default {
     },
     methods: {
         submit() {
-            this.$inertia.post(this.route('cart.store', this.product.id), this.form), {
+            this.$inertia.post(this.route('cart.store', this.product.id), this.form, {
                 preserveScroll: true,
                 onSuccess: () => {
+                    Toast.fire({
+                        icon: 'success',
+                        title: `${this.form.name} se agrego al carrito`
+                    })
                 }
-            }
+            })
         },
         showImage() {
             return "/storage/";

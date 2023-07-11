@@ -11,10 +11,12 @@ use App\Domain\Product\ProductUpdateAction;
 use App\Domain\Product\ProductDestroyAction;
 use App\Http\Requests\Api\V1\ProductRequest;
 use App\Http\Resources\Api\V1\ProductResource;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index():AnonymousResourceCollection
     {
         $products = QueryBuilder::for(Product::class)
             ->allowedFilters(['id', 'name', 'description','status', 'price', 'quantity' ])
@@ -23,7 +25,7 @@ class ProductController extends Controller
         return ProductResource::collection($products);
     }
 
-    public function store(ProductRequest $request)
+    public function store(ProductRequest $request):JsonResponse
     {
         $data = $request->all();
 
@@ -35,7 +37,7 @@ class ProductController extends Controller
         ], 201);
     }
 
-    public function show(int $id)
+    public function show(int $id):ProductResource
     {
         $product = QueryBuilder::for(Product::class)
             ->findOrFail($id);
@@ -43,7 +45,7 @@ class ProductController extends Controller
         return ProductResource::make($product);
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id):JsonResponse
     {
         $product = Product::query()->findOrFail($id);
 
@@ -56,7 +58,7 @@ class ProductController extends Controller
         ], 200);
     }
 
-    public function destroy(string $id)
+    public function destroy(string $id):JsonResponse
     {
         $product = Product::query()->findOrFail($id);
 

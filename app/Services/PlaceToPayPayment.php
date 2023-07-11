@@ -17,6 +17,7 @@ use App\Domain\Order\OrderUpdateAction;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Order\OrderGetLastAction;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Inertia\Ssr\Response as SsrResponse;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 class PlaceToPayPayment implements PaymentInterface
@@ -42,7 +43,7 @@ class PlaceToPayPayment implements PaymentInterface
         throw new \Exception($result->body());
     }
 
-    public function sendNotification()
+    public function sendNotification(): void
     {
         Log::info('[PAY]: Enviamos la notificacion PlaceToPay');
     }
@@ -94,7 +95,7 @@ class PlaceToPayPayment implements PaymentInterface
 
 
 
-    public function getRequestInformation()
+    public function getRequestInformation():Response
     {
         $order = OrderGetLastAction::execute();
     
