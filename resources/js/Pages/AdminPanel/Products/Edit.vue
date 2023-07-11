@@ -3,6 +3,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import { useForm, Link } from '@inertiajs/vue3';
 import { Inertia } from '@inertiajs/inertia';
 import { computed } from 'vue';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 const props = defineProps({
     product: Object,
@@ -21,7 +22,14 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('products.update', props.product.id),
+    form.post(route('products.update', props.product.id), {
+        onSuccess: () => {
+            Toast.fire({
+                icon: 'success',
+                title: 'El producto a sido editado!'
+            })
+        }
+    }
     );
 }
 
@@ -50,10 +58,32 @@ const status = computed(() => {
 });
 
 const destroy = (id) => {
-    if (confirm('¿Desea Eliminar?')) {
-        Inertia.delete(route('products.destroy', id))
-    }
-}
+    Swal.fire({
+        title: '¿Desea Eliminar?',
+        text: 'Esta acción no se puede deshacer',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar',
+    }).then((result) => {
+        if (result.value) {
+            Inertia.delete(route('products.destroy', id)).then(() => {
+                Swal.fire(
+                    'Eliminado',
+                    'El producto ha sido eliminado exitosamente',
+                    'success'
+                );
+            });
+        }
+    });
+};
+// const destroy = (id) => {
+//     if (confirm('¿Desea Eliminar?')) {
+//         Inertia.delete(route('products.destroy', id))
+//     }
+// }
 </script>
 
 <template>

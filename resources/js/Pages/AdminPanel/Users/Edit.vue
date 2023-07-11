@@ -31,26 +31,56 @@ export default {
     },
     methods: {
         submit() {
-            this.$inertia.put(this.route('users.update', this.user.id), this.form);
+            this.$inertia.put(this.route('users.update', this.user.id), this.form, {
+                onSuccess: () => {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'El Usuario a sido editado!'
+                    })
+                }
+            });
         },
         destroy() {
-            if (confirm('¿Desea Eliminar?')) {
-                this.$inertia.delete(this.route('users.destroy', this.user.id))
-            }
-        },
-        updateStatus(user) {
-            const status = (user.status === 'Active') ? 'Inactive' : 'Active';
-            axios.get('/change/user/status', {
-                params: { status: status, user_id: user.id }
-            }).then(response => {
-                console.log(response.data.success);
-                user.status = !user.status;
-            }).catch(error => {
-                console.error(error);
+            Swal.fire({
+                title: '¿Desea Eliminar?',
+                text: 'Esta acción no se puede deshacer',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Eliminar',
+                cancelButtonText: 'Cancelar',
+            }).then((result) => {
+                if (result.value) {
+                    this.$inertia.delete(route('users.destroy', this.user.id)).then(() => {
+                        Swal.fire(
+                            'Eliminado',
+                            'El Usuario ha sido eliminado exitosamente',
+                            'success'
+                        );
+                    });
+                }
             });
         }
+    },
+    // destroy() {
+    //     if (confirm('¿Desea Eliminar?')) {
+    //         this.$inertia.delete(this.route('users.destroy', this.user.id))
+    //     }
+    // },
+    updateStatus(user) {
+        const status = (user.status === 'Active') ? 'Inactive' : 'Active';
+        axios.get('/change/user/status', {
+            params: { status: status, user_id: user.id }
+        }).then(response => {
+            console.log(response.data.success);
+            user.status = !user.status;
+        }).catch(error => {
+            console.error(error);
+        });
     }
 }
+
 </script>
 
 <template>
