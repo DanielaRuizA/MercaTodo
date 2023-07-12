@@ -13,6 +13,6 @@ class ProductExportController extends Controller
     {
         dispatch(new ProductExportJob($request->user()));
 
-        return redirect()->route('products.index')->with('message', 'Productos export a excel format');
+        return redirect()->route('products.index')->with('Products export a excel format');
     }
 }

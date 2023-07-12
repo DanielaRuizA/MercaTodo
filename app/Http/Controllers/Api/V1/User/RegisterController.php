@@ -18,7 +18,7 @@ class RegisterController extends Controller
         ]);
 
         return response()->json([
-            'message' => trans('message.created', ['attribute' => 'user']),
+            'message' => trans('the user was register successfully', ['attribute' => 'user']),
             'user' => $user->only(['name', 'email']),
         ], 201);
     }
