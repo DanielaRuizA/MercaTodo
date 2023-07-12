@@ -11,7 +11,7 @@ export default {
 }
 </script>
 <template>
-    <AppLayout title="Status Orden">
+    <AppLayout title="Estado De la Orden">
         <div v-if="status === 'COMPLETED'">
             <div class="flex items-center justify-center">
                 <img width="200"
