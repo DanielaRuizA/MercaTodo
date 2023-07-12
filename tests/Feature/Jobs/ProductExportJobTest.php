@@ -16,6 +16,6 @@ class ProductExportJobTest extends TestCase
     {
         Storage::fake(config()->get('filesystem.default'));
         (new ProductExportJob())->handle();
-        Storage::disk(config()->get('filesystem.default'))->assertExists('exports/my-file-test.csv');
+        Storage::disk(config()->get('filesystem.default'))->assertExists('exports/products.csv');
     }
 }
