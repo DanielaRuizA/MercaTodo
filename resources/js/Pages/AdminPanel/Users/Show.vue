@@ -11,26 +11,28 @@ export default {
         user: Object,
     },
     setup() {
-        Swal.fire({
-            title: '¿Desea Eliminar?',
-            text: 'Esta acción no se puede deshacer',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Eliminar',
-            cancelButtonText: 'Cancelar',
-        }).then((result) => {
-            if (result.value) {
-                Inertia.delete(route('users.destroy', id)).then(() => {
-                    Swal.fire(
-                        'Eliminado',
-                        'El producto ha sido eliminado exitosamente',
-                        'success'
-                    );
-                });
-            }
-        });
+        const destroy = (id) => {
+            Swal.fire({
+                title: '¿Desea Eliminar?',
+                text: 'Esta acción no se puede deshacer',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Eliminar',
+                cancelButtonText: 'Cancelar',
+            }).then((result) => {
+                if (result.value) {
+                    Inertia.delete(route('users.destroy', id)).then(() => {
+                        Swal.fire(
+                            'Eliminado',
+                            'El producto ha sido eliminado exitosamente',
+                            'success'
+                        );
+                    });
+                }
+            });
+        }
         return { destroy };
         // const destroy = (id) => {
         //     if (confirm('¿Desea Eliminar?')) {

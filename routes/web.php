@@ -22,6 +22,18 @@ Route::get('/', function () {
     ]);
 });
 
+
+
+// Route::middleware([
+//     'auth:sanctum',
+//     config('jetstream.auth_session'),
+//     'verified',
+// ])->group(function () {
+//     Route::get('/dashboard', function () {
+//         return Inertia::render('Dashboard');
+//     })->name('dashboard');
+// });
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -30,7 +42,18 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+    
+    Route::get('/', function () {
+        return redirect()->route('dashboard');
+    });
 });
+
+
+
+Route::get('user/banned', function () {
+    return Inertia::render('Auth/UserBanned');
+})->name('user.banned');
+
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('users', UserController::class);
