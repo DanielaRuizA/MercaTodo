@@ -21,7 +21,7 @@ class ProductFactory extends Factory
             'description' => fake()->realText(150),
             'price' => fake()->numberBetween(1000, 300000),
             'quantity' => fake()->numberBetween(1, 100),
-            'product_photo' => 'https://images.pexels.com/photos/1262302/pexels-photo-1262302.jpeg',
+            'product_photo' => 'https://images.pexels.com/photos/54632/cat-animal-eyes-grey-54632.jpeg',
         ];
     }
 }
