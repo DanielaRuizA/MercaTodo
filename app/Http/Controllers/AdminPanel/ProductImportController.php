@@ -4,12 +4,12 @@ namespace App\Http\Controllers\AdminPanel;
 
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Imports\ProductsImport;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
+use Maatwebsite\Excel\Validators\ValidationException;
 
 class ProductImportController extends Controller
 {
@@ -18,17 +18,51 @@ class ProductImportController extends Controller
         return Inertia::render('AdminPanel/Products/Import');
     }
 
-    public function store(Request $request):RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
-        $file = $request->file('file');
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx,csv'
+        ]);
 
-        Excel::import(new ProductsImport, $file);
+        $file = $request->file('file')->getPathname();
 
-        return redirect()->back();
-
-
-        // return back()->with('import');
+        try {
+            Excel::queueImport(new ProductsImport, $file);
+            return redirect()->back()->with('success', 'Products successfully imported');
+        } catch (ValidationException $e) {
+            $failures = $e->failures();
+            dd($failures);
+            return redirect()->back()->with('import_errors', $failures);
+        }
     }
+
+    // public function store(Request $request):RedirectResponse
+    // {
+    //     $file = $request->file('file');
+
+    //     // $file = $request->validate([
+    //     //     'file'=> 'required|file|mimes:xlsx,csv'
+    //     // ]);
+
+    //     Excel::queueImport(new ProductsImport, $file);
+    //     // Excel::import(new ProductsImport, $file);
+
+
+    //     return redirect()->back()->with('success', 'Products successfully imported');
+    // }
+
+    
+    //   public function store(Request $request):RedirectResponse
+    //   {
+    //       $file = $request->file('file');
+
+    //       Excel::import(new ProductsImport, $file);
+
+    //       return redirect()->back();
+
+
+    //       // return back()->with('import');
+    //   }
 }
 
 //$file = $request->file('file')->store('import');
@@ -54,4 +88,20 @@ class ProductImportController extends Controller
     //     }
 
     //     return response()->json(['error' => 'No file found']);
+// }
+
+
+// try {
+        //     Excel::queueImport(new ProductsImport, $file);
+        //     return redirect()->back()->with('success', 'Products successfully imported');
+// } catch (ValidationException $e) {
+        //     $failures = $e->failures();
+        //     dd($failures);
+        //     return redirect()->back()->with('import_errors', $failures);
+// foreach ($failures as $failure) {
+            //     $failure->row(); // row that went wrong
+            //     $failure->attribute(); // either heading key (if using heading row concern) or column index
+            //     $failure->errors(); // Actual error messages from Laravel validator
+            //     $failure->values(); // The values of the row that has failed.
+// }
 // }
