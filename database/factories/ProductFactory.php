@@ -21,7 +21,7 @@ class ProductFactory extends Factory
             'description' => fake()->realText(150),
             'price' => fake()->numberBetween(1000, 300000),
             'quantity' => fake()->numberBetween(1, 100),
-            'product_photo' => 'images/icecream.jpg',
+            'product_photo' => 'https://images.pexels.com/photos/1262302/pexels-photo-1262302.jpeg',
         ];
     }
 }

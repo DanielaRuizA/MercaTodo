@@ -1,23 +1,4 @@
-<!-- <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
-import { useForm, Link } from '@inertiajs/vue3';
-import { Inertia } from "@inertiajs/inertia";
-
-const form = useForm({
-    file: null,
-    _method: 'put'
-})
-
-const uploadFile = () => {
-    form.post(route('products.store.imports'), {
-        preserveScroll: true,
-    })
-}
-
-</script> -->
-
 <script>
-
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link } from '@inertiajs/vue3';
 
@@ -25,9 +6,13 @@ export default {
     components: {
         AppLayout, Link
     },
+    props: {
+        errors: Object
+    },
     data() {
         return {
             file: null,
+            importError: '',
         };
     },
     methods: {
@@ -39,8 +24,17 @@ export default {
             formData.append('file', this.file);
             axios.post('/products/imports', formData).then(() => {
                 console.log('import file');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'El Archivo Fue Importado Con Exito'
+                })
             }).catch(error => {
                 console.log(error.response.data);
+                this.importError = error.response.data.message;
+                Swal.fire({
+                    icon: 'error',
+                    title: 'El Archivo No Fue Importado'
+                })
             });
         },
     },
@@ -65,17 +59,12 @@ export default {
                     </div>
                     <div class="md:col-span-2 mt-5 md:mt-0">
                         <div class="shadow bg-white md:rounded-md p-4">
-                            <!-- <form class="w-full" @submit.prevent="uploadFile" enctype="multipart/form-data">
-                                <input class="py-2" type="file" @input="form.file = $event.target.files[0]" />
-                                <button type="submit"
-                                    class="px-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold uppercase mr-2">Importar
-                                    Producto</button> -->
-                            <!-- <progress v-if="form.progress" :value="form.progress.percentage" max="100">
-                                {{ form.progress.percentage }}%
-                            </progress> -->
-                            <!-- </form> -->
-                            <input type="file" @change="handleFileUpload" />
-                            <button @click="importFile">Import</button>
+                            <input class="py-2" type="file" @change="handleFileUpload" />
+                            <button type="submit" @click="importFile"
+                                class="px-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold uppercase mr-2">Importar</button>
+                            <div v-if="importError" class="text-red-600">
+                                {{ importError }}
+                            </div>
                             <hr class="my-6">
                             <Link :href="route('products.index')"
                                 class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-md mr-2">
@@ -88,3 +77,4 @@ export default {
         </div>
     </AppLayout>
 </template>
+

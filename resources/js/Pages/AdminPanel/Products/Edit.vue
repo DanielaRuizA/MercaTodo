@@ -33,8 +33,16 @@ const submit = () => {
     );
 }
 
-function showImage() {
-    return "/storage/";
+// function showImage() {
+//     return "/storage/";
+// }
+
+function showImage(image) {
+    if (image.startsWith('http')) {
+        return image;
+    } else {
+        return "/storage/" + image;
+    }
 }
 
 function updateStatus(product) {
@@ -145,8 +153,7 @@ const destroy = (id) => {
                                         </div>
                                     </label>
                                 </td>
-                                <img class="py-2" :src="showImage() + product.product_photo" :alt="product.name"
-                                    width="250">
+                                <img class="py-2" :src="showImage(product.product_photo)" :alt="product.name" width="250">
                                 <input class="py-2" type="file" @input="form.product_photo = $event.target.files[0]" />
                                 <div v-if="errors.product_photo" class="text-red-600">
                                     {{ errors.product_photo }}

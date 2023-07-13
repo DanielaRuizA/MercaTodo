@@ -7,8 +7,15 @@ const props = defineProps({
     product: Object
 })
 
-const showImage = () => "/storage/"
+// const showImage = () => "/storage/"
 
+function showImage(image) {
+    if (image.startsWith('http')) {
+        return image;
+    } else {
+        return "/storage/" + image;
+    }
+}
 const destroy = (id) => {
     Swal.fire({
         title: '¿Desea Eliminar?',
@@ -91,7 +98,7 @@ const destroy = (id) => {
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt class="text-sm font-medium leading-6 text-gray-900">Imagen</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                            <img :src="showImage() + product.product_photo" :alt="product.name" width="400">
+                            <img :src="showImage(product.product_photo)" :alt="product.name" width="400">
                         </dd>
                     </div>
                 </dl>
