@@ -23,7 +23,14 @@ export default {
     },
     methods: {
         submit() {
-            this.$inertia.post(this.route('products.store'), this.form);
+            this.$inertia.post(this.route('products.store'), this.form, {
+                onSuccess: () => {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'El producto fue Creado exitosamente!'
+                    })
+                }
+            });
         }
     }
 }

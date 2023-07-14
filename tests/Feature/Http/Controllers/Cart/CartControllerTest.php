@@ -14,7 +14,7 @@ class CartControllerTest extends TestCase
     use WithFaker;
     use RefreshDatabase;
 
-    public function testUserCanAccessToCartView()
+    public function testUserCanAccessToCartView(): void
     {
         $user = User::factory()->create();
 
@@ -23,13 +23,13 @@ class CartControllerTest extends TestCase
             ->assertStatus(200);
     }
 
-    public function testCanAccessToCartOnlyLoggedUsers()
+    public function testCanAccessToCartOnlyLoggedUsers(): void
     {
         $this->get('cart')
         ->assertRedirect('login');
     }
 
-    public function testUserCanAccessToEmptyItemsCart()
+    public function testUserCanAccessToEmptyItemsCart(): void
     {
         $user = User::factory()->create();
         
@@ -43,7 +43,7 @@ class CartControllerTest extends TestCase
     }
 
 
-    public function testUserCanAddItemsToCart()
+    public function testUserCanAddItemsToCart(): void
     {
         $user = User::factory()->create();
 
@@ -66,7 +66,7 @@ class CartControllerTest extends TestCase
     }
 
 
-    public function testUserUpdateTheQuantityOfTheCart()
+    public function testUserUpdateTheQuantityOfTheCart(): void
     {
         $cartItemId = 'da39a3ee5e6b4b0d3255bfef95601890afd80709';
         $newQuantity = 2;

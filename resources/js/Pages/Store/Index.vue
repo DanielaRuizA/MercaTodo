@@ -29,7 +29,7 @@ export default {
 }
 </script>
 <template>
-    <AppLayout title="Dashboard">
+    <AppLayout title="Mercatodo">
 
         <body class="bg-white text-gray-600 work-sans leading-normal text-base tracking-normal">
             <section class="bg-white py-8">

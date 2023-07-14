@@ -13,7 +13,7 @@ class UserControllerTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    public function testAdminAccessDashboard()
+    public function testAdminAccessDashboard(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -28,7 +28,7 @@ class UserControllerTest extends TestCase
         $response->assertSeeText('dashboard');
     }
 
-    public function testAdminAccessUsersIndex()
+    public function testAdminAccessUsersIndex(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -41,7 +41,7 @@ class UserControllerTest extends TestCase
             ->assertStatus(200);
     }
 
-    public function testAdminShowUser()
+    public function testAdminShowUser(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -56,7 +56,7 @@ class UserControllerTest extends TestCase
             ->assertStatus(200);
     }
 
-    public function testAdminCanAccessEditFormUser()
+    public function testAdminCanAccessEditFormUser(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -73,7 +73,7 @@ class UserControllerTest extends TestCase
             ->assertSee($user->email);
     }
 
-    public function testAdminUpdateUser()
+    public function testAdminUpdateUser(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
         Permission::create(['name' => 'admin.users.update'])->assignRole($roleAdmin);
@@ -94,7 +94,7 @@ class UserControllerTest extends TestCase
         $this->assertDatabaseHas('users', $data);
     }
 
-    public function testAdminDestroyUser()
+    public function testAdminDestroyUser(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -116,7 +116,7 @@ class UserControllerTest extends TestCase
         ]);
     }
 
-    public function testAdminChangeUserStatus()
+    public function testAdminChangeUserStatus(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -127,18 +127,22 @@ class UserControllerTest extends TestCase
         $user = User::factory()->create();
 
         $data = [
+            'user_id' => $user->id,
             'status' => 'Inactive',
         ];
 
         $this->actingAs($admin)
             ->get("change/user/status/$user->id", $data);
 
+        $updatedUser = User::find($user->id);
+        $this->assertEquals('Active', $updatedUser->status);
+
         $this->assertDatabaseHas('users', [
             'status' => 'Active',
         ]);
     }
 
-    public function testUserAccessDashboard()
+    public function testUserAccessDashboard(): void
     {
         $roleAdmin = Role::create(['name' => 'dashboard']);
 
@@ -151,7 +155,7 @@ class UserControllerTest extends TestCase
             ->assertStatus(200);
     }
 
-    public function testUserCantAccessIndexUsers()
+    public function testUserCantAccessIndexUsers(): void
     {
         $user = User::factory()->create();
 
@@ -160,7 +164,7 @@ class UserControllerTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function testUserCantAccessShowUsers()
+    public function testUserCantAccessShowUsers(): void
     {
         $user = User::factory()->create();
 
@@ -169,7 +173,7 @@ class UserControllerTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function testUserCantAccessEditFormUsers()
+    public function testUserCantAccessEditFormUsers(): void
     {
         $user = User::factory()->create();
 
@@ -178,7 +182,7 @@ class UserControllerTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function testUserCantUpdateUsers()
+    public function testUserCantUpdateUsers(): void
     {
         $user = User::factory()->create();
 
@@ -193,7 +197,7 @@ class UserControllerTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function testUsersCantDestroyUsers()
+    public function testUsersCantDestroyUsers(): void
     {
         $user = User::factory()->create();
 
@@ -203,7 +207,7 @@ class UserControllerTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function testUserCantChangeUserStatus()
+    public function testUserCantChangeUserStatus(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 

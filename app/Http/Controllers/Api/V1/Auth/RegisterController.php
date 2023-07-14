@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\User;
+namespace App\Http\Controllers\Api\V1\Auth;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
@@ -18,7 +18,7 @@ class RegisterController extends Controller
         ]);
 
         return response()->json([
-            'message' => trans('message.created', ['attribute' => 'user']),
+            'message' => trans('the user was register successfully', ['attribute' => 'user']),
             'user' => $user->only(['name', 'email']),
         ], 201);
     }

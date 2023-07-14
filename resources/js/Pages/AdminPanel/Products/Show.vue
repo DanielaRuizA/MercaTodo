@@ -7,13 +7,43 @@ const props = defineProps({
     product: Object
 })
 
-const showImage = () => "/storage/"
+// const showImage = () => "/storage/"
 
-const destroy = (id) => {
-    if (confirm('¿Desea Eliminar?')) {
-        Inertia.delete(route('products.destroy', id))
+function showImage(image) {
+    if (image.startsWith('http')) {
+        return image;
+    } else {
+        return "/storage/" + image;
     }
 }
+const destroy = (id) => {
+    Swal.fire({
+        title: '¿Desea Eliminar?',
+        text: 'Esta acción no se puede deshacer',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar',
+    }).then((result) => {
+        if (result.value) {
+            Inertia.delete(route('products.destroy', id)).then(() => {
+                Swal.fire(
+                    'Eliminado',
+                    'El producto ha sido eliminado exitosamente',
+                    'success'
+                );
+            });
+        }
+    });
+};
+
+// const destroy = (id) => {
+//     if (confirm('¿Desea Eliminar?')) {
+//         Inertia.delete(route('products.destroy', id))
+//     }
+// }
 
 </script>
 
@@ -68,7 +98,7 @@ const destroy = (id) => {
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt class="text-sm font-medium leading-6 text-gray-900">Imagen</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                            <img :src="showImage() + product.product_photo" :alt="product.name" width="400">
+                            <img :src="showImage(product.product_photo)" :alt="product.name" width="400">
                         </dd>
                     </div>
                 </dl>

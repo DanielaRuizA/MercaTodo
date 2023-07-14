@@ -4,15 +4,12 @@ namespace App\Jobs;
 
 use App\Models\User;
 use App\Models\Product;
-use App\Mail\ImportMail;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 
 class ProductImportJob implements ShouldQueue
 {
@@ -49,13 +46,8 @@ class ProductImportJob implements ShouldQueue
                 }
 
                 fclose($file);
-
-                // Mail::to($this->user)
-                //     ->send((new ImportMail('Import post successful'))->subject('Import posts successful'));
             }
         } catch (\Exception $exception) {
-            // Mail::to($this->user)->send((new ImportMail('Failed import posts'))->subject('Failed import posts'));
-
             logger()->warning('error when import file', [
                 'message' => $exception->getMessage(),
                 'trace' => $exception->getTrace(),

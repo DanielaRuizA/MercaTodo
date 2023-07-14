@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\User;
+namespace App\Http\Controllers\Api\V1\Auth;
 
 use App\Models\User;
 use Illuminate\Support\Str;

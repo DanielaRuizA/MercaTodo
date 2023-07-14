@@ -3,9 +3,9 @@
 use Illuminate\Http\Request;
 use App\Imports\ProductsImport;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\V1\User\LoginController;
+use App\Http\Controllers\Api\V1\Auth\LoginController;
 use App\Http\Controllers\Api\V1\User\ProfileController;
-use App\Http\Controllers\Api\V1\User\RegisterController;
+use App\Http\Controllers\Api\V1\Auth\RegisterController;
 use App\Http\Controllers\Api\V1\Product\ProductImportController;
 use App\Http\Controllers\Api\V1\Product\ProductController;
 

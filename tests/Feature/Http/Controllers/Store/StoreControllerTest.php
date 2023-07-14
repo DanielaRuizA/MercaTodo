@@ -14,7 +14,7 @@ class StoreControllerTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    public function testAdminAccessStore()
+    public function testAdminAccessStore(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -32,7 +32,7 @@ class StoreControllerTest extends TestCase
             ->assertSee($product->imagen);
     }
 
-    public function testUserAccessStore()
+    public function testUserAccessStore(): void
     {
         $roleUser = Role::create(['name' => 'user']);
 
@@ -50,7 +50,7 @@ class StoreControllerTest extends TestCase
             ->assertSee($product->imagen);
     }
 
-    public function testAdminAccessStoreShowProductView()
+    public function testAdminAccessStoreShowProductView(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -68,7 +68,7 @@ class StoreControllerTest extends TestCase
             ->assertSee($product->imagen);
     }
 
-    public function testUserAccessStoreShowProductView()
+    public function testUserAccessStoreShowProductView(): void
     {
         $roleUser = Role::create(['name' => 'user']);
 

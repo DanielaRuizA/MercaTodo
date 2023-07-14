@@ -6,8 +6,11 @@ use App\Models\Product;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Concerns\WithValidation;
 
-class ProductsImport implements ToModel, WithHeadingRow, WithUpserts
+class ProductsImport implements ToModel, WithHeadingRow, WithUpserts, WithChunkReading, ShouldQueue
 {
     /**
      * @param array $row
@@ -26,11 +29,38 @@ class ProductsImport implements ToModel, WithHeadingRow, WithUpserts
             'product_photo'     => $row['product_photo'],
         ]);
     }
-    public function uniqueBy()
+
+    public function uniqueBy():string|array
     {
         return 'id';
     }
+
+    public function chunkSize(): int
+    {
+        return 500;
+    }
 }
+
+//     public function rules(): array
+//     {
+//         return [
+//             'id'=>'required|integer|unique:products',
+//             '*.id' =>'required|integer|unique:products',
+//             'name' => 'required|string',
+//             '*.name' => 'required|string',
+//             'description' => 'required|string',
+//             '*.description' => 'required|string',
+//             'status'  =>'required',
+//             '*status'  =>'required',
+//             'price' => 'required|integer|digits_between:3,7|gt:0',
+//             '*.price' => 'required|integer|digits_between:3,7|gt:0',
+//             'quantity' => 'required|integer|digits_between:1,5|gt:0',
+//             '*.quantity' => 'required|integer|digits_between:1,5|gt:0',
+//             'product_photo' => 'required|mimes:jpeg,png,jpg,webp|max:2048',
+//             '*.product_photo' => 'required|mimes:jpeg,png,jpg,webp|max:2048',
+//         ];
+//     }
+// }
 
 
     //     // Verificar si el registro ya existe en la base de datos
@@ -108,4 +138,24 @@ class ProductsImport implements ToModel, WithHeadingRow, WithUpserts
         //     'photo'         => $row['photo'],
 // ]);
 // }
+// }
+
+// public function rules(): array , WithValidation
+// {
+    //     return [
+    //         'id'=>'required|integer|unique:products',
+    //         '*.id' =>'required|integer|unique:products',
+    //         'name' => 'required|string',
+    //         '*.name' => 'required|string',
+    //         'description' => 'required|string',
+    //         '*.description' => 'required|string',
+    //         'status'  =>'required',
+    //         '*status'  =>'required',
+    //         'price' => 'required|integer|digits_between:3,7|gt:0',
+    //         '*.price' => 'required|integer|digits_between:3,7|gt:0',
+    //         'quantity' => 'required|integer|digits_between:1,5|gt:0',
+    //         '*.quantity' => 'required|integer|digits_between:1,5|gt:0',
+    //         'product_photo' => 'required|mimes:jpeg,png,jpg,webp|max:2048',
+    //         '*.product_photo' => 'required|mimes:jpeg,png,jpg,webp|max:2048',
+    //     ];
 // }

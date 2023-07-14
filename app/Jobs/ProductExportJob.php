@@ -39,7 +39,7 @@ class ProductExportJob implements ShouldQueue
         ];
         
         //  $fileName = sprintf("exports/%s.csv", Str::uuid()->serialize());
-        $fileName = 'exports/my-file-test.csv';
+        $fileName = 'exports/products.csv';
         $this->createFile($fileName);
         $file = $this->openFile($fileName);
         fputcsv($file, $headers);
