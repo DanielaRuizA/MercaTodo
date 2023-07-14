@@ -5,6 +5,7 @@ namespace App\Domain\Product;
 use App\Models\Product;
 use App\Contracts\ActionInterface;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Requests\Api\V1\ProductRequest;
 use Illuminate\Database\Eloquent\Collection;
 
 class ProductSaveAction implements ActionInterface

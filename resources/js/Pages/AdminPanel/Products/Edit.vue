@@ -26,7 +26,7 @@ const submit = () => {
         onSuccess: () => {
             Toast.fire({
                 icon: 'success',
-                title: 'El producto a sido editado!'
+                title: 'El producto fue editado exitosamente!'
             })
         }
     }

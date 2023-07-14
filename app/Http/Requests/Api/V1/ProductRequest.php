@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Api\V1;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProductRequest extends FormRequest
@@ -24,9 +25,10 @@ class ProductRequest extends FormRequest
         return [
             'name' => 'required|string|min:3|max:100',
             'description' => 'required|string|min:3|max:150',
+            'status' => ['required',Rule::in(['Active', 'Inactive'])],
             'price' => 'required|integer|digits_between:3,7|gt:0',
             'quantity' => 'required|integer|digits_between:1,5|gt:0',
-            // 'product_photo' => 'required|mimes:jpeg,png,jpg,webp|max:2048',
+            'product_photo' => 'nullable',
         ];
     }
 }
