@@ -27,7 +27,7 @@ export default {
                 onSuccess: () => {
                     Toast.fire({
                         icon: 'success',
-                        title: 'El producto a sido Creado!'
+                        title: 'El producto fue Creado exitosamente!'
                     })
                 }
             });
