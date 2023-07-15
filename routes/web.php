@@ -10,8 +10,10 @@ use App\Http\Controllers\Cart\CartController;
 use App\Http\Controllers\Store\StoreController;
 use App\Http\Controllers\AdminPanel\UserController;
 use App\Http\Controllers\AdminPanel\ProductController;
+use App\Http\Controllers\AdminPanel\ReportOrderController;
 use App\Http\Controllers\AdminPanel\ProductExportController;
 use App\Http\Controllers\AdminPanel\ProductImportController;
+use App\Http\Controllers\AdminPanel\ProductsStockReportController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -65,6 +67,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('products/exports', ProductExportController::class)->name('products.export');
     Route::resource('products', ProductController::class);
     Route::get('change/product/status', [ProductController::class, 'changeProductStatus'])->name('change.product.status');
+
+    Route::get('products/stock/report', ProductsStockReportController::class)->name('products.stock.report');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -83,4 +87,6 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('payments/retry/payment', [PaymentController::class, 'retryPayment'])->name('payments.retry');
 
     Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('orders/report', [ReportOrderController::class, 'ordersReportTable'])->name('orders.report.table');
+    Route::post('orders/report/export', [ReportOrderController::class, 'ordersReportExport'])->name('orders.report.export');
 });
