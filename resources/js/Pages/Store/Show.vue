@@ -8,11 +8,6 @@ export default {
         Link,
         AppLayout,
     },
-    methods: {
-        showImage() {
-            return "/storage/";
-        }
-    },
     data() {
         return {
             quantity: 1,
@@ -43,8 +38,15 @@ export default {
                 }
             })
         },
-        showImage() {
-            return "/storage/";
+        // showImage() {
+        //     return "/storage/";
+        // },
+        showImage(image) {
+            if (image.startsWith('http')) {
+                return image;
+            } else {
+                return "/storage/" + image;
+            }
         },
         zoomImage() {
             let container = document.querySelector('#img-container')
@@ -74,7 +76,7 @@ export default {
                             <div class="flex flex-col flex-1 sm:border-r">
                                 <div class="border-2 overflow-hidden cursor-zoom-in h-full">
                                     <div id="img-container" class="w-full h-full">
-                                        <img id="current-img" :src="showImage() + product.product_photo" :alt="product.name"
+                                        <img id="current-img" :src="showImage(product.product_photo)" :alt="product.name"
                                             class="w-full h-full object-cover origin-center">
                                     </div>
                                 </div>

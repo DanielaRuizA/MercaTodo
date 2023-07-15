@@ -62,10 +62,13 @@ const logout = () => {
                                     :active="route().current('products.*')">
                                     Productos
                                 </NavLink>
+                                <NavLink :href="route('orders.report.table')">
+                                    Reporte Pedidos
+                                </NavLink>
                                 <NavLink :href="route('stores.index')" :active="route().current('stores.*')">
                                     Tienda
                                 </NavLink>
-                                <NavLink :href="route('orders.index')" :active="route().current('orders.*')">
+                                <NavLink :href="route('orders.index')">
                                     Mis Pedidos
                                 </NavLink>
                             </div>

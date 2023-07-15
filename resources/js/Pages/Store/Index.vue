@@ -12,8 +12,16 @@ export default {
         products: Object,
     },
     methods: {
-        showImage() {
-            return "/storage/";
+        //     showImage() {
+        //         return "/storage/";
+        //     }
+        // },
+        showImage(image) {
+            if (image.startsWith('http')) {
+                return image;
+            } else {
+                return "/storage/" + image;
+            }
         }
     },
     data() {
@@ -53,8 +61,8 @@ export default {
                     <div class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col" v-for="product in products.data"
                         :key="product.id">
                         <Link :href="route('stores.show', product.id)">
-                        <img class="hover:grow hover:shadow-lg" :src="showImage() + product.product_photo"
-                            :alt="product.name" width="450">
+                        <img class="hover:grow hover:shadow-lg" :src="showImage(product.product_photo)" :alt="product.name"
+                            width="450">
                         <div class="pt-3 flex items-center justify-between">
                             <p class="">{{ product.name }}</p>
                         </div>

@@ -10,6 +10,7 @@ use App\Http\Controllers\Cart\CartController;
 use App\Http\Controllers\Store\StoreController;
 use App\Http\Controllers\AdminPanel\UserController;
 use App\Http\Controllers\AdminPanel\ProductController;
+use App\Http\Controllers\AdminPanel\ReportOrderController;
 use App\Http\Controllers\AdminPanel\ProductExportController;
 use App\Http\Controllers\AdminPanel\ProductImportController;
 use App\Http\Controllers\AdminPanel\ProductsStockReportController;
@@ -86,4 +87,6 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('payments/retry/payment', [PaymentController::class, 'retryPayment'])->name('payments.retry');
 
     Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('orders/report', [ReportOrderController::class, 'ordersReportTable'])->name('orders.report.table');
+    Route::post('orders/report/export', [ReportOrderController::class, 'ordersReportExport'])->name('orders.report.export');
 });

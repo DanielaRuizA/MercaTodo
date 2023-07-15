@@ -20,8 +20,15 @@ export default {
         }
     },
     methods: {
-        showImage() {
-            return "/storage/";
+        // showImage() {
+        //     return "/storage/";
+        // },
+        showImage(image) {
+            if (image.startsWith('http')) {
+                return image;
+            } else {
+                return "/storage/" + image;
+            }
         },
         updateCart(id, quantity) {
             this.form.quantity = quantity
@@ -74,7 +81,7 @@ export default {
                         :key="index">
                         <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                             <Link :href="route('stores.show', item.id)" class="flex flex-1">
-                            <img :src="showImage() + item.options.image" :alt="item.name"
+                            <img :src="showImage(item.options.image)" :alt="item.name"
                                 class="h-full w-full object-cover object-center">
                             </Link>
                         </div>
