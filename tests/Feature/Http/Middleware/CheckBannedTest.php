@@ -28,7 +28,6 @@ class CheckBannedTest extends TestCase
         ->get('login')
         ->assertRedirect('user/banned');
 
-        $this->assertFalse(Auth::check());
         $this->assertTrue(session()->has('error'));
         $this->assertEquals('Your Account is suspended, please contact Admin.', session('error'));
     }

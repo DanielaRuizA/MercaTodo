@@ -14,14 +14,13 @@ class CheckBanned
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
+
     public function handle(Request $request, Closure $next): Response
     {
         if (auth()->check() && (auth()->user()->status === 'Inactive')) {
-            Auth::logout();
+            $request->session()->invalidate();
 
-            // $request->session()->invalidate();
-
-            // $request->session()->regeneerateToken();
+            $request->session()->regenerateToken();
 
             return redirect()->route('user.banned')->with('error', 'Your Account is suspended, please contact Admin.');
         }
