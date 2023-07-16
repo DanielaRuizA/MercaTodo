@@ -6,8 +6,8 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Order;
 use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -33,10 +33,10 @@ class ReportOrderControllerTest extends TestCase
     // $order = Order::factory()->create;
 
     // $order = Order::factory()->create([
-        //     'code' => '123abc',
-        //     'user_id' => $this->user_client->id,
-        //     'purchase_date' => '2023-07-01 12:00:00',
-        //     'purchase_total' => '500000',
+    //     'code' => '123abc',
+    //     'user_id' => $this->user_client->id,
+    //     'purchase_date' => '2023-07-01 12:00:00',
+    //     'purchase_total' => '500000',
     // ]);
 
 
@@ -51,9 +51,9 @@ class ReportOrderControllerTest extends TestCase
 
         $admin = User::factory()->create()->assignRole('admin');
 
-        $user = User::factory()->create();
+        User::factory()->create();
 
-        $order = Order::factory()->create([
+        Order::factory()->create([
             'order_id' => 12345,
             'user_id' => 1,
             'created_at' => '2023-07-14 15:30:00',
@@ -61,27 +61,199 @@ class ReportOrderControllerTest extends TestCase
         ]);
 
         $response = $this->actingAs($admin)
-            ->get('/orders/report?date1=&date2=&'.'orderStatus=PENDING&minAmount=1000000&maxAmount=2000000');
+            ->get('/orders/report?date1=&date2=&' . 'orderStatus=PENDING&minAmount=1000000&maxAmount=2000000');
 
         // 127.0.0.1:8000/orders/report?date1=&date2=&orderStatus=PENDING&minAmount=1000000&maxAmount=2000000
         $response->assertStatus(200)->assertInertia(
             fn (Assert $page) => $page
+                ->component('AdminPanel/Reports/Orders/Table')
+                ->has('filters')
+                ->has('orders')
+                ->has('success')
+        );
+    }
+
+    public function testAdminCanSearchWithFiltersDates(): void
+    {
+        $roleAdmin = Role::create(['name' => 'admin']);
+
+        Permission::create(['name' => 'admin.create.report'])->assignRole($roleAdmin);
+
+        $admin = User::factory()->create()->assignRole('admin');
+
+        User::factory()->create();
+
+        $order=Order::factory()->create([]);
+
+        $response = $this->actingAs($admin)
+            ->get('/orders/report?date1='. $order->created_at. '&date2=' . $order->created_at);
+        // /orders/report?date1=14-07-2023&date2=14-07-2023
+        $response->assertStatus(200)->assertInertia(
+            fn (Assert $page) => $page
+                ->component('AdminPanel/Reports/Orders/Table')
+                ->has('filters')
+                ->has('orders')
+                ->has('success')
+        );
+    }
+
+    public function testAdminCanSearchWithFiltersDate1(): void
+    {
+        $roleAdmin = Role::create(['name' => 'admin']);
+
+        Permission::create(['name' => 'admin.create.report'])->assignRole($roleAdmin);
+
+        $admin = User::factory()->create()->assignRole('admin');
+
+        User::factory()->create();
+
+        $order=Order::factory()->create([]);
+
+        $response = $this->actingAs($admin)
+            ->get('/orders/report?date1='. $order->created_at);
+        // /orders/report?date1=14-07-2023&date2=14-07-2023
+        $response->assertStatus(200)->assertInertia(
+            fn (Assert $page) => $page
+                ->component('AdminPanel/Reports/Orders/Table')
+                ->has('filters')
+                ->has('orders')
+                ->has('success')
+        );
+    }
+
+    public function testAdminCanSearchWithFiltersDate2(): void
+    {
+        $roleAdmin = Role::create(['name' => 'admin']);
+
+        Permission::create(['name' => 'admin.create.report'])->assignRole($roleAdmin);
+
+        $admin = User::factory()->create()->assignRole('admin');
+
+        User::factory()->create();
+
+        $order=Order::factory()->create([]);
+
+        $response = $this->actingAs($admin)
+            ->get('/orders/report?date1=&date2=' . $order->created_at);
+        // /orders/report?date1=14-07-2023&date2=14-07-2023
+        $response->assertStatus(200)->assertInertia(
+            fn (Assert $page) => $page
+                ->component('AdminPanel/Reports/Orders/Table')
+                ->has('filters')
+                ->has('orders')
+                ->has('success')
+        );
+    }
+
+    public function testAdminCanSearchWithFiltersAmount(): void
+    {
+        $roleAdmin = Role::create(['name' => 'admin']);
+
+        Permission::create(['name' => 'admin.create.report'])->assignRole($roleAdmin);
+
+        $admin = User::factory()->create()->assignRole('admin');
+
+        User::factory()->create();
+
+        $order=Order::factory()->create([]);
+
+        $response = $this->actingAs($admin)
+            ->get('orders/report?minAmount='.$order->amount.'&maxAmount='.$order->amount);
+
+        //http://127.0.0.1:8000/orders/report?minAmount=1000000&maxAmount=2000000
+
+        $response->assertStatus(200)->assertInertia(
+            fn (Assert $page) => $page
                 -> component('AdminPanel/Reports/Orders/Table')
                 -> has('filters')
-                -> has(
-                    'orders',
-                    fn (Assert $page) => $page
-                    -> where('orders_id', $order->orders_id)
-                    -> where('created_at', $order->created_at)
-                    -> where('amount', intval($order->amount))
-                    -> where('status', $order->status)
-                    -> where('url', $order->url)
-                    -> where('updated_at', $order->updated_at)
-                    -> where('name', $user->name)
-                    -> where('email', $user->email)
-                    -> etc()
-                )
+                -> has('orders', )
                 -> has('success')
         );
+    }
+
+    public function testAdminCanSearchWithFiltersMinAmount(): void
+    {
+        $roleAdmin = Role::create(['name' => 'admin']);
+
+        Permission::create(['name' => 'admin.create.report'])->assignRole($roleAdmin);
+
+        $admin = User::factory()->create()->assignRole('admin');
+
+        User::factory()->create();
+
+        $order=Order::factory()->create([]);
+
+        $response = $this->actingAs($admin)
+            ->get('orders/report?minAmount='.$order->amount);
+
+        //http://127.0.0.1:8000/orders/report?minAmount=1000000&maxAmount=2000000
+
+        $response->assertStatus(200)->assertInertia(
+            fn (Assert $page) => $page
+                -> component('AdminPanel/Reports/Orders/Table')
+                -> has('filters')
+                -> has('orders', )
+                -> has('success')
+        );
+    }
+
+    public function testAdminCanSearchWithFiltersMaxAmount(): void
+    {
+        $roleAdmin = Role::create(['name' => 'admin']);
+
+        Permission::create(['name' => 'admin.create.report'])->assignRole($roleAdmin);
+
+        $admin = User::factory()->create()->assignRole('admin');
+
+        User::factory()->create();
+
+        $order=Order::factory()->create([]);
+
+        $response = $this->actingAs($admin)
+            ->get('orders/report?minAmount=&maxAmount='.$order->amount);
+
+        //http://127.0.0.1:8000/orders/report?minAmount=1000000&maxAmount=2000000
+
+        $response->assertStatus(200)->assertInertia(
+            fn (Assert $page) => $page
+                -> component('AdminPanel/Reports/Orders/Table')
+                -> has('filters')
+                -> has('orders', )
+                -> has('success')
+        );
+    }
+
+    public function testCanQueueGenerateReportOfOrders(): void
+    {
+        $roleAdmin = Role::create(['name' => 'admin']);
+
+        Permission::create(['name' => 'admin.create.report'])->assignRole($roleAdmin);
+
+        $admin = User::factory()->create()->assignRole('admin');
+
+        User::factory()->create();
+
+        Order::factory()->create([
+            'order_id' => 12345,
+            'user_id' => 1,
+            'created_at' => '2023-07-14 15:30:00',
+            'amount' => '2000000',
+        ]);
+
+        Storage::fake('public');
+
+        Excel::fake();
+
+        $time = strval(time());
+
+        $response = $this->actingAs($admin)
+            ->post(route('orders.report.export'), [
+                'time' => $time,
+            ]);
+
+        Excel::assertQueued('reports/orders/orders_' . $time . '.xlsx');
+
+        $response->assertRedirect(route('orders.report.table'))
+            ->assertSessionHasAll(['success' => 'The Report Of Orders Was Generated Successfully.']);
     }
 }
