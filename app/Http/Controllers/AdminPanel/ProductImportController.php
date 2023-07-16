@@ -31,7 +31,6 @@ class ProductImportController extends Controller
             return redirect()->back()->with('success', 'Products successfully imported');
         } catch (ValidationException $e) {
             $failures = $e->failures();
-            dd($failures);
             return redirect()->back()->with('import_errors', $failures);
         }
     }

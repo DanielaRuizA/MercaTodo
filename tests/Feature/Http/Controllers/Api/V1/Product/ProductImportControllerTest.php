@@ -22,8 +22,6 @@ class ProductImportControllerTest extends TestCase
     {
         $user = User::factory()->create();
 
-        // Storage::fake(config()->get('filesystem.default'));
-
         Storage::fake();
 
         Bus::fake();
@@ -47,5 +45,18 @@ class ProductImportControllerTest extends TestCase
         $response
             ->assertOk()
             ->assertJsonStructure(['message']);
+    }
+
+    public function testFileIsRequired(): void
+    {
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', 'api/v1/products/import', []);
+
+        $response->assertStatus(400)
+            ->assertJson(['message' => 'A file is required']);
+
     }
 }
