@@ -36,7 +36,9 @@ class ProductController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('product_photo')) {
-            $filePath = Storage::disk('public')->put('images', request()->file('product_photo'));
+            $filePath = url(Storage::disk('public')->put('images', request()->file('product_photo')));
+
+            // $filePath = Storage::disk('public')->put('images', request()->file('product_photo'));
 
             $data['product_photo'] = $filePath;
         }
@@ -71,7 +73,9 @@ class ProductController extends Controller
         if ($request->hasFile('product_photo')) {
             Storage::disk('public')->delete($product->product_photo);
 
-            $filePath = Storage::disk('public')->put('images', request()->file('product_photo'));
+            $filePath = url(Storage::disk('public')->put('images', request()->file('product_photo')));
+
+            // $filePath = Storage::disk('public')->put('images', request()->file('product_photo'));
 
             $validated['product_photo'] = $filePath;
         }
