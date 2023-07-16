@@ -199,33 +199,33 @@ class ProductControllerTest extends TestCase
         ]);
     }
 
-        public function testAdminChangeProductStatus(): void
-        {
-            $roleAdmin = Role::create(['name' => 'admin']);
+    public function testAdminChangeProductStatus(): void
+    {
+        $roleAdmin = Role::create(['name' => 'admin']);
 
-            Permission::create(['name' => 'admin.products.status'])->assignRole($roleAdmin);
+        Permission::create(['name' => 'admin.products.status'])->assignRole($roleAdmin);
 
-            $admin = User::factory()->create()->assignRole('admin');
+        $admin = User::factory()->create()->assignRole('admin');
 
-            $product = Product::factory()->create();
+        $product = Product::factory()->create();
 
-            $data = [
+        $response = $this->actingAs($admin)
+            ->json('get', 'change/product/status', [
                 'product_id' => $product->id,
                 'status' => 'Inactive',
-            ];
-
-            $this->actingAs($admin)
-                ->get("change/product/status/$product->id", $data);
-
-
-            $updatedProduct = Product::find($product->id);
-            $this->assertEquals('Active', $updatedProduct->status);
-
-
-            $this->assertDatabaseHas('products', [
-                'status' => 'Active',
             ]);
-        }
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('products', [
+            'id' => $product->id,
+            'status' => 'Inactive',
+        ]);
+
+        $response->assertJson([
+            'success' => 'Status change successfully.'
+        ]);
+    }
 
     public function testUserCantAccessIndexProducts(): void
     {
@@ -345,16 +345,15 @@ class ProductControllerTest extends TestCase
 
         $product = Product::factory()->create();
 
-        $data = [
-            'product_id' => $product->id,
-            'status' => 'Inactive',
-        ];
+        $response = $this->actingAs($user)
+            ->json('get', 'change/product/status', [
+                'product_id' => $product->id,
+                'status' => 'Inactive',
+            ]);
 
-        $this->actingAs($user)
-            ->post("change/product/status/$product->id", $data)
-            ->assertStatus(404);
+        $response->assertStatus(403);
     }
-    
+
     public function testImagesCanBeUploaded(): void
     {
         Storage::fake('images');

@@ -22,12 +22,11 @@ class ProductImportControllerTest extends TestCase
     use WithFaker;
     use RefreshDatabase;
 
-
     public function testAdminCanAccessTheImportView(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
-        Permission::create(['name' => 'admin.products.edit'])->assignRole($roleAdmin);
+        Permission::create(['name' => 'admin.products.import'])->assignRole($roleAdmin);
 
         $admin = User::factory()->create()->assignRole('admin');
 
@@ -42,125 +41,106 @@ class ProductImportControllerTest extends TestCase
                     $page->component('AdminPanel/Products/Import')
         );
     }
+
+public function testImportingCVSProductSuccessfully()
+{
+    $roleAdmin = Role::create(['name' => 'admin']);
+
+    Permission::create(['name' => 'admin.products.import'])->assignRole($roleAdmin);
+
+    $admin = User::factory()->create()->assignRole('admin');
+
+    $response = $this->actingAs($admin);
+        
+    Storage::fake('public');
+
+    Excel::fake();
+
+    $file = UploadedFile::fake()->create('products.csv');
+
+    $response = $this->post('products/imports', [
+        'file' => $file,
+    ]);
+
+    $response->assertRedirect()->assertSessionHas('success', 'Products successfully imported');
+
+    $response->assertSessionMissing('import_errors');
 }
 
-// public function testImportingProductsWithQueueSuccessfully()
-// {
-    //     // Configurar el estado de prueba
-    //     Storage::fake('public');
-    //     Excel::fake();
+public function testImportingXlsxProductsSuccessfully()
+{
+    $roleAdmin = Role::create(['name' => 'admin']);
 
-    //     $file = UploadedFile::fake()->create('products.csv');
+    Permission::create(['name' => 'admin.products.import'])->assignRole($roleAdmin);
 
-    //     $response = $this->post('products/import', [
-    //         'file' => $file,
-    //     ]);
+    $admin = User::factory()->create()->assignRole('admin');
 
-// $response->assertRedirect('products/import');
-// $response->assertSessionHas('success', 'Products successfully imported');
+    Storage::fake('public');
 
-//         Excel::assertQueued(new ProductsImport, function ($import) use ($file) {
-//             return $import->getFile()->getPathname() === $file->getPathname();
-//         });
-//     }
-// }
-// public function testImportingProductsWithQueueSuccessfully()
-// {
-    //     $roleAdmin = Role::create(['name' => 'admin']);
-    //     Permission::create(['name' => 'admin.products.edit'])->assignRole($roleAdmin);
-    //     $admin = User::factory()->create()->assignRole('admin');
+    Excel::fake();
+    
+    $response = $this->actingAs($admin);
 
-    //     Storage::fake('public');
-    //     Excel::fake();
+    $file = UploadedFile::fake()->create('products.xlsx');
 
-    //     $file = UploadedFile::fake()->create('products.xlsx');
+    $response = $this->post('products/imports', [
+        'file' => $file,
+    ]);
 
-    //     $this->actingAs($admin)
-    //         ->post('products/imports', [
-    //             'file' => $file,
-    //         ]);
+    $response->assertRedirect()->assertSessionHas('success', 'Products successfully imported');
 
-    //     Excel::assertQueued(function (PendingDispatch $pendingDispatch) use ($file) {
-    //         return $pendingDispatch->getJob()->getFile()->getPathname() === $file->getPathname()
-    //             && $pendingDispatch->getJob() instanceof ProcessImport;
-    //     });
-// }
+    $response->assertSessionMissing('import_errors');
+}
 
-//     public function testImportingProductsWithQueueSuccessfully()
-//     {
-//     $roleAdmin = Role::create(['name' => 'admin']);
+public function testImportingProductsFileDeniedFormats()
+{
+    $roleAdmin = Role::create(['name' => 'admin']);
 
-//     Permission::create(['name' => 'admin.products.edit'])->assignRole($roleAdmin);
+    Permission::create(['name' => 'admin.products.import'])->assignRole($roleAdmin);
 
-//     $admin = User::factory()->create()->assignRole('admin');
+    $admin = User::factory()->create()->assignRole('admin');
 
-//     Storage::fake('public');
-//     Excel::fake();
+    Storage::fake('public');
 
-//     $file = UploadedFile::fake()->create('products.xlsx');
+    Excel::fake();
+    
+    $response = $this->actingAs($admin);
 
-//     $response = $this->actingAs($admin)
-//     ->post('products/imports', [
-//         'file' => $file,
-//     ]);
+    $file = UploadedFile::fake()->create('products.pdf');
 
-//     Excel::assertQueued('products.xlsx', 'file');
+    $response = $this->post('products/imports', [
+        'file' => $file,
+    ]);
 
-//     Excel::assertQueued(function (ProductsImport $import) {
-//         return true;
-//     });
-// }
+    $response->assertSessionHasErrors();
+}
 
-    //     Excel::assertQueuedImport(function (ProductsImport $import) {
-    //         return true;
-    //     });
-// $file = UploadedFile::fake()->create('products.xlsx');
+public function testImportingProductsFileUploadFailure()
+{
+    $roleAdmin = Role::create(['name' => 'admin']);
 
-// $response = $this->post('products/imports', [
-        //     'file' => $file,
-// ]);
+    Permission::create(['name' => 'admin.products.import'])->assignRole($roleAdmin);
 
-// $response->assertSessionHas('success', 'Products successfully imported');
+    $admin = User::factory()->create()->assignRole('admin');
 
-// Excel::assertQueuedImport(new ProductsImport, function ($import) use ($file) {
-        //     return true;
-// return $import->getFile()->getPathname() === $file->getPathname();
-// });
-// }
+    Storage::fake('public');
 
+    Excel::fake();
 
-// public function testAdminCanImportProductsWithExcel(): void
-// {
-//     $roleAdmin = Role::create(['name' => 'admin']);
+    $response = $this->actingAs($admin);
 
-//     Permission::create(['name' => 'admin.products.edit'])->assignRole($roleAdmin);
+    $file = UploadedFile::fake()->create('products.pdf');
 
-//     $admin = User::factory()->create()->assignRole('admin');
+    $response = $this->post('products/imports', [
+        'file' => $file,
+    ]);
 
-//     $response = $this->actingAs($admin);
-        
-//     Storage::fake('local');
+    $response->assertRedirect();
 
-//     $file = UploadedFile::fake()->create('products.xlsx');
+    $importErrors = session('import_errors');
 
-//     $response = $this->post('/admin/products/import', [
-//         'file' => $file,
-//     ]);
+    $response->assertSessionHasErrors($importErrors);
 
-//     $response->assertRedirect();
-//     $response->assertSessionHasNoErrors();
-
-//     Storage::disk('local')->assertExists('imports/' . $file->hashName());
-
-//     $this->assertEquals(10, count($importedData));
-
-//     $expectedData = [
-//                 ['name' => 'Product 1', 'price' => 10.99],
-//                 ['name' => 'Product 2', 'price' => 19.99],
-//     ];
-
-//     foreach ($expectedData as $index => $expected) {
-//         $this->assertDatabaseHas('products', $expected, 'id', $importedData[$index]->id);
-//     }
-// }
-// }
+    $this->assertFalse(Storage::disk('local')->exists($file->hashName()));
+}
+}

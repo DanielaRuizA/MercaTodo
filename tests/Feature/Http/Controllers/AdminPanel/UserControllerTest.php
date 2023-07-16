@@ -127,19 +127,21 @@ class UserControllerTest extends TestCase
 
         $user = User::factory()->create();
 
-        $data = [
+        $response = $this->actingAs($admin)
+        ->json('get', 'change/user/status', [
             'user_id' => $user->id,
             'status' => 'Inactive',
-        ];
+        ]);
 
-        $this->actingAs($admin)
-            ->get("change/user/status/$user->id", $data);
-
-        $updatedUser = User::find($user->id);
-        $this->assertEquals('Active', $updatedUser->status);
+        $response->assertStatus(200);
 
         $this->assertDatabaseHas('users', [
-            'status' => 'Active',
+            'id' => $user->id,
+            'status' => 'Inactive',
+        ]);
+
+        $response->assertJson([
+            'success' => 'Status change successfully.'
         ]);
     }
 
@@ -217,16 +219,15 @@ class UserControllerTest extends TestCase
         $admin = User::factory()->create()->assignRole('admin');
 
         $user = User::factory()->create();
-
-        $data = [
+        
+        $response = $this->actingAs($user)
+        ->json('get', 'change/user/status', [
+            'user_id' => $user->id,
             'status' => 'Inactive',
-        ];
+        ]);
 
-        $this->actingAs($admin)
-            ->get("change/user/status/$user->id", $data)
-            ->assertStatus(404);
+        $response->assertStatus(403);
     }
-
 
     public function testAdminCanSearch()
     {
