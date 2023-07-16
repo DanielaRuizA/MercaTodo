@@ -44,7 +44,7 @@ class ProductExportJob implements ShouldQueue
         $file = $this->openFile($fileName);
         fputcsv($file, $headers);
 
-        Product::chunk(10, function ($products) use ($file) {
+        Product::chunk(1000, function ($products) use ($file) {
             foreach ($products as $product) {
                 fputcsv($file, [
                     'id'=> $product->id,

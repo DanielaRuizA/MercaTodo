@@ -4,8 +4,13 @@ namespace Tests\Feature\Http\Controllers\AdminPanel;
 
 use Tests\TestCase;
 use App\Models\User;
+use App\Imports\ProductsImport;
 use Illuminate\Http\UploadedFile;
 use Spatie\Permission\Models\Role;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Validators\ValidationException;
+use Maatwebsite\Excel\Jobs\PendingDispatch;
+use Maatwebsite\Excel\Jobs\ProcessImport;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -37,6 +42,91 @@ class ProductImportControllerTest extends TestCase
                     $page->component('AdminPanel/Products/Import')
         );
     }
+}
+
+// public function testImportingProductsWithQueueSuccessfully()
+// {
+    //     // Configurar el estado de prueba
+    //     Storage::fake('public');
+    //     Excel::fake();
+
+    //     $file = UploadedFile::fake()->create('products.csv');
+
+    //     $response = $this->post('products/import', [
+    //         'file' => $file,
+    //     ]);
+
+// $response->assertRedirect('products/import');
+// $response->assertSessionHas('success', 'Products successfully imported');
+
+//         Excel::assertQueued(new ProductsImport, function ($import) use ($file) {
+//             return $import->getFile()->getPathname() === $file->getPathname();
+//         });
+//     }
+// }
+// public function testImportingProductsWithQueueSuccessfully()
+// {
+    //     $roleAdmin = Role::create(['name' => 'admin']);
+    //     Permission::create(['name' => 'admin.products.edit'])->assignRole($roleAdmin);
+    //     $admin = User::factory()->create()->assignRole('admin');
+
+    //     Storage::fake('public');
+    //     Excel::fake();
+
+    //     $file = UploadedFile::fake()->create('products.xlsx');
+
+    //     $this->actingAs($admin)
+    //         ->post('products/imports', [
+    //             'file' => $file,
+    //         ]);
+
+    //     Excel::assertQueued(function (PendingDispatch $pendingDispatch) use ($file) {
+    //         return $pendingDispatch->getJob()->getFile()->getPathname() === $file->getPathname()
+    //             && $pendingDispatch->getJob() instanceof ProcessImport;
+    //     });
+// }
+
+//     public function testImportingProductsWithQueueSuccessfully()
+//     {
+//     $roleAdmin = Role::create(['name' => 'admin']);
+
+//     Permission::create(['name' => 'admin.products.edit'])->assignRole($roleAdmin);
+
+//     $admin = User::factory()->create()->assignRole('admin');
+
+//     Storage::fake('public');
+//     Excel::fake();
+
+//     $file = UploadedFile::fake()->create('products.xlsx');
+
+//     $response = $this->actingAs($admin)
+//     ->post('products/imports', [
+//         'file' => $file,
+//     ]);
+
+//     Excel::assertQueued('products.xlsx', 'file');
+
+//     Excel::assertQueued(function (ProductsImport $import) {
+//         return true;
+//     });
+// }
+
+    //     Excel::assertQueuedImport(function (ProductsImport $import) {
+    //         return true;
+    //     });
+// $file = UploadedFile::fake()->create('products.xlsx');
+
+// $response = $this->post('products/imports', [
+        //     'file' => $file,
+// ]);
+
+// $response->assertSessionHas('success', 'Products successfully imported');
+
+// Excel::assertQueuedImport(new ProductsImport, function ($import) use ($file) {
+        //     return true;
+// return $import->getFile()->getPathname() === $file->getPathname();
+// });
+// }
 
 
 // public function testAdminCanImportProductsWithExcel(): void
@@ -73,4 +163,4 @@ class ProductImportControllerTest extends TestCase
 //         $this->assertDatabaseHas('products', $expected, 'id', $importedData[$index]->id);
 //     }
 // }
-}
+// }

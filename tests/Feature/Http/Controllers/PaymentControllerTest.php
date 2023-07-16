@@ -5,6 +5,8 @@ namespace Tests\Feature\Http\Controllers;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Order;
+use Illuminate\Http\Request;
+use App\Services\PlaceToPayPayment;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -43,4 +45,38 @@ class PaymentControllerTest extends TestCase
             'total' => $order->amount,
         ])->assertStatus(200);
     }
+
+    // public function testUserCanPay()
+    // {
+    //     $paymentService = new PlaceToPayPayment();
+    //     $request = new Request();
+    //     $order = Order::factory()->create();
+
+    //     $response = $paymentService->pay($request, $order);
+
+    //     $this->assertInstanceOf(HttpFoundationResponse::class, $response);
+    //     $this->assertEquals(302, $response->getStatusCode());
+    //     $this->assertNotNull($order->order_id);
+    //     $this->assertNotNull($order->url);
+    //     $this->assertStringContainsString($order->order_id, $response->headers->get('Location'));
+    // }
+
+    // public function testUserCanRedirectToPlacetopay()
+    // {
+    //     $user = User::factory()->create();
+
+    //     $this->actingAs($user);
+
+    //     $order = Order::factory()->create([
+    //         'user_id' => $user->getKey(),
+    //         'order_id' => 1213,
+    //         'url' => 'https://checkout-co.placetopay.dev/spa/session/1213/1234',
+    //         'amount' => 30000,
+    //             ], );
+
+    //     $response = $this->post(route('payments.process', $order->order_id));
+
+    //     $response->assertRedirect()
+    //         ->assertRedirectContains($order->url);
+    // }
 }

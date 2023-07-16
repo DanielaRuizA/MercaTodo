@@ -53,12 +53,12 @@ class ReportOrderController extends Controller
 
     //     return $export->download('invoices.xlsx');
     // }
-    public function ordersReportExport(ProductStoreRequest $request)
+    public function ordersReportExport(OrderReportRequest $request)
     {
         $path_file = 'reports/orders/orders_'.$request->validated()['time'].'.xlsx';
         (new OrdersReportExport($request->validated()))->queue($path_file);
 
-        return Redirect::route('orders.report.export')->with('success', 'Orders report generated.');
+        return Redirect::route('orders.report.table')->with('success', 'The Report Of Orders Was Generated Successfully.');
 
         // $filters = [
         //     'date1' => // Provide the start date,

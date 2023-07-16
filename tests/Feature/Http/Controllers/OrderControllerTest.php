@@ -2,19 +2,36 @@
 
 namespace Tests\Feature\Http\Controllers;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\User;
+use App\Models\Order;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia as InertiaAssert;
 
 class OrderControllerTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
-    public function test_example(): void
-    {
-        $response = $this->get('/');
+    use RefreshDatabase, WithFaker;
 
-        $response->assertStatus(302);
+
+    public function testUserCanSeeTheOrders()
+    {
+        Role::create(['name' => 'user']);
+
+        $user = User::factory()->create()->assignRole('user');
+
+        Order::factory()->count(5)->create(['user_id' => $user->id]);
+
+        $response = $this->actingAs($user)
+            ->get(route('orders.index'));
+
+        $response->assertStatus(200);
+
+        $response->assertInertia(
+            fn (InertiaAssert $page) =>
+                    $page->component('Orders/Index')
+        );
     }
 }

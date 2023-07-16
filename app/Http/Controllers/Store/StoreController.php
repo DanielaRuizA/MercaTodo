@@ -32,9 +32,4 @@ class StoreController extends Controller
     {
         return Inertia::render('Store/Show', compact('product'));
     }
-
-    public function edit(Product $product): Response
-    {
-        return Inertia::render('Store/Edit', compact('product'));
-    }
 }

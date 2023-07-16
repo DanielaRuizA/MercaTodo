@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
+use Inertia\Testing\AssertableInertia as InertiaAssert;
 
 class UserControllerTest extends TestCase
 {
@@ -224,5 +225,36 @@ class UserControllerTest extends TestCase
         $this->actingAs($admin)
             ->get("change/user/status/$user->id", $data)
             ->assertStatus(404);
+    }
+
+
+    public function testAdminCanSearch()
+    {
+        $roleAdmin = Role::create(['name' => 'admin']);
+
+        Permission::create(['name' => 'admin.users.index'])->assignRole($roleAdmin);
+
+        $admin = User::factory()->create()->assignRole('admin');
+
+        User::factory()->count(10)->create();
+
+        $response = $this->actingAs($admin)
+            ->get(route('users.index', ['search' => 'example']));
+
+        $response->assertStatus(200);
+        $response->assertInertia(
+            fn (InertiaAssert $page) =>
+                    $page->component('AdminPanel/Users/Index')
+                    ->has('users', 13)
+        );
+
+        $response = $this->actingAs($admin)
+            ->get(route('users.index'));
+
+        $response->assertStatus(200);
+        $response->assertInertia(
+            fn (InertiaAssert $page) =>
+                    $page->component('AdminPanel/Users/Index')
+        );
     }
 }
