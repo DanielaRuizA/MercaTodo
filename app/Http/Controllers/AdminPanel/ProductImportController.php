@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 use App\Imports\ProductsImport;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Http\RedirectResponse;
 use Maatwebsite\Excel\Validators\ValidationException;
+use Illuminate\Http\RedirectResponse;
 
 class ProductImportController extends Controller
 {

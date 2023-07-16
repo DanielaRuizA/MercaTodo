@@ -2,13 +2,18 @@
 
 namespace Tests\Feature\Http\Controllers\Store;
 
-use App\Models\Product;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 use Tests\TestCase;
+use App\Models\User;
+use App\Models\Product;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Http\Controllers\AdminPanel\ProductController;
+use Inertia\Testing\Assert;
+use Inertia\Testing\AssertableInertia;
 
 class StoreControllerTest extends TestCase
 {
@@ -85,4 +90,23 @@ class StoreControllerTest extends TestCase
             ->assertSee($product->precio)
             ->assertSee($product->imagen);
     }
+
+public function testStoreIndexSearch()
+{
+    $roleUser = Role::create(['name' => 'user']);
+    Permission::create(['name' => 'admin.store.index'])->assignRole($roleUser);
+    $user = User::factory()->create()->assignRole('user');
+
+    Product::factory()->create();
+
+    $response = $this->actingAs($user)
+        ->get('/stores?q=Product')
+        ->assertStatus(200);
+
+    $response->assertInertia(
+        fn (AssertableInertia $page) => $page
+            ->component('Store/Index')
+            ->has('products')
+    );
+}
 }

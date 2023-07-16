@@ -41,11 +41,6 @@ class PaymentController extends Controller
             $product->decrement('quantity', $item->qty);
         }
 
-        // foreach (Cart::instance('default')->content() as $item) {
-        //     $product = Product::find($item->model->id);
-        //     $order->products()->attach($product, ['quantity' => $item->qty, 'unit_price'=>$item->price]);
-        // }
-
         $paymentService->pay($request, $order);
 
         Cart::instance('default')->destroy();
