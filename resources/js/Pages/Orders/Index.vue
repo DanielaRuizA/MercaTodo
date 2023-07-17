@@ -66,7 +66,7 @@ export default {
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200 divide-solid">
-                            <tr v-for="order in orders" :key="order.id">
+                            <tr v-for="order in orders">
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                     {{ order.id }}
                                 </td>
