@@ -140,10 +140,9 @@ PlaceToPay https://docs-gateway.placetopay.com/
 
 
 ### PlaceToPay Payment Service
->PLACETOPAY_LOGIN
->PLACETOPAY_TRANKEY
->PLACETOPAY_URl
-
+>PLACETOPAY_LOGIN  
+>PLACETOPAY_TRANKEY  
+>PLACETOPAY_URl  
 
 ## Task Scheduling
 th command scheduler offers a fresh approach to managing scheduled in this app.
