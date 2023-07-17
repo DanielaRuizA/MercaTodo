@@ -132,7 +132,7 @@ PlaceToPay https://docs-gateway.placetopay.com/
 
 ### Mail Configuration 
 >MAIL_MAILER 
->MAIL_HOST  
+>MAIL_HOST
 >MAIL_PORT
 >MAIL_USERNAME  
 >MAIL_PASSWORD  
