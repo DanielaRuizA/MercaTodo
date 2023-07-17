@@ -131,13 +131,12 @@ PlaceToPay https://docs-gateway.placetopay.com/
 >DB_PASSWORD
 
 ### Mail Configuration 
->MAIL_MAILER
->MAIL_HOST
->MAIL_PORT
+>MAIL_MAILER 
+>MAIL_HOST  
+>MAIL_PORT  
 >MAIL_USERNAME
->MAIL_PASSWORD
+>MAIL_PASSWORD 
 >MAIL_ENCRYPTION
-
 
 ### PlaceToPay Payment Service
 >PLACETOPAY_LOGIN  
