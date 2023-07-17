@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\QueryBuilders\OrderQueryBuilder;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
@@ -16,13 +16,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $id
  * @property string $amount
  * @property string $status
+ *
  * @method static Order where(...$parameters)
  * @method static Order latest(...$parameters)
  * @method Order canceled(...$parameters)
- *
  */
-
-
 class Order extends Model
 {
     use HasFactory;
@@ -44,11 +42,7 @@ class Order extends Model
         'currency' => 'string',
         'status' => 'string',
         'created_at' => 'datetime:Y-m-d H:i:s',
-        // 'created_at' => 'datetime:d-m-Y H:i:s',
-        // 'created_at' => 'datetime:d-m-Y',
-        // 'updated_at' => 'datetime:d-m-Y'
-        // 'updated_at' => 'datetime:d-m-Y H:i:s'
-        'updated_at' => 'datetime:Y-m-d H:i:s'
+        'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
 
     public function newEloquentBuilder($query): OrderQueryBuilder

@@ -7,8 +7,6 @@ const props = defineProps({
     product: Object
 })
 
-// const showImage = () => "/storage/"
-
 function showImage(image) {
     if (image.startsWith('http')) {
         return image;
@@ -38,12 +36,6 @@ const destroy = (id) => {
         }
     });
 };
-
-// const destroy = (id) => {
-//     if (confirm('¿Desea Eliminar?')) {
-//         Inertia.delete(route('products.destroy', id))
-//     }
-// }
 
 </script>
 

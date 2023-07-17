@@ -4,12 +4,11 @@ namespace App\Jobs;
 
 use App\Models\Product;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 
 class ProductExportJob implements ShouldQueue
 {
@@ -37,8 +36,7 @@ class ProductExportJob implements ShouldQueue
             'quantity',
             'product_photo',
         ];
-        
-        //  $fileName = sprintf("exports/%s.csv", Str::uuid()->serialize());
+
         $fileName = 'exports/products.csv';
         $this->createFile($fileName);
         $file = $this->openFile($fileName);
@@ -47,7 +45,7 @@ class ProductExportJob implements ShouldQueue
         Product::chunk(1000, function ($products) use ($file) {
             foreach ($products as $product) {
                 fputcsv($file, [
-                    'id'=> $product->id,
+                    'id' => $product->id,
                     'name' => $product->name,
                     'description' => $product->description,
                     'status' => $product->status,
@@ -63,11 +61,11 @@ class ProductExportJob implements ShouldQueue
 
     private function createFile(string $fileName): void
     {
-        Storage::disk(config()->get('filesystem.default'))->put($fileName, "");
+        Storage::disk(config()->get('filesystem.default'))->put($fileName, '');
     }
 
     private function openFile(string $fileName)
     {
-        return fopen(Storage::disk(config()->get('filesystem.default'))->path($fileName), "w");
+        return fopen(Storage::disk(config()->get('filesystem.default'))->path($fileName), 'w');
     }
 }

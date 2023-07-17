@@ -2,12 +2,10 @@
 
 namespace Tests\Feature\Http\Controllers\Api\V1\Auth;
 
-use Tests\TestCase;
 use App\Models\User;
-use Laravel\Sanctum\Sanctum;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Laravel\Sanctum\Sanctum;
+use Tests\TestCase;
 
 class ProfileControllerTest extends TestCase
 {

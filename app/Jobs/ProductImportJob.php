@@ -2,14 +2,14 @@
 
 namespace App\Jobs;
 
-use App\Models\User;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 
 class ProductImportJob implements ShouldQueue
 {
@@ -24,8 +24,6 @@ class ProductImportJob implements ShouldQueue
         'quantity' => 5,
         'product_photo' => 6,
     ];
-
-
 
     public function __construct(private readonly string $pathFile, private readonly User $user)
     {

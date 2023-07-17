@@ -2,9 +2,8 @@
 
 namespace App\QueryBuilders;
 
-use Illuminate\Database\Eloquent\Builder;
 use App\Models\Order;
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 
 class OrderQueryBuilder extends Builder
 {

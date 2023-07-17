@@ -71,28 +71,8 @@ const generateReport = () => {
         time: time,
     });
 }
-
-// const openDownloadDialog = () => {
-//     let time = Math.floor(new Date().getTime() / 1000);
-//     time = time.toString();
-
-//     const url = route('orders.report.export', {
-//         date1: date1.value,
-//         date2: date2.value,
-//         orderStatus: orderStatus.value,
-//         minAmount: minAmount.value,
-//         maxAmount: maxAmount.value,
-//         time: time,
-//     });
-
-//     window.open(url, '_blank');
-// }
-
-// const generateReport = () => {
-//     openDownloadDialog();
-// }
-
 </script>
+
 <template>
     <AppLayout title="Reporte De Pedidos">
 
@@ -137,7 +117,8 @@ const generateReport = () => {
                                     class="px-2 py-[10px] w-32 bg-transparent text-black  border border-gray-400 rounded-md">
                                 <input v-model="maxAmount" type="number" placeholder="Valor Max."
                                     class="px-2 py-[10px] w-32 bg-transparent text-black border border-gray-400 rounded-md">
-                                <button @click="generateReport()" class="col-span-1">
+                                <button @click="generateReport()"
+                                    class="col-span-1 rounded-md px-4 py-2 bg-blue-500 text-center font-semibold uppercase text-white">
                                     Generar reporte de ordenes
                                 </button>
                             </div>
@@ -214,9 +195,6 @@ const generateReport = () => {
                         </tbody>
                     </table>
                 </div>
-                <!-- <div>
-                    <pagination class="mt-6" :links="orders.links" />
-                </div> -->
             </section>
         </body>
     </AppLayout>

@@ -3,12 +3,11 @@
 namespace Tests\Feature\Http\Controllers\Api\V1\Product;
 
 use App\Models\Product;
-use Tests\TestCase;
 use App\Models\User;
-use Laravel\Sanctum\Sanctum;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Testing\Fluent\AssertableJson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Testing\Fluent\AssertableJson;
+use Laravel\Sanctum\Sanctum;
+use Tests\TestCase;
 
 class ProductApiControllerTest extends TestCase
 {
@@ -19,7 +18,6 @@ class ProductApiControllerTest extends TestCase
     public function testCantCallIndexProductsIfIsNotUnauthenticated(): void
     {
         /** @var Product $product */
-
         Product::factory(10)->create();
 
         $this->getJson(route('api.products.index'))
@@ -29,7 +27,6 @@ class ProductApiControllerTest extends TestCase
     public function testUserAuthenticatedCanCallIndexProducts(): void
     {
         /** @var Product $product */
-
         $this->user = User::factory()->create();
 
         Sanctum::actingAs($this->user);
@@ -56,7 +53,6 @@ class ProductApiControllerTest extends TestCase
     public function testCantStoreProductsIfIsNotUnauthenticated(): void
     {
         /** @var Product $product */
-
         $product = Product::factory()->make();
 
         $this->postJson(route('api.products.store'), [
@@ -66,7 +62,7 @@ class ProductApiControllerTest extends TestCase
             'quantity' => $product->quantity,
             'product_photo' => $product->product_photo,
         ])->assertUnauthorized()
-            ->assertJson(function (AssertableJson $json) use ($product) {
+            ->assertJson(function (AssertableJson $json) {
                 $json->where('message', 'Unauthenticated.');
             });
 
@@ -82,7 +78,6 @@ class ProductApiControllerTest extends TestCase
     public function testUserAuthenticatedCanStoreProducts(): void
     {
         /** @var Product $product */
-
         $this->user = User::factory()->create();
 
         Sanctum::actingAs($this->user);
@@ -92,7 +87,7 @@ class ProductApiControllerTest extends TestCase
         $this->postJson(route('api.products.store'), [
             'name' => $product->name,
             'description' => $product->description,
-            'status'=> 'Active',
+            'status' => 'Active',
             'price' => $product->price,
             'quantity' => $product->quantity,
             'product_photo' => $product->product_photo,
@@ -115,7 +110,7 @@ class ProductApiControllerTest extends TestCase
         $this->assertDatabaseHas('products', [
             'name' => $product->name,
             'description' => $product->description,
-            'status'=> 'Active',
+            'status' => 'Active',
             'price' => $product->price,
             'quantity' => $product->quantity,
             'product_photo' => $product->product_photo,
@@ -125,7 +120,6 @@ class ProductApiControllerTest extends TestCase
     public function testCanShowProductIfIsNotUnauthenticated(): void
     {
         /** @var Product $product */
-
         $product = Product::factory()->create();
 
         $this->getJson(route('api.products.show', $product->id))
@@ -135,11 +129,9 @@ class ProductApiControllerTest extends TestCase
     public function testUserAuthenticatedCanShowProduct(): void
     {
         /** @var Product $product */
-
         $this->user = User::factory()->create();
 
         Sanctum::actingAs($this->user);
-
 
         $product = Product::factory()->create();
 
@@ -163,7 +155,6 @@ class ProductApiControllerTest extends TestCase
     public function testCantUpdateIfIsNotUnauthenticated(): void
     {
         /** @var Product $product */
-
         $product = Product::factory()->create();
 
         $this->putJson(route('api.products.update', $product->id), [
@@ -189,7 +180,6 @@ class ProductApiControllerTest extends TestCase
     public function testUserAuthenticatedCanUpdate(): void
     {
         /** @var Product $product */
-
         $this->user = User::factory()->create();
 
         Sanctum::actingAs($this->user);
@@ -199,28 +189,28 @@ class ProductApiControllerTest extends TestCase
         $this->putJson(route('api.products.update', $product->id), [
             'name' => 'Name',
             'description' => 'description',
-            'status'=> 'Active',
+            'status' => 'Active',
             'price' => 2000,
             'quantity' => 10,
             'product_photo' => 'images/icecream.jpg',
         ])->assertOk()
-        ->assertJson(function (AssertableJson $json) {
-            $json->where('message', 'the product was updated successfully')
-                ->has('data', function ($json) {
-                    $json->where('id', 1)
-                        ->where('name', 'Name')
-                        ->where('description', 'description')
-                        ->where('status', 'Active')
-                        ->where('price', 2000)
-                        ->where('quantity', 10)
-                        ->etc();
-                });
-        });
+            ->assertJson(function (AssertableJson $json) {
+                $json->where('message', 'the product was updated successfully')
+                    ->has('data', function ($json) {
+                        $json->where('id', 1)
+                            ->where('name', 'Name')
+                            ->where('description', 'description')
+                            ->where('status', 'Active')
+                            ->where('price', 2000)
+                            ->where('quantity', 10)
+                            ->etc();
+                    });
+            });
 
         $this->assertDatabaseHas('products', [
             'name' => 'Name',
             'description' => 'description',
-            'status'=> 'Active',
+            'status' => 'Active',
             'price' => 2000,
             'quantity' => 10,
             'product_photo' => 'images/icecream.jpg',
@@ -230,9 +220,7 @@ class ProductApiControllerTest extends TestCase
     public function testCantDestroyIfIsNotUnauthenticated(): void
     {
         /** @var Product $product */
-
         $product = Product::factory()->create();
-
 
         $this->deleteJson(route('api.products.destroy', $product->id))
             ->assertUnauthorized()
@@ -252,13 +240,11 @@ class ProductApiControllerTest extends TestCase
     public function testUserAuthenticatedCanDestroy(): void
     {
         /** @var Product $product */
-
         $this->user = User::factory()->create();
 
         Sanctum::actingAs($this->user);
 
         $product = Product::factory()->create();
-
 
         $this->deleteJson(route('api.products.destroy', $product->id))
             ->assertOk()

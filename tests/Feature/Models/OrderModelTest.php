@@ -2,21 +2,17 @@
 
 namespace Tests\Feature\Models;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Order;
 use App\Models\Product;
-use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Storage;
-use Spatie\Permission\Models\Permission;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class OrderModelTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testOrderBelongsToUser()
+    public function testOrderBelongsToUser(): void
     {
         $user = User::factory()->create();
         $order = Order::factory()->create(['user_id' => $user->id]);
@@ -25,7 +21,7 @@ class OrderModelTest extends TestCase
         $this->assertEquals($user->id, $order->user->id);
     }
 
-    public function testProductsRelationship()
+    public function testProductsRelationship(): void
     {
         $order = Order::factory()->create();
         $product1 = Product::factory()->create();

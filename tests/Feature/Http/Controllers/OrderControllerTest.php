@@ -2,21 +2,19 @@
 
 namespace Tests\Feature\Http\Controllers;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Order;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Inertia\Testing\AssertableInertia as InertiaAssert;
+use Spatie\Permission\Models\Role;
+use Tests\TestCase;
 
 class OrderControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
-
-    public function testUserCanSeeTheOrders()
+    public function testUserCanSeeTheOrders(): void
     {
         Role::create(['name' => 'user']);
 
@@ -30,8 +28,7 @@ class OrderControllerTest extends TestCase
         $response->assertStatus(200);
 
         $response->assertInertia(
-            fn (InertiaAssert $page) =>
-                    $page->component('Orders/Index')
+            fn (InertiaAssert $page) => $page->component('Orders/Index')
         );
     }
 }

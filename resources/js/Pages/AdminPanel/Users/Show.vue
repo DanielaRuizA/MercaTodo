@@ -34,12 +34,6 @@ export default {
             });
         }
         return { destroy };
-        // const destroy = (id) => {
-        //     if (confirm('¿Desea Eliminar?')) {
-        //         Inertia.delete(route('users.destroy', id))
-        //     }
-        // }
-        // return { destroy }
     },
     computed: {
         status() {

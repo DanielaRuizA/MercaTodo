@@ -223,7 +223,7 @@ class ProductControllerTest extends TestCase
         ]);
 
         $response->assertJson([
-            'success' => 'Status change successfully.'
+            'success' => 'Status change successfully.',
         ]);
     }
 

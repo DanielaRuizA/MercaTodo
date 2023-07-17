@@ -13,11 +13,7 @@
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
-    <li>
-      <ul>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
+    <li><a href="#installation">Installation</a></li>
     <li><a href="#Login">Login</a></li>
     <li><a href="#Env-file">Env file</a></li>
     <li><a href="#Task-Scheduling">Task Scheduling</a></li>
@@ -35,15 +31,15 @@ MercaTodo is a E-commerce for the Bootcamp Evertec 2023, this project is made wi
 
 * [![Vue][Vue.js]][Vue-url]  version 3.2.31
 * [![Laravel][Laravel.com]][Laravel-url] version 10.0
-* [![PHP][php.net]][PHP-url] version 8.1.12
-* [![Inertiajs][inertiajs.com]][Inertiajs-url] version 0.6.8
-* [![Vitejs][vitejs.dev]][Vitejs-url] version 4.0.0
-* [![Tailwindcss][tailwindcss.com]][Tailwindcss-url] version 3.1.0
+* PHP  version 8.1.12
+* Inertiajs  version 0.6.8
+* Vitejs version 4.0.0
+* Tailwindcss version 3.1.0
 
 
 ## Installation
 
-In order to run the application, you must do the following:
+the order to run the application, you must do the following:
 
 1. Clone the repository with 
 
@@ -51,7 +47,7 @@ In order to run the application, you must do the following:
 git clone https://github.com/DanielaRuizA/MercaTodo.git.
 ```
 
-2. CD (Change Directory) 
+2. CD for change the directory 
 
 ```sh
 cd MercaTodo
@@ -123,6 +119,8 @@ php artisan serve
 ## .Env file
 
 The .env file contains the configuration of the application. It is important to configure this file for a excellent app performance.
+mail This app use https://mailtrap.io
+PlaceToPay https://docs-gateway.placetopay.com/
 
 ### Database Connection
 >DB_CONNECTION  
@@ -133,8 +131,6 @@ The .env file contains the configuration of the application. It is important to 
 >DB_PASSWORD
 
 ### Mail Configuration 
-This app use https://mailtrap.io
-
 >MAIL_MAILER
 >MAIL_HOST
 >MAIL_PORT
@@ -142,9 +138,8 @@ This app use https://mailtrap.io
 >MAIL_PASSWORD
 >MAIL_ENCRYPTION
 
-### PlaceToPay Payment Service
-https://docs-gateway.placetopay.com/
 
+### PlaceToPay Payment Service
 >PLACETOPAY_LOGIN
 >PLACETOPAY_TRANKEY
 >PLACETOPAY_URl

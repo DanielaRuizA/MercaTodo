@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\AdminPanel;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProductUpdateRequest extends FormRequest

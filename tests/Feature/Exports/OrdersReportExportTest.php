@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Exports;
 
-use Tests\TestCase;
 use App\Exports\OrdersReportExport;
-use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Maatwebsite\Excel\Facades\Excel;
+use Tests\TestCase;
 
 class OrdersReportExportTest extends TestCase
 {

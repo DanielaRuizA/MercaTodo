@@ -3,7 +3,6 @@
 namespace App\Domain\Order;
 
 use App\Models\Order;
-use Gloudemans\Shoppingcart\CartItem;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderCreateAction

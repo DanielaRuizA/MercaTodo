@@ -2,46 +2,20 @@
 
 namespace Tests\Feature\Http\Controllers\AdminPanel;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Order;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia as Assert;
 use Maatwebsite\Excel\Facades\Excel;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use Tests\TestCase;
 
 class ReportOrderControllerTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
-    // public function setUp(): void
-    // {
-    // parent::setUp();
-
-    // Storage::fake('public');
-
-    // $roleAdmin = Role::create(['name' => 'admin']);
-
-    // Permission::create(['name' => 'admin.products.edit'])->assignRole($roleAdmin);
-
-    // $admin = User::factory()->create()->assignRole('admin');
-
-    // $users = User::factory()->create();
-
-    // $order = Order::factory()->create;
-
-    // $order = Order::factory()->create([
-    //     'code' => '123abc',
-    //     'user_id' => $this->user_client->id,
-    //     'purchase_date' => '2023-07-01 12:00:00',
-    //     'purchase_total' => '500000',
-    // ]);
-
-
-    // $response = $this->actingAs($admin);
-    // }
 
     public function testAdminCanSearchWithFilters(): void
     {
@@ -61,9 +35,8 @@ class ReportOrderControllerTest extends TestCase
         ]);
 
         $response = $this->actingAs($admin)
-            ->get('/orders/report?date1=&date2=&' . 'orderStatus=PENDING&minAmount=1000000&maxAmount=2000000');
+            ->get('/orders/report?date1=&date2=&'.'orderStatus=PENDING&minAmount=1000000&maxAmount=2000000');
 
-        // 127.0.0.1:8000/orders/report?date1=&date2=&orderStatus=PENDING&minAmount=1000000&maxAmount=2000000
         $response->assertStatus(200)->assertInertia(
             fn (Assert $page) => $page
                 ->component('AdminPanel/Reports/Orders/Table')
@@ -83,11 +56,11 @@ class ReportOrderControllerTest extends TestCase
 
         User::factory()->create();
 
-        $order=Order::factory()->create([]);
+        $order = Order::factory()->create([]);
 
         $response = $this->actingAs($admin)
-            ->get('/orders/report?date1='. $order->created_at. '&date2=' . $order->created_at);
-        // /orders/report?date1=14-07-2023&date2=14-07-2023
+            ->get('/orders/report?date1='.$order->created_at.'&date2='.$order->created_at);
+
         $response->assertStatus(200)->assertInertia(
             fn (Assert $page) => $page
                 ->component('AdminPanel/Reports/Orders/Table')
@@ -107,11 +80,11 @@ class ReportOrderControllerTest extends TestCase
 
         User::factory()->create();
 
-        $order=Order::factory()->create([]);
+        $order = Order::factory()->create([]);
 
         $response = $this->actingAs($admin)
-            ->get('/orders/report?date1='. $order->created_at);
-        // /orders/report?date1=14-07-2023&date2=14-07-2023
+            ->get('/orders/report?date1='.$order->created_at);
+
         $response->assertStatus(200)->assertInertia(
             fn (Assert $page) => $page
                 ->component('AdminPanel/Reports/Orders/Table')
@@ -131,11 +104,11 @@ class ReportOrderControllerTest extends TestCase
 
         User::factory()->create();
 
-        $order=Order::factory()->create([]);
+        $order = Order::factory()->create([]);
 
         $response = $this->actingAs($admin)
-            ->get('/orders/report?date1=&date2=' . $order->created_at);
-        // /orders/report?date1=14-07-2023&date2=14-07-2023
+            ->get('/orders/report?date1=&date2='.$order->created_at);
+
         $response->assertStatus(200)->assertInertia(
             fn (Assert $page) => $page
                 ->component('AdminPanel/Reports/Orders/Table')
@@ -155,19 +128,17 @@ class ReportOrderControllerTest extends TestCase
 
         User::factory()->create();
 
-        $order=Order::factory()->create([]);
+        $order = Order::factory()->create([]);
 
         $response = $this->actingAs($admin)
             ->get('orders/report?minAmount='.$order->amount.'&maxAmount='.$order->amount);
 
-        //http://127.0.0.1:8000/orders/report?minAmount=1000000&maxAmount=2000000
-
         $response->assertStatus(200)->assertInertia(
             fn (Assert $page) => $page
-                -> component('AdminPanel/Reports/Orders/Table')
-                -> has('filters')
-                -> has('orders', )
-                -> has('success')
+                ->component('AdminPanel/Reports/Orders/Table')
+                ->has('filters')
+                ->has('orders')
+                ->has('success')
         );
     }
 
@@ -181,19 +152,17 @@ class ReportOrderControllerTest extends TestCase
 
         User::factory()->create();
 
-        $order=Order::factory()->create([]);
+        $order = Order::factory()->create([]);
 
         $response = $this->actingAs($admin)
             ->get('orders/report?minAmount='.$order->amount);
 
-        //http://127.0.0.1:8000/orders/report?minAmount=1000000&maxAmount=2000000
-
         $response->assertStatus(200)->assertInertia(
             fn (Assert $page) => $page
-                -> component('AdminPanel/Reports/Orders/Table')
-                -> has('filters')
-                -> has('orders', )
-                -> has('success')
+                ->component('AdminPanel/Reports/Orders/Table')
+                ->has('filters')
+                ->has('orders')
+                ->has('success')
         );
     }
 
@@ -207,19 +176,17 @@ class ReportOrderControllerTest extends TestCase
 
         User::factory()->create();
 
-        $order=Order::factory()->create([]);
+        $order = Order::factory()->create([]);
 
         $response = $this->actingAs($admin)
             ->get('orders/report?minAmount=&maxAmount='.$order->amount);
 
-        //http://127.0.0.1:8000/orders/report?minAmount=1000000&maxAmount=2000000
-
         $response->assertStatus(200)->assertInertia(
             fn (Assert $page) => $page
-                -> component('AdminPanel/Reports/Orders/Table')
-                -> has('filters')
-                -> has('orders', )
-                -> has('success')
+                ->component('AdminPanel/Reports/Orders/Table')
+                ->has('filters')
+                ->has('orders')
+                ->has('success')
         );
     }
 
@@ -251,7 +218,7 @@ class ReportOrderControllerTest extends TestCase
                 'time' => $time,
             ]);
 
-        Excel::assertQueued('reports/orders/orders_' . $time . '.xlsx');
+        Excel::assertQueued('reports/orders/orders_'.$time.'.xlsx');
 
         $response->assertRedirect(route('orders.report.table'))
             ->assertSessionHasAll(['success' => 'The Report Of Orders Was Generated Successfully.']);

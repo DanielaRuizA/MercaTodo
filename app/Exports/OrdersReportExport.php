@@ -3,9 +3,8 @@
 namespace App\Exports;
 
 use App\Models\Order;
-use App\Invoice;
-use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromQuery;
 
 class OrdersReportExport implements FromQuery
 {
@@ -21,16 +20,16 @@ class OrdersReportExport implements FromQuery
     public function query()
     {
         return Order::query()
-            -> whereDateOrder(
+            ->whereDateOrder(
                 isset($this->filters['date1']) ? $this->filters['date1'] : null,
                 isset($this->filters['date2']) ? $this->filters['date2'] : null,
             )
-            -> whereOrderStatus(isset($this->filters['orderStatus']) ? $this->filters['orderStatus'] : null)
-            -> whereOrderAmount(
+            ->whereOrderStatus(isset($this->filters['orderStatus']) ? $this->filters['orderStatus'] : null)
+            ->whereOrderAmount(
                 isset($this->filters['minAmount']) ? $this->filters['minAmount'] : null,
                 isset($this->filters['maxAmount']) ? $this->filters['maxAmount'] : null,
             )
-            -> select(
+            ->select(
                 'orders.id',
                 'orders.order_id',
                 'orders.created_at',
@@ -41,7 +40,7 @@ class OrdersReportExport implements FromQuery
                 'users.name',
                 'users.email'
             )
-            -> orderByDesc('orders.created_at')
-            -> join('users', 'orders.user_id', 'users.id');
+            ->orderByDesc('orders.created_at')
+            ->join('users', 'orders.user_id', 'users.id');
     }
 }

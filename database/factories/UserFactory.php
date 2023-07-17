@@ -10,9 +10,7 @@ use Laravel\Jetstream\Features;
 
 /**
  * * @method static UserFactory factory(...$parameters)
-*/
-
-
+ */
 class UserFactory extends Factory
 {
     /**

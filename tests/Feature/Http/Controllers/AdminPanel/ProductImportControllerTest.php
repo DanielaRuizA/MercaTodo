@@ -2,20 +2,16 @@
 
 namespace Tests\Feature\Http\Controllers\AdminPanel;
 
-use Tests\TestCase;
 use App\Models\User;
-use App\Imports\ProductsImport;
-use Illuminate\Http\UploadedFile;
-use Spatie\Permission\Models\Role;
-use Maatwebsite\Excel\Facades\Excel;
-use Maatwebsite\Excel\Validators\ValidationException;
-use Maatwebsite\Excel\Jobs\PendingDispatch;
-use Maatwebsite\Excel\Jobs\ProcessImport;
-use Illuminate\Support\Facades\Storage;
-use Spatie\Permission\Models\Permission;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia as InertiaAssert;
+use Maatwebsite\Excel\Facades\Excel;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use Tests\TestCase;
 
 class ProductImportControllerTest extends TestCase
 {
@@ -31,18 +27,17 @@ class ProductImportControllerTest extends TestCase
         $admin = User::factory()->create()->assignRole('admin');
 
         $response = $this->actingAs($admin);
-        
+
         $response = $this->get(route('products.show.imports'));
 
         $response->assertStatus(200);
 
         $response->assertInertia(
-            fn (InertiaAssert $page) =>
-                    $page->component('AdminPanel/Products/Import')
+            fn (InertiaAssert $page) => $page->component('AdminPanel/Products/Import')
         );
     }
 
-public function testImportingCVSProductSuccessfully()
+public function testImportingCVSProductSuccessfully(): void
 {
     $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -51,7 +46,7 @@ public function testImportingCVSProductSuccessfully()
     $admin = User::factory()->create()->assignRole('admin');
 
     $response = $this->actingAs($admin);
-        
+
     Storage::fake('public');
 
     Excel::fake();
@@ -67,7 +62,7 @@ public function testImportingCVSProductSuccessfully()
     $response->assertSessionMissing('import_errors');
 }
 
-public function testImportingXlsxProductsSuccessfully()
+public function testImportingXlsxProductsSuccessfully(): void
 {
     $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -78,7 +73,7 @@ public function testImportingXlsxProductsSuccessfully()
     Storage::fake('public');
 
     Excel::fake();
-    
+
     $response = $this->actingAs($admin);
 
     $file = UploadedFile::fake()->create('products.xlsx');
@@ -92,7 +87,7 @@ public function testImportingXlsxProductsSuccessfully()
     $response->assertSessionMissing('import_errors');
 }
 
-public function testImportingProductsFileDeniedFormats()
+public function testImportingProductsFileDeniedFormats(): void
 {
     $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -103,7 +98,7 @@ public function testImportingProductsFileDeniedFormats()
     Storage::fake('public');
 
     Excel::fake();
-    
+
     $response = $this->actingAs($admin);
 
     $file = UploadedFile::fake()->create('products.pdf');
@@ -115,7 +110,7 @@ public function testImportingProductsFileDeniedFormats()
     $response->assertSessionHasErrors();
 }
 
-public function testImportingProductsFileUploadFailure()
+public function testImportingProductsFileUploadFailure(): void
 {
     $roleAdmin = Role::create(['name' => 'admin']);
 

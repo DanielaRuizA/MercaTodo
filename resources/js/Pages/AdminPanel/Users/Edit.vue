@@ -63,11 +63,6 @@ export default {
             });
         }
     },
-    // destroy() {
-    //     if (confirm('¿Desea Eliminar?')) {
-    //         this.$inertia.delete(this.route('users.destroy', this.user.id))
-    //     }
-    // },
     updateStatus(user) {
         const status = (user.status === 'Active') ? 'Inactive' : 'Active';
         axios.get('/change/user/status', {

@@ -40,7 +40,6 @@ export default {
                             </a>
                         </div>
                     </nav>
-                    <!-- <div>{{ orders }}</div> -->
                     <table class="mt-4 min-w-full divide-y divide-gray-200 border">
                         <thead class="text-base font-semibold text-black-500 uppercase bg-gray-50">
                             <tr>
@@ -75,7 +74,6 @@ export default {
                                     {{ order.order_id }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                    <!-- {{ Date(order.created_at) }} -->
                                     {{ order.created_at }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">

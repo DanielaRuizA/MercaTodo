@@ -2,24 +2,24 @@
 
 namespace Tests\Feature\Commands\Commands;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Order;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use Tests\TestCase;
 
 class ConsultSessionTest extends TestCase
 {
     use RefreshDatabase;
 
     private Order $order;
-    private User $user;
-    private array $mockResponse;
 
+    private User $user;
+
+    private array $mockResponse;
 
     public function setUp(): void
     {
@@ -47,12 +47,12 @@ class ConsultSessionTest extends TestCase
         ]);
 
         $this->mockResponse = [
-            "requestId" => 0000,
-            "status" => [
-                "status" => "APPROVED",
-                "reason" => "00",
-                "message" => "La Transacción ha sido aprobada exitosamente",
-                "date" => "2023-07-05T14:50:01-05:00"
+            'requestId' => 0000,
+            'status' => [
+                'status' => 'APPROVED',
+                'reason' => '00',
+                'message' => 'La Transacción ha sido aprobada exitosamente',
+                'date' => '2023-07-05T14:50:01-05:00',
             ],
             'payment' => [
                 0 => [
@@ -60,11 +60,11 @@ class ConsultSessionTest extends TestCase
                     'description' => 'Transacción a Mercatodo',
                     'amount' => [
                         'currency' => 'COP',
-                            'total' => $this->order->amount,
-                        ]
-                    ]
-                ]
-            ];
+                        'total' => $this->order->amount,
+                    ],
+                ],
+            ],
+        ];
     }
 
     public function testExecuteCommandSchedule(): void
@@ -95,21 +95,21 @@ class ConsultSessionTest extends TestCase
     public function testExecuteCommandConsultSessionChangeStatusCanceled(): void
     {
         $mockResponsePaymentCanceled = [
-            "requestId" => 0000,
-            "status" => [
-                "status" => "REJECTED",
-                "reason" => "CD",
-                "message" => "La Transacción se encuentra cancelada",
-                "date" => "2023-07-05T14:50:01-05:00"
+            'requestId' => 0000,
+            'status' => [
+                'status' => 'REJECTED',
+                'reason' => 'CD',
+                'message' => 'La Transacción se encuentra cancelada',
+                'date' => '2023-07-05T14:50:01-05:00',
             ],
-            "payment" => [
+            'payment' => [
                 0 => [
-                    "status" => [
-                        "status" => "REJECTED",
-                        "message" => "La Transacción fue cancelada ",
-                    ]
-                ]
-            ]
+                    'status' => [
+                        'status' => 'REJECTED',
+                        'message' => 'La Transacción fue cancelada ',
+                    ],
+                ],
+            ],
         ];
 
         Http::fake([config('placetopay.url').'/*' => Http::response($mockResponsePaymentCanceled)]);

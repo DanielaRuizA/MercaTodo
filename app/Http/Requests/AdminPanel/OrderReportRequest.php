@@ -22,10 +22,10 @@ class OrderReportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'date_1' =>'nullable|date',
+            'date_1' => 'nullable|date',
             'date_2' => 'nullable|date',
-            'orderStatus' =>'nullable|string',
-            'minAmount' =>'nullable|integer',
+            'orderStatus' => 'nullable|string',
+            'minAmount' => 'nullable|integer',
             'maxAmount' => 'nullable|integer',
             'time' => 'required|string',
         ];
