@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id();
+            $table->id()->uniqid();
             $table->string('name')->nullable();
             $table->longText('description')->nullable();
-            $table->boolean('status')->default(0);
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->integer('price')->nullable();
             $table->integer('quantity')->nullable();
             $table->string('product_photo')->nullable();

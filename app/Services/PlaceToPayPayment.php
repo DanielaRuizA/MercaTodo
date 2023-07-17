@@ -3,11 +3,10 @@
 namespace App\Services;
 
 use App\Contracts\PaymentInterface;
-use App\Domain\Order\OrderCreateAction;
 use App\Domain\Order\OrderGetLastAction;
 use App\Domain\Order\OrderUpdateAction;
+use App\Models\Order;
 use Carbon\Carbon;
-use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -19,14 +18,12 @@ use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 class PlaceToPayPayment implements PaymentInterface
 {
-    public function pay(Request $request): HttpFoundationResponse
+    public function pay(Request $request, Order $order): HttpFoundationResponse
     {
         Log::info('[PAY]: Pago con PlaceToPay');
 
-        $order = OrderCreateAction::execute($request->all());
-
         $result = Http::post(
-            config('placetopay.url').config('placetopay.route.api'),
+            config('placetopay.url').'/api/session/',
             $this->createSession($order, $request->ip(), $request->userAgent())
         );
 
@@ -36,15 +33,13 @@ class PlaceToPayPayment implements PaymentInterface
 
             OrderUpdateAction::execute($order);
 
-            Cart::instance('default')->destroy();
-
             return Inertia::location($order->url)->send();
         }
 
         throw new \Exception($result->body());
     }
 
-    public function sendNotification()
+    public function sendNotification(): void
     {
         Log::info('[PAY]: Enviamos la notificacion PlaceToPay');
     }
@@ -68,7 +63,8 @@ class PlaceToPayPayment implements PaymentInterface
                 ],
             ],
             'expiration' => Carbon::now()->addHour(),
-            'returnUrl' => route('payments.processResponse'),
+            'returnUrl' => route('payments.process.response'),
+            'cancelUrl' => route('payments.process.response'),
             'ipAddress' => $ipAddress,
             'userAgent' => $userAgent,
         ];
@@ -93,27 +89,27 @@ class PlaceToPayPayment implements PaymentInterface
         ];
     }
 
-public function getRequestInformation(): Response
-{
-    $order = OrderGetLastAction::execute();
+    public function getRequestInformation(): Response
+    {
+        $order = OrderGetLastAction::execute();
 
-    $result = Http::post(config('placetopay.url')."/api/session/$order->order_id", [
-        'auth' => $this->getAuth(),
-    ]);
+        $result = Http::post(config('placetopay.url')."/api/session/$order->order_id", [
+            'auth' => $this->getAuth(),
+        ]);
 
-    if ($result->ok()) {
-        $status = $result->json()['status']['status'];
-        if ($status == 'APPROVED') {
-            $order->completed();
-        } elseif ($status == 'REJECTED') {
-            $order->canceled();
+        if ($result->ok()) {
+            $status = $result->json()['status']['status'];
+            if ($status == 'APPROVED') {
+                $order->completed();
+            } elseif ($status == 'REJECTED') {
+                $order->canceled();
+            }
+
+            return Inertia::render('Checkout/Show', [
+                'status' => $order->status,
+            ]);
         }
 
-        return Inertia::render('Checkout/Show', [
-            'status' => $order->status,
-        ]);
+        throw new \Exception($result->body());
     }
-
-    throw new \Exception($result->body());
-}
 }

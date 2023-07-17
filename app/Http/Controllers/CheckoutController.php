@@ -3,11 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Services\CartService;
-use App\Services\PlaceToPayPayment;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 class CheckoutController extends Controller
 {

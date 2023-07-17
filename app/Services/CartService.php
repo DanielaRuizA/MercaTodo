@@ -6,7 +6,7 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 
 class CartService
 {
-    public function setCartValues()
+    public function setCartValues(): mixed
     {
         $cartItems = Cart::instance('default')->content();
         $total = Cart::instance('default')->subtotal();

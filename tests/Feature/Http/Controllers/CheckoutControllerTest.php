@@ -2,20 +2,17 @@
 
 namespace Tests\Feature\Http\Controllers;
 
-use Tests\TestCase;
 use App\Models\User;
-use App\Services\CartService;
-use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
 
 class CheckoutControllerTest extends TestCase
 {
     use WithFaker;
     use RefreshDatabase;
 
-
-    public function testUserCanAccessToCheckoutView()
+    public function testUserCanAccessToCheckoutView(): void
     {
         $user = User::factory()->create();
 
@@ -24,36 +21,20 @@ class CheckoutControllerTest extends TestCase
             ->assertStatus(200);
     }
 
-    public function testCanAccessToCheckoutLoggedUsers()
+    public function testCanAccessToCheckoutLoggedUsers(): void
     {
         $this->get('checkout')
-        ->assertRedirect('login');
+            ->assertRedirect('login');
     }
 
-    public function testUserCantCheckoutWithAEmptyCart()
+    public function testUserCantCheckoutWithAEmptyCart(): void
     {
         $user = User::factory()->create();
 
         $this
-        ->actingAs($user)
-        ->get('checkout')
-        ->assertStatus(200)
-        ->assertSee(0);
+            ->actingAs($user)
+            ->get('checkout')
+            ->assertStatus(200)
+            ->assertSee(0);
     }
-
-    // public function testUserCantCheckoutWithACart()
-    // {
-        // $user = User::factory()->create();
-        
-        // $cartItems = Cart::instance('default')->content();
-        // $total = Cart::instance('default')->subtotal();
-
-        // $this->get(route('checkout.index'));
-
-        // $this
-        // ->actingAs($user)
-        // ->get('checkout')
-        // ->assertStatus(200)
-        // ->assertSee($catItems);
-    // }
 }

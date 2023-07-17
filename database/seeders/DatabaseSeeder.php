@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -23,8 +24,22 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('123456'),
         ])->assignRole('admin');
 
-        User::factory(50)->create();
-
-        Product::factory(100)->create();
+        User::factory(100)
+            ->has(Order::factory()->count(2))
+            ->afterCreating(function (User $user) {
+                $user->orders->each(function (Order $order) {
+                    $products = Product::factory(3)->make();
+                    $order->products()->saveMany($products);
+                    $products->each(function (Product $product) use ($order) {
+                        $unitPrice = $product->price;
+                        $quantity = fake()->numberBetween(1, 100);
+                        $order->products()->updateExistingPivot($product->id, [
+                            'quantity' => $quantity,
+                            'unit_price' => $unitPrice,
+                        ]);
+                    });
+                });
+            })
+            ->create();
     }
 }

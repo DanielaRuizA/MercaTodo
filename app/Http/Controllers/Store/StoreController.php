@@ -12,7 +12,7 @@ class StoreController extends Controller
 {
     public function index(Request $request): Response
     {
-        $query = Product::latest()->where('status', 0);
+        $query = Product::latest()->where('status', 'Active');
 
         if ($request->q) {
             $query->where(function ($query) use ($request) {
@@ -31,10 +31,5 @@ class StoreController extends Controller
     public function show(Product $product): Response
     {
         return Inertia::render('Store/Show', compact('product'));
-    }
-
-    public function edit(Product $product): Response
-    {
-        return Inertia::render('Store/Edit', compact('product'));
     }
 }

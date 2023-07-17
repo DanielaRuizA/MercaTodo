@@ -13,18 +13,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $product_id
  * @property mixed $status
  * @property string $product_photo
+ *
  * @method static Product find(...$parameters)
  * @method static Product create(...$parameters)
  * @method static Product latest(...$parameters)
  * @method static Product where(...$parameters)
  */
-
-
 class Product extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'name',
         'description',
         'status',

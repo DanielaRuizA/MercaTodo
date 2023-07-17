@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controllers\AdminPanel;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Inertia\Testing\AssertableInertia as InertiaAssert;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
@@ -13,7 +14,7 @@ class UserControllerTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    public function testAdminAccessDashboard()
+    public function testAdminAccessDashboard(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -28,7 +29,7 @@ class UserControllerTest extends TestCase
         $response->assertSeeText('dashboard');
     }
 
-    public function testAdminAccessUsersIndex()
+    public function testAdminAccessUsersIndex(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -41,7 +42,7 @@ class UserControllerTest extends TestCase
             ->assertStatus(200);
     }
 
-    public function testAdminShowUser()
+    public function testAdminShowUser(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -56,7 +57,7 @@ class UserControllerTest extends TestCase
             ->assertStatus(200);
     }
 
-    public function testAdminCanAccessEditFormUser()
+    public function testAdminCanAccessEditFormUser(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -73,7 +74,7 @@ class UserControllerTest extends TestCase
             ->assertSee($user->email);
     }
 
-    public function testAdminUpdateUser()
+    public function testAdminUpdateUser(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
         Permission::create(['name' => 'admin.users.update'])->assignRole($roleAdmin);
@@ -94,7 +95,7 @@ class UserControllerTest extends TestCase
         $this->assertDatabaseHas('users', $data);
     }
 
-    public function testAdminDestroyUser()
+    public function testAdminDestroyUser(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -116,7 +117,7 @@ class UserControllerTest extends TestCase
         ]);
     }
 
-    public function testAdminChangeUserStatus()
+    public function testAdminChangeUserStatus(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -126,19 +127,25 @@ class UserControllerTest extends TestCase
 
         $user = User::factory()->create();
 
-        $data = [
-            'status' => 1,
-        ];
+        $response = $this->actingAs($admin)
+            ->json('get', 'change/user/status', [
+                'user_id' => $user->id,
+                'status' => 'Inactive',
+            ]);
 
-        $this->actingAs($admin)
-            ->get("changeStatus/$user->id", $data);
+        $response->assertStatus(200);
 
         $this->assertDatabaseHas('users', [
-            'status' => 0,
+            'id' => $user->id,
+            'status' => 'Inactive',
+        ]);
+
+        $response->assertJson([
+            'success' => 'Status change successfully.',
         ]);
     }
 
-    public function testUserAccessDashboard()
+    public function testUserAccessDashboard(): void
     {
         $roleAdmin = Role::create(['name' => 'dashboard']);
 
@@ -151,7 +158,7 @@ class UserControllerTest extends TestCase
             ->assertStatus(200);
     }
 
-    public function testUserCantAccessIndexUsers()
+    public function testUserCantAccessIndexUsers(): void
     {
         $user = User::factory()->create();
 
@@ -160,7 +167,7 @@ class UserControllerTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function testUserCantAccessShowUsers()
+    public function testUserCantAccessShowUsers(): void
     {
         $user = User::factory()->create();
 
@@ -169,7 +176,7 @@ class UserControllerTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function testUserCantAccessEditFormUsers()
+    public function testUserCantAccessEditFormUsers(): void
     {
         $user = User::factory()->create();
 
@@ -178,7 +185,7 @@ class UserControllerTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function testUserCantUpdateUsers()
+    public function testUserCantUpdateUsers(): void
     {
         $user = User::factory()->create();
 
@@ -193,7 +200,7 @@ class UserControllerTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function testUsersCantDestroyUsers()
+    public function testUsersCantDestroyUsers(): void
     {
         $user = User::factory()->create();
 
@@ -203,7 +210,7 @@ class UserControllerTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function testUserCantChangeUserStatus()
+    public function testUserCantChangeUserStatus(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -213,12 +220,40 @@ class UserControllerTest extends TestCase
 
         $user = User::factory()->create();
 
-        $data = [
-            'status' => 1,
-        ];
+        $response = $this->actingAs($user)
+            ->json('get', 'change/user/status', [
+                'user_id' => $user->id,
+                'status' => 'Inactive',
+            ]);
 
-        $this->actingAs($admin)
-            ->get("changeStatus/$user->id", $data)
-            ->assertStatus(404);
+        $response->assertStatus(403);
+    }
+
+    public function testAdminCanSearch(): void
+    {
+        $roleAdmin = Role::create(['name' => 'admin']);
+
+        Permission::create(['name' => 'admin.users.index'])->assignRole($roleAdmin);
+
+        $admin = User::factory()->create()->assignRole('admin');
+
+        User::factory()->count(10)->create();
+
+        $response = $this->actingAs($admin)
+            ->get(route('users.index', ['search' => 'example']));
+
+        $response->assertStatus(200);
+        $response->assertInertia(
+            fn (InertiaAssert $page) => $page->component('AdminPanel/Users/Index')
+                ->has('users', 13)
+        );
+
+        $response = $this->actingAs($admin)
+            ->get(route('users.index'));
+
+        $response->assertStatus(200);
+        $response->assertInertia(
+            fn (InertiaAssert $page) => $page->component('AdminPanel/Users/Index')
+        );
     }
 }

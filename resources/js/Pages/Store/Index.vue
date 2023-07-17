@@ -12,8 +12,12 @@ export default {
         products: Object,
     },
     methods: {
-        showImage() {
-            return "/storage/";
+        showImage(image) {
+            if (image.startsWith('http')) {
+                return image;
+            } else {
+                return "/storage/" + image;
+            }
         }
     },
     data() {
@@ -29,15 +33,14 @@ export default {
 }
 </script>
 <template>
-    <AppLayout title="Dashboard">
+    <AppLayout title="Mercatodo">
 
         <body class="bg-white text-gray-600 work-sans leading-normal text-base tracking-normal">
             <section class="bg-white py-8">
                 <div class="container mx-auto flex items-center flex-wrap pt-4 pb-12">
                     <nav id="stores" class="w-full z-30 top-0 px-6 py-1">
                         <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-3">
-                            <a class="uppercase tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl "
-                                href="#">
+                            <a class="uppercase text-indigo-700 text-4xl font-bold tracking-wide no-underline" href="#">
                                 Mercatodo
                             </a>
                             <div class="flex items-center" id="store-nav-content">
@@ -54,8 +57,8 @@ export default {
                     <div class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col" v-for="product in products.data"
                         :key="product.id">
                         <Link :href="route('stores.show', product.id)">
-                        <img class="hover:grow hover:shadow-lg" :src="showImage() + product.product_photo"
-                            :alt="product.name" width="450">
+                        <img class="hover:grow hover:shadow-lg" :src="showImage(product.product_photo)" :alt="product.name"
+                            width="450">
                         <div class="pt-3 flex items-center justify-between">
                             <p class="">{{ product.name }}</p>
                         </div>

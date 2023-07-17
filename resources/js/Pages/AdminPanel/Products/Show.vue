@@ -1,28 +1,49 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link, router } from '@inertiajs/vue3';
+import { Inertia } from '@inertiajs/inertia';
 
 const props = defineProps({
     product: Object
 })
 
-const showImage = () => "/storage/"
-
-const statusMessage = () => {
-    if (product.status === 1) {
-        ("deshabilitado");
+function showImage(image) {
+    if (image.startsWith('http')) {
+        return image;
     } else {
-        console.log("Habilitado");
+        return "/storage/" + image;
     }
 }
+const destroy = (id) => {
+    Swal.fire({
+        title: '¿Desea Eliminar?',
+        text: 'Esta acción no se puede deshacer',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar',
+    }).then((result) => {
+        if (result.value) {
+            Inertia.delete(route('products.destroy', id)).then(() => {
+                Swal.fire(
+                    'Eliminado',
+                    'El producto ha sido eliminado exitosamente',
+                    'success'
+                );
+            });
+        }
+    });
+};
 
 </script>
 
 <template>
-    <app-layout>
+    <AppLayout title="Detalles Del Producto">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Producto
+                Producto {{ product.name }}
             </h2>
         </template>
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -57,28 +78,36 @@ const statusMessage = () => {
                     </div>
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt class="text-sm font-medium leading-6 text-gray-900">Status</dt>
-                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0" v-if="product.status === 0">
-                            Producto Habilitado
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+                            v-if="product.status === 'Active'">
+                            El Producto Esta Disponible
                         </dd>
-                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0" v-if="product.status === 1">
-                            Producto Deshabilitado
+                        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+                            v-if="product.status === 'Inactive'">
+                            El Producto No Esta Disponible
                         </dd>
                     </div>
                     <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt class="text-sm font-medium leading-6 text-gray-900">Imagen</dt>
                         <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                            <img :src="showImage() + product.product_photo" :alt="product.name" width="400">
+                            <img :src="showImage(product.product_photo)" :alt="product.name" width="400">
                         </dd>
-                        <hr class="my-6">
-                        <Link :href="route('products.index')">
-                        Volver
-                        </Link>
                     </div>
-
                 </dl>
+                <div class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
+                    <Link :href="route('products.index')"
+                        class="px-2 py-1 bg-blue-600 text-white rounded font-bold uppercase mr-2">
+                    Volver
+                    </Link>
+                    <Link :href="route('products.edit', product.id)"
+                        class="px-2 py-1 bg-blue-600 text-white rounded font-bold uppercase mr-2">Editar</Link>
+                    <button @click="destroy(product.id)" type="button"
+                        class="px-2 py-1 bg-red-600 text-white rounded font-bold uppercase">
+                        Eliminar
+                    </button>
+                </div>
             </div>
         </div>
-    </app-layout>
+    </AppLayout>
 </template>
-
 

@@ -183,6 +183,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -216,5 +217,5 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
     ])->toArray(),
-
+    'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 ];

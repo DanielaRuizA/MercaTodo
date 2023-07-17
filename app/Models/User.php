@@ -18,12 +18,11 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string $email
  * @property string $tokens
  * @property object $each
+ *
  * @method static User create(...$parameters)
  * @method static User find(...$parameters)
  * @method static User latest(...$parameters)
  */
-
-
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens;

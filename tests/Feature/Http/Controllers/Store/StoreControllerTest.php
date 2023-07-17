@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Inertia\Testing\AssertableInertia;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
@@ -14,7 +15,7 @@ class StoreControllerTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    public function testAdminAccessStore()
+    public function testAdminAccessStore(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -32,7 +33,7 @@ class StoreControllerTest extends TestCase
             ->assertSee($product->imagen);
     }
 
-    public function testUserAccessStore()
+    public function testUserAccessStore(): void
     {
         $roleUser = Role::create(['name' => 'user']);
 
@@ -50,7 +51,7 @@ class StoreControllerTest extends TestCase
             ->assertSee($product->imagen);
     }
 
-    public function testAdminAccessStoreShowProductView()
+    public function testAdminAccessStoreShowProductView(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -68,7 +69,7 @@ class StoreControllerTest extends TestCase
             ->assertSee($product->imagen);
     }
 
-    public function testUserAccessStoreShowProductView()
+    public function testUserAccessStoreShowProductView(): void
     {
         $roleUser = Role::create(['name' => 'user']);
 
@@ -85,4 +86,23 @@ class StoreControllerTest extends TestCase
             ->assertSee($product->precio)
             ->assertSee($product->imagen);
     }
+
+public function testStoreIndexSearch()
+{
+    $roleUser = Role::create(['name' => 'user']);
+    Permission::create(['name' => 'admin.store.index'])->assignRole($roleUser);
+    $user = User::factory()->create()->assignRole('user');
+
+    Product::factory()->create();
+
+    $response = $this->actingAs($user)
+        ->get('/stores?q=Product')
+        ->assertStatus(200);
+
+    $response->assertInertia(
+        fn (AssertableInertia $page) => $page
+            ->component('Store/Index')
+            ->has('products')
+    );
+}
 }

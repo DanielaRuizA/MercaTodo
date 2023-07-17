@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\AdminPanel;
 
-use App\Actions\User\ChangeStatus;
+use App\Actions\User\ChangeUserStatusAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminPanel\UserRequest;
 use App\Models\User;
@@ -18,11 +18,11 @@ class UserController extends Controller
     {
         $query = User::latest()->where('id', '!=', auth()->id());
 
-        if ($request->q) {
+        if ($request->search) {
             $query->where(function ($query) use ($request) {
-                $query->where('id', 'LIKE', "%$request->q%")
-                    ->orWhere('name', 'LIKE', "%$request->q%")
-                    ->orWhere('email', 'LIKE', "%$request->q%");
+                $query->where('id', 'LIKE', "%$request->search%")
+                    ->orWhere('name', 'LIKE', "%$request->search%")
+                    ->orWhere('email', 'LIKE', "%$request->search%");
             });
         }
 
@@ -57,7 +57,7 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('message', 'Usuario eliminado');
     }
 
-    public function changeStatus(ChangeStatus $changeStatus, Request $request): JsonResponse
+    public function changeUserStatus(ChangeUserStatusAction $changeStatus, Request $request): JsonResponse
     {
         $changeStatus->handle($request);
 

@@ -8,11 +8,6 @@ export default {
         Link,
         AppLayout,
     },
-    methods: {
-        showImage() {
-            return "/storage/";
-        }
-    },
     data() {
         return {
             quantity: 1,
@@ -33,14 +28,22 @@ export default {
     },
     methods: {
         submit() {
-            this.$inertia.post(this.route('cart.store', this.product.id), this.form), {
+            this.$inertia.post(this.route('cart.store', this.product.id), this.form, {
                 preserveScroll: true,
                 onSuccess: () => {
+                    Toast.fire({
+                        icon: 'success',
+                        title: `${this.form.name} se agrego al carrito`
+                    })
                 }
-            }
+            })
         },
-        showImage() {
-            return "/storage/";
+        showImage(image) {
+            if (image.startsWith('http')) {
+                return image;
+            } else {
+                return "/storage/" + image;
+            }
         },
         zoomImage() {
             let container = document.querySelector('#img-container')
@@ -70,22 +73,22 @@ export default {
                             <div class="flex flex-col flex-1 sm:border-r">
                                 <div class="border-2 overflow-hidden cursor-zoom-in h-full">
                                     <div id="img-container" class="w-full h-full">
-                                        <img id="current-img" :src="showImage() + product.product_photo" :alt="product.name"
+                                        <img id="current-img" :src="showImage(product.product_photo)" :alt="product.name"
                                             class="w-full h-full object-cover origin-center">
                                     </div>
                                 </div>
                             </div>
-                            <div class="px-6 pb-6 mt-6 border-t border-gray-300 dark:border-gray-400 ">
+                            <div class="px-6 pb-6 mt-6 border-t border-gray-300 ">
                                 <div class="flex flex-wrap items-center mt-6">
                                     <span class="mr-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                            class="w-4 h-4 text-sky-300 bi bi-truck" viewBox="0 0 16 16">
+                                            class="w-4 h-4 text-sky-500 bi bi-truck" viewBox="0 0 16 16">
                                             <path
                                                 d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z">
                                             </path>
                                         </svg>
                                     </span>
-                                    <h2 class="text-lg font-bold text-sky-300">Envió Gratis</h2>
+                                    <h2 class="text-lg font-bold text-sky-500">Envió Gratis</h2>
                                 </div>
                             </div>
                         </div>
@@ -102,32 +105,34 @@ export default {
                                             maximumSignificantDigits: 3
                                         }).format(product.price) }}</span>
                                     </p>
-                                    <p class="max-w-md text-gray-700 dark:text-gray-400">
+                                    <p class="max-w-md text-gray-800">
                                         {{ product.description }}
                                     </p>
                                 </div>
                                 <div class="w-32 mb-8 ">
-                                    <label for=""
-                                        class="w-full pb-1 text-xl font-semibold text-gray-700 border-b border-blue-300 dark:border-gray-600 dark:text-gray-400">Cantidad</label>
+                                    <label class="w-full pb-1 text-xl font-semibold text-gray-900 border-b border-grey-700"
+                                        v-if="product.quantity >= 5">Cantidad</label>
                                     <template v-if="product.quantity <= 0">
                                         <div class="mt-4">
-                                            <span class="text-2xl font-bold text-red-400">
+                                            <span class="text-2xl font-bold text-red-400 uppercase">
                                                 Agotado
                                             </span>
                                         </div>
                                     </template>
                                     <template v-else-if="product.quantity <= 5">
                                         <div class="mt-4">
-                                            <span class="text-xl  text-sky-400 font-bold">
+                                            <p class="mb-4 flex flex-wrap items-center text-xl text-sky-400 font-bold">
                                                 Pocas Unidades Disponibles
-                                            </span>
+                                            </p>
                                         </div>
                                         <div class="flex items-center">
-                                            <label for="quantity" class="flex-1 text-xl capitalize"> Cantidad:</label>
-                                            <select class="flex-1 w-full border bg-white rounded px-3 py-1 outline-none"
+                                            <label for="quantity" class="flex-1 text-xl capitalize text-gray-900">
+                                                Cantidad:</label>
+                                            <select class="flex-1 w-full border bg-white rounded px-1 py-2 outline-none"
                                                 tabindex="1" v-model="form.quantity">
                                                 <option :value="qty" :selected="qty === quantity"
-                                                    v-for="(qty, index) in product.quantity" :key="index">{{ qty }}</option>
+                                                    v-for="( qty, index ) in  product.quantity " :key="index">{{ qty }}
+                                                </option>
                                             </select>
                                         </div>
                                     </template>
@@ -136,14 +141,15 @@ export default {
                                             <select class="flex-1 w-full border bg-white rounded px-3 py-1 outline-none"
                                                 tabindex="1" v-model="form.quantity">
                                                 <option :value="qty" :selected="qty === quantity"
-                                                    v-for="(qty, index) in product.quantity" :key="index">{{ qty }}</option>
+                                                    v-for="( qty, index ) in  product.quantity " :key="index">{{ qty }}
+                                                </option>
                                             </select>
                                         </div>
                                     </template>
                                 </div>
                                 <div class="flex flex-wrap items-center gap-4">
                                     <button v-if="product.quantity > 0"
-                                        class=" px-8 py-3 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 dark:text-gray-200 text-gray-50  uppercase hover:bg-sky-600 dark:bg-sky-500">
+                                        class="inline-flex items-center px-8 py-3 rounded-md outline-none focus:outline-none ease-linear transition-all duration-15 text-gray-50 bg-sky-500 uppercase hover:bg-sky-700">
                                         <svg aria-hidden="true" class="w-5 h-5 mr-2 -ml-1" fill="currentColor"
                                             viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                             <path
