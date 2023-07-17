@@ -33,9 +33,6 @@ const submit = () => {
     );
 }
 
-// function showImage() {
-//     return "/storage/";
-// }
 
 function showImage(image) {
     if (image.startsWith('http')) {
@@ -87,11 +84,6 @@ const destroy = (id) => {
         }
     });
 };
-// const destroy = (id) => {
-//     if (confirm('¿Desea Eliminar?')) {
-//         Inertia.delete(route('products.destroy', id))
-//     }
-// }
 </script>
 
 <template>

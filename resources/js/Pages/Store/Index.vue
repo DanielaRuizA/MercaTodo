@@ -12,10 +12,6 @@ export default {
         products: Object,
     },
     methods: {
-        //     showImage() {
-        //         return "/storage/";
-        //     }
-        // },
         showImage(image) {
             if (image.startsWith('http')) {
                 return image;

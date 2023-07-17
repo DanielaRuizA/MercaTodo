@@ -5,10 +5,10 @@ namespace Tests\Feature\Http\Controllers\AdminPanel;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Inertia\Testing\AssertableInertia as InertiaAssert;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
-use Inertia\Testing\AssertableInertia as InertiaAssert;
 
 class UserControllerTest extends TestCase
 {
@@ -128,10 +128,10 @@ class UserControllerTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->actingAs($admin)
-        ->json('get', 'change/user/status', [
-            'user_id' => $user->id,
-            'status' => 'Inactive',
-        ]);
+            ->json('get', 'change/user/status', [
+                'user_id' => $user->id,
+                'status' => 'Inactive',
+            ]);
 
         $response->assertStatus(200);
 
@@ -141,7 +141,7 @@ class UserControllerTest extends TestCase
         ]);
 
         $response->assertJson([
-            'success' => 'Status change successfully.'
+            'success' => 'Status change successfully.',
         ]);
     }
 
@@ -219,17 +219,17 @@ class UserControllerTest extends TestCase
         $admin = User::factory()->create()->assignRole('admin');
 
         $user = User::factory()->create();
-        
+
         $response = $this->actingAs($user)
-        ->json('get', 'change/user/status', [
-            'user_id' => $user->id,
-            'status' => 'Inactive',
-        ]);
+            ->json('get', 'change/user/status', [
+                'user_id' => $user->id,
+                'status' => 'Inactive',
+            ]);
 
         $response->assertStatus(403);
     }
 
-    public function testAdminCanSearch()
+    public function testAdminCanSearch(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -244,9 +244,8 @@ class UserControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertInertia(
-            fn (InertiaAssert $page) =>
-                    $page->component('AdminPanel/Users/Index')
-                    ->has('users', 13)
+            fn (InertiaAssert $page) => $page->component('AdminPanel/Users/Index')
+                ->has('users', 13)
         );
 
         $response = $this->actingAs($admin)
@@ -254,8 +253,7 @@ class UserControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertInertia(
-            fn (InertiaAssert $page) =>
-                    $page->component('AdminPanel/Users/Index')
+            fn (InertiaAssert $page) => $page->component('AdminPanel/Users/Index')
         );
     }
 }

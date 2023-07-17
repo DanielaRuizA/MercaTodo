@@ -38,9 +38,6 @@ export default {
                 }
             })
         },
-        // showImage() {
-        //     return "/storage/";
-        // },
         showImage(image) {
             if (image.startsWith('http')) {
                 return image;

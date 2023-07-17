@@ -2,11 +2,10 @@
 
 namespace Tests\Feature\Jobs;
 
-use Tests\TestCase;
 use App\Jobs\ProductExportJob;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
+use Tests\TestCase;
 
 class ProductExportJobTest extends TestCase
 {

@@ -18,10 +18,10 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id'=> User::factory()->create(),
-            'order_id'=> $this->faker->lexify,
+            'user_id' => User::factory()->create(),
+            'order_id' => $this->faker->lexify,
             'url' => $this->faker->url(),
-            'amount'=> $this->faker->randomNumber(7, false),
+            'amount' => $this->faker->randomNumber(7, false),
             'currency' => $this->faker->randomElement(['COP']),
             'status' => $this->faker->randomElement(['PENDING', 'COMPLETED', 'CANCELED']),
         ];

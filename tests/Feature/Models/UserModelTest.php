@@ -2,11 +2,10 @@
 
 namespace Tests\Feature\Models;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Order;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class UserModelTest extends TestCase
 {
@@ -14,10 +13,8 @@ class UserModelTest extends TestCase
 
     /**
      * Test the relationship with orders.
-     *
-     * @return void
      */
-    public function testOrdersRelationship()
+    public function testOrdersRelationship(): void
     {
         $user = User::factory()->create();
 

@@ -2,18 +2,14 @@
 
 namespace Tests\Feature\Http\Controllers\Store;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Product;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Http\Controllers\AdminPanel\ProductController;
-use Inertia\Testing\Assert;
+use Illuminate\Foundation\Testing\WithFaker;
 use Inertia\Testing\AssertableInertia;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use Tests\TestCase;
 
 class StoreControllerTest extends TestCase
 {

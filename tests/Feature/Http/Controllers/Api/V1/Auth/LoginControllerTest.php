@@ -2,10 +2,9 @@
 
 namespace Tests\Feature\Http\Controllers\Api\V1\Auth;
 
-use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class LoginControllerTest extends TestCase
 {

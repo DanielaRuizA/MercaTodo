@@ -2,17 +2,16 @@
 
 namespace Tests\Feature\Models;
 
-use Tests\TestCase;
 use App\Models\Order;
 use App\Models\Product;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ProductModelTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testProductHasOrdersRelationship()
+    public function testProductHasOrdersRelationship(): void
     {
         $product = Product::factory()->create();
 

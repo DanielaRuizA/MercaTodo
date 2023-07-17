@@ -1,20 +1,18 @@
 <?php
 
-use Inertia\Inertia;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Redirect;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\Cart\CartController;
-use App\Http\Controllers\Store\StoreController;
-use App\Http\Controllers\AdminPanel\UserController;
 use App\Http\Controllers\AdminPanel\ProductController;
-use App\Http\Controllers\AdminPanel\ReportOrderController;
 use App\Http\Controllers\AdminPanel\ProductExportController;
 use App\Http\Controllers\AdminPanel\ProductImportController;
-use App\Http\Controllers\AdminPanel\ProductsStockReportController;
+use App\Http\Controllers\AdminPanel\ReportOrderController;
+use App\Http\Controllers\AdminPanel\UserController;
+use App\Http\Controllers\Cart\CartController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\Store\StoreController;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -33,7 +31,7 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
-    
+
     Route::get('/', function () {
         return redirect()->route('stores.index');
     });
@@ -43,50 +41,12 @@ Route::get('user/banned', function () {
     return Inertia::render('Auth/UserBanned');
 })->name('user.banned');
 
-
-// Route::middleware([
-//     'auth:sanctum',
-//     config('jetstream.auth_session'),
-//     'verified',
-// ])->group(function () {
-//     Route::get('/stores');
-    
-//     Route::get('/', function () {
-//         return redirect()->route('stores.index');
-//     });
-// });
-
-// Route::middleware([
-//     'auth:sanctum',
-//     config('jetstream.auth_session'),
-//     'verified',
-// ])->group(function () {
-//     Route::get('/dashboard', function () {
-//         return Inertia::render('Dashboard');
-//     })->name('dashboard');
-// });
-
-// Route::middleware([
-//     'auth:sanctum',
-//     config('jetstream.auth_session'),
-//     'verified',
-// ])->group(function () {
-//     Route::get('/dashboard', function () {
-//         return Inertia::render('Dashboard');
-//     })->name('dashboard');
-    
-//     Route::get('/', function () {
-//         return redirect()->route('dashboard');
-//     });
-// });
-
-
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('users', UserController::class);
     Route::get('change/user/status', [UserController::class, 'changeUserStatus'])->name('change.user.status');
 
-    Route::get('products/imports', [ProductImportController::class,'show'])->name('products.show.imports');
-    Route::post('products/imports', [ProductImportController::class,'store'])->name('products.store.imports');
+    Route::get('products/imports', [ProductImportController::class, 'show'])->name('products.show.imports');
+    Route::post('products/imports', [ProductImportController::class, 'store'])->name('products.store.imports');
 
     Route::get('products/exports', ProductExportController::class)->name('products.export');
     Route::resource('products', ProductController::class);

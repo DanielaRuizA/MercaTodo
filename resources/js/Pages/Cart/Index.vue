@@ -20,9 +20,6 @@ export default {
         }
     },
     methods: {
-        // showImage() {
-        //     return "/storage/";
-        // },
         showImage(image) {
             if (image.startsWith('http')) {
                 return image;
