@@ -138,6 +138,7 @@ PlaceToPay https://docs-gateway.placetopay.com/
 >MAIL_PASSWORD
 >MAIL_ENCRYPTION
 
+
 ### PlaceToPay Payment Service
 >PLACETOPAY_LOGIN
 >PLACETOPAY_TRANKEY
