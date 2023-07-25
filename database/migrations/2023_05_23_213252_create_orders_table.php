@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -20,8 +19,7 @@ return new class extends Migration
             $table->enum('currency', ['COP'])->default('COP');
             $table->enum('status', ['PENDING', 'COMPLETED', 'CANCELED'])->default('PENDING');
             $table->timestamps();
-
-            $table->foreign('user_id')->on('users')->references('id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

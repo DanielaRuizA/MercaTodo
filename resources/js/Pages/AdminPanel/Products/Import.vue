@@ -22,7 +22,7 @@ export default {
         importFile() {
             let formData = new FormData();
             formData.append('file', this.file);
-            axios.post('/products/imports', formData).then(() => {
+            axios.post(route('products.store.imports'), formData).then(() => {
                 console.log('import file');
                 Swal.fire({
                     icon: 'success',

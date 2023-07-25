@@ -22,7 +22,7 @@ export default {
         },
         updateStatus(product) {
             const status = (product.status === 'Active') ? 'Inactive' : 'Active';
-            axios.get('change/product/status', {
+            axios.get(route('change.product.status'), {
                 params: { status: status, product_id: product.id }
             }).then(response => {
                 console.log(response.data.success);
@@ -30,7 +30,24 @@ export default {
             }).catch(error => {
                 console.error(error);
             });
-        }
+        },
+        exportData() {
+            axios.get('/exports', { responseType: 'blob' })
+                .then((response) => {
+                    const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                    const url = window.URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', 'products.xlsx');
+                    document.body.appendChild(link);
+                    link.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(link);
+                })
+                .catch((error) => {
+                    console.error('Error al exportar', error);
+                });
+        },
     },
     setup() {
         const destroy = (id) => {
@@ -86,10 +103,14 @@ export default {
                                     class="bg-blue-600 hover:bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-mdpx-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold uppercase mr-2">
                                 Crear Producto
                                 </Link>
-                                <Link :href="route('products.export')"
+                                <Link @click="exportData()"
                                     class="bg-blue-600 hover:bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-mdpx-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold uppercase mr-2">
                                 Exportar
                                 </Link>
+                                <!-- <Link :href="route('products.export')"
+                                    class="bg-blue-600 hover:bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-mdpx-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold uppercase mr-2">
+                                Exportar
+                                </Link> -->
                                 <Link :href="route('products.show.imports')"
                                     class="bg-blue-600 hover:bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-mdpx-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold uppercase mr-2">
                                 Importar
