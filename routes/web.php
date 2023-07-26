@@ -9,7 +9,6 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Cart\CartController;
 use App\Http\Controllers\Store\StoreController;
 use App\Http\Controllers\AdminPanel\UserController;
-use App\Http\Controllers\AdminPanel\ExportController;
 use App\Http\Controllers\AdminPanel\ProductController;
 use App\Http\Controllers\AdminPanel\ReportOrderController;
 use App\Http\Controllers\AdminPanel\ProductExportController;
@@ -49,8 +48,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('products/imports', [ProductImportController::class, 'show'])->name('products.show.imports');
     Route::post('products/imports', [ProductImportController::class, 'store'])->name('products.store.imports');
 
-    // Route::get('products/exports', ProductExportController::class)->name('products.export');
-    Route::get('exports', [ExportController::class, 'export'])->name('export');
+    Route::get('products/exports', [ProductExportController::class, 'export'])->name('products.export');
     Route::resource('products', ProductController::class);
     Route::get('change/product/status', [ProductController::class, 'changeProductStatus'])->name('change.product.status');
 });

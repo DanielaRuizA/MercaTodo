@@ -3,10 +3,11 @@
 namespace App\Exports;
 
 use App\Models\Order;
-use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class OrdersReportExport implements FromQuery
+class OrdersReportExport implements FromQuery, WithHeadings
 {
     use Exportable;
 
@@ -15,6 +16,21 @@ class OrdersReportExport implements FromQuery
     public function __construct(array $filters)
     {
         $this->filters = $filters;
+    }
+
+    public function headings(): array
+    {
+        return [
+            'id',
+            'orders id ',
+            'amount',
+            'status',
+            'url',
+            'date created',
+            'date updated',
+            'user name ',
+            'user email',
+        ];
     }
 
     public function query()
@@ -32,10 +48,10 @@ class OrdersReportExport implements FromQuery
             ->select(
                 'orders.id',
                 'orders.order_id',
-                'orders.created_at',
                 'orders.amount',
                 'orders.status',
                 'orders.url',
+                'orders.created_at',
                 'orders.updated_at',
                 'users.name',
                 'users.email'

@@ -26,10 +26,10 @@ class ProductExportControllerTest extends TestCase
 
         $this->actingAs($admin)
             ->get('products/exports')
-            ->assertRedirect('products');
+            ->assertStatus(200);
     }
 
-    public function testAdminCanExportProductsEnqueueJob(): void
+    public function testAdminCanExportProducts(): void
     {
         $roleAdmin = Role::create(['name' => 'admin']);
 
@@ -37,12 +37,9 @@ class ProductExportControllerTest extends TestCase
 
         $admin = User::factory()->create()->assignRole('admin');
 
-        Queue::fake();
         $this->actingAs($admin)
             ->get(route('products.export'))
-            ->assertRedirect('products');
-
-        Queue::assertPushed(ProductExportJob::class);
+            ->assertStatus(200);
     }
 
     public function testUserCantAccessExportProductsRoute(): void

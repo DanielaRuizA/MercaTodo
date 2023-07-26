@@ -32,7 +32,7 @@ export default {
             });
         },
         exportData() {
-            axios.get('/exports', { responseType: 'blob' })
+            axios.get(route('products.export'), { responseType: 'blob' })
                 .then((response) => {
                     const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
                     const url = window.URL.createObjectURL(blob);
@@ -107,10 +107,6 @@ export default {
                                     class="bg-blue-600 hover:bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-mdpx-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold uppercase mr-2">
                                 Exportar
                                 </Link>
-                                <!-- <Link :href="route('products.export')"
-                                    class="bg-blue-600 hover:bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-mdpx-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold uppercase mr-2">
-                                Exportar
-                                </Link> -->
                                 <Link :href="route('products.show.imports')"
                                     class="bg-blue-600 hover:bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-mdpx-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold uppercase mr-2">
                                 Importar
@@ -179,9 +175,6 @@ export default {
                                 </td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                     <img :src="showImage(product.product_photo)" :alt="product.name" width="100">
-                                    <!-- <img :src="showImage() + product.product_photo" :alt="product.name" width="100"> -->
-                                    <!-- <img :src="'https://images.pexels.com/photos/11627652/pexels-photo-11627652.jpeg'"
-                                        :alt="product.name" width="100"> -->
                                 </td>
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                     {{ Intl.NumberFormat('es-CO', {

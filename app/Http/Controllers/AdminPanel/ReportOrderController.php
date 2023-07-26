@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\AdminPanel;
 
+use Inertia\Inertia;
+use App\Models\Order;
+use Inertia\Response;
+use Illuminate\Http\Request;
 use App\Exports\OrdersReportExport;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AdminPanel\OrderReportRequest;
-use App\Models\Order;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-use Inertia\Inertia;
-use Inertia\Response;
+use App\Http\Requests\AdminPanel\OrderReportRequest;
 
 class ReportOrderController extends Controller
 {
@@ -46,8 +47,8 @@ class ReportOrderController extends Controller
 
     public function ordersReportExport(OrderReportRequest $request): RedirectResponse
     {
-        $path_file = 'reports/orders/orders_'.$request->validated()['time'].'.xlsx';
-        (new OrdersReportExport($request->validated()))->queue($path_file);
+        $filePath = 'reports/orders/orders_'.$request->validated()['time'].'.xlsx';
+        (new OrdersReportExport($request->validated()))->queue($filePath);
 
         return Redirect::route('orders.report.table')->with('success', 'The Report Of Orders Was Generated Successfully.');
     }
