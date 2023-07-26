@@ -71,6 +71,7 @@ const generateReport = () => {
         time: time,
     });
 }
+
 </script>
 
 <template>

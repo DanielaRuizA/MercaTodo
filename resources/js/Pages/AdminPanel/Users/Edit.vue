@@ -1,81 +1,73 @@
-<script>
+<script setup>
 import AppLayout from '@/Layouts/AppLayoutUser.vue';
+import { Inertia } from '@inertiajs/inertia';
 import { Link, useForm } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
-export default {
-    components: {
-        AppLayout,
-        Link,
-    },
-    props: {
-        user: Object,
-        errors: Object
-    },
-    data() {
-        return {
-            form: useForm({
-                name: this.user.name,
-                email: this.user.email,
-                status: this.user.status,
+const props = defineProps({
+    user: Object,
+    errors: Object
+});
+
+const form = useForm({
+    name: props.user.name,
+    email: props.user.email,
+    status: props.user.status,
+});
+
+const submit = () => {
+    form.put(route('users.update', props.user.id), {
+        onSuccess: () => {
+            Toast.fire({
+                icon: 'success',
+                title: 'El Usuario a sido editado!'
             })
         }
-    },
-    computed: {
-        status() {
-            if (this.user.status === 'Active') {
-                return 'Usuario Esta habilitado'
-            } else {
-                return 'Usuario Esta Deshabilitado'
-            }
-        }
-    },
-    methods: {
-        submit() {
-            this.$inertia.put(this.route('users.update', this.user.id), this.form, {
-                onSuccess: () => {
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'El Usuario a sido editado!'
-                    })
-                }
-            });
-        },
-        destroy() {
-            Swal.fire({
-                title: '¿Desea Eliminar?',
-                text: 'Esta acción no se puede deshacer',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Eliminar',
-                cancelButtonText: 'Cancelar',
-            }).then((result) => {
-                if (result.value) {
-                    this.$inertia.delete(route('users.destroy', this.user.id)).then(() => {
-                        Swal.fire(
-                            'Eliminado',
-                            'El Usuario ha sido eliminado exitosamente',
-                            'success'
-                        );
-                    });
-                }
-            });
-        }
-    },
-    updateStatus(user) {
-        const status = (user.status === 'Active') ? 'Inactive' : 'Active';
-        axios.get('/change/user/status', {
-            params: { status: status, user_id: user.id }
-        }).then(response => {
-            console.log(response.data.success);
-            user.status = !user.status;
-        }).catch(error => {
-            console.error(error);
-        });
-    }
-}
+    });
+};
 
+function updateStatus(user) {
+    const status = (user.status === 'Active') ? 'Inactive' : 'Active';
+    axios.get(route('change.user.status'), {
+        params: { status: status, user_id: user.id }
+    }).then(response => {
+        console.log(response.data.success);
+        user.status = !user.status;
+    }).catch(error => {
+        console.error(error);
+    });
+};
+
+const status = computed(() => {
+    if (props.user.status === 'Active') {
+        return 'El Usuario Esta habilitado'
+    } else {
+        return 'El Usuario Esta Deshabilitado'
+    }
+});
+
+const destroy = (id) => {
+    Swal.fire({
+        title: '¿Desea Eliminar?',
+        text: 'Esta acción no se puede deshacer',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar',
+    }).then((result) => {
+        if (result.value) {
+            Inertia.delete(route('users.destroy', id)).then(() => {
+                Swal.fire(
+                    'Eliminado',
+                    'El Usuario ha sido eliminado exitosamente',
+                    'success'
+                );
+            });
+        }
+    });
+};
 </script>
 
 <template>
@@ -123,17 +115,19 @@ export default {
                                         </div>
                                     </label>
                                 </td>
-                                <button
-                                    class="px-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold uppercase mr-2">Editar
-                                    Usuario</button>
+                                <div>
+                                    <button
+                                        class="px-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold uppercase mr-2">Editar
+                                        Usuario</button>
+                                </div>
                             </form>
                             <hr class="my-6">
-                            <div>
+                            <div class="md:col-span-2 mt-5 md:mt-0">
                                 <Link :href="route('users.index')"
                                     class="bg-blue-600 hover:bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-mdpx-2 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold uppercase mr-2">
                                 Volver
                                 </Link>
-                                <button @click.prevent="destroy()" type="button"
+                                <button @click.prevent="destroy(user.id)" type="button"
                                     class="px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded font-bold uppercase">
                                     Eliminar Usuario
                                 </button>
@@ -144,4 +138,4 @@ export default {
             </div>
         </div>
     </AppLayout>
-</template>
+</template >

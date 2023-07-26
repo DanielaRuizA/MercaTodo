@@ -1,18 +1,18 @@
 <?php
 
-use App\Http\Controllers\AdminPanel\ProductController;
-use App\Http\Controllers\AdminPanel\ProductExportController;
-use App\Http\Controllers\AdminPanel\ProductImportController;
-use App\Http\Controllers\AdminPanel\ReportOrderController;
-use App\Http\Controllers\AdminPanel\UserController;
-use App\Http\Controllers\Cart\CartController;
-use App\Http\Controllers\CheckoutController;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\Cart\CartController;
 use App\Http\Controllers\Store\StoreController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+use App\Http\Controllers\AdminPanel\UserController;
+use App\Http\Controllers\AdminPanel\ProductController;
+use App\Http\Controllers\AdminPanel\ReportOrderController;
+use App\Http\Controllers\AdminPanel\ProductExportController;
+use App\Http\Controllers\AdminPanel\ProductImportController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -48,7 +48,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('products/imports', [ProductImportController::class, 'show'])->name('products.show.imports');
     Route::post('products/imports', [ProductImportController::class, 'store'])->name('products.store.imports');
 
-    Route::get('products/exports', ProductExportController::class)->name('products.export');
+    Route::get('products/exports', [ProductExportController::class, 'export'])->name('products.export');
     Route::resource('products', ProductController::class);
     Route::get('change/product/status', [ProductController::class, 'changeProductStatus'])->name('change.product.status');
 });

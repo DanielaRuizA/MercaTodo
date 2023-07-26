@@ -37,31 +37,6 @@ class ProductImportControllerTest extends TestCase
         );
     }
 
-public function testImportingCVSProductSuccessfully(): void
-{
-    $roleAdmin = Role::create(['name' => 'admin']);
-
-    Permission::create(['name' => 'admin.products.import'])->assignRole($roleAdmin);
-
-    $admin = User::factory()->create()->assignRole('admin');
-
-    $response = $this->actingAs($admin);
-
-    Storage::fake('public');
-
-    Excel::fake();
-
-    $file = UploadedFile::fake()->create('products.csv');
-
-    $response = $this->post('products/imports', [
-        'file' => $file,
-    ]);
-
-    $response->assertRedirect()->assertSessionHas('success', 'Products successfully imported');
-
-    $response->assertSessionMissing('import_errors');
-}
-
 public function testImportingXlsxProductsSuccessfully(): void
 {
     $roleAdmin = Role::create(['name' => 'admin']);
@@ -82,7 +57,7 @@ public function testImportingXlsxProductsSuccessfully(): void
         'file' => $file,
     ]);
 
-    $response->assertRedirect()->assertSessionHas('success', 'Products successfully imported');
+    $response->assertRedirect()->assertSessionHas('success', 'Products Was Successfully Imported');
 
     $response->assertSessionMissing('import_errors');
 }

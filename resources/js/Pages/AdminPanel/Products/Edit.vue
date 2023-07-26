@@ -44,7 +44,7 @@ function showImage(image) {
 
 function updateStatus(product) {
     const status = (product.status === 'Active') ? 'Inactive' : 'Active';
-    axios.get('/change/product/status', {
+    axios.get(route('change.product.status'), {
         params: { status: status, product_id: product.id }
     }).then(response => {
         console.log(response.data.success);

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\AdminPanel;
 
-use App\Http\Controllers\Controller;
-use App\Imports\ProductsImport;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Http\Request;
+use App\Imports\ProductsImport;
+use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Validators\ValidationException;
 
 class ProductImportController extends Controller
@@ -18,21 +18,20 @@ class ProductImportController extends Controller
         return Inertia::render('AdminPanel/Products/Import');
     }
 
-    public function store(Request $request): RedirectResponse
+
+    public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|mimes:xlsx,csv',
-        ]);
+        'file' => 'required|file|mimes:xlsx',
+    ]);
 
         $file = $request->file('file')->getPathname();
 
         try {
             Excel::queueImport(new ProductsImport, $file);
-
-            return redirect()->back()->with('success', 'Products successfully imported');
+            return redirect()->back()->with('success', 'Products Was Successfully Imported');
         } catch (ValidationException $e) {
-            $failures = $e->failures();
-
+            $failures = $e->validator->getMessageBag()->toArray();
             return redirect()->back()->with('import_errors', $failures);
         }
     }
